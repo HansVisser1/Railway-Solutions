@@ -39,13 +39,14 @@ class Traject():
         This methods adds connections from a list to the Traject object as long as they don't exceed the maximum time.
         It also checks whether the station can be connected.
         """
+
         for connection in connections_list:
             if len(self.connections) == 0:
                 add_connection(connection)
-            else:
-                if connection.stations[0] in self.stations or connection.stations[1] in self.stations:
-                    if duration() + connection.time <= 120:
-                        add_connection(connection)
+            # else:
+            #     if connection.stations[0] in self.stations or connection.stations[1] in self.stations:
+            #         if duration() + connection.time <= 120:
+            #             add_connection(connection)
 
 
     def stations(self):
