@@ -19,15 +19,16 @@ class Traject():
 
     def run(self, stations_path, connections_path):
         stations_dict, connections_list = read_data(stations_path, connections_path)
-        #pprint.pprint(stations_dict)
+
         stations = []
         for station in stations_dict.keys():
             stations.append(station)
-        start_station = random.sample(stations, 1)[0]
+        start_station = (random.sample(stations, 1)[0])
 
-        self.starting_station(self, start_station)
+        print(start_station)
+        self.starting_station(start_station)
 
-        self.determine_available_connections(self, stations_dict)
+        self.determine_available_connections(stations_dict)
         print(self.available_connections)
 
     def starting_station(self, station):
@@ -39,11 +40,11 @@ class Traject():
         This methods adds connections from a list to the Traject object as long as they don't exceed the maximum time.
         It also checks whether the station can be connected.
         """
-        self.connections_dict = stations_dict[current_station]
+        connections_dict = stations_dict[self.current_station]
         self.available_connections = []
 
-        for key in connections[self.current_station]['connections'].keys():
-            if duration() + connections[self.current_station]['connections'][key] <= self.max_time:
+        for key in connections_dict['connections'].keys():
+            if self.duration() + connections_dict['connections'][key] <= self.max_time:
                 self.available_connections.append(key)
 
     def add_connection(self):
