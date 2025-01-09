@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
 def import_stations(csv_file):
     df = pd.read_csv(csv_file, sep = ',')
     return(df)
@@ -32,9 +33,12 @@ def visualize_stations(station_dict):
     plt.show()
 
 if __name__ == "__main__":
-    # Execute functions
-    df_stations = import_stations('StationsHolland.csv')
+    # creating a stations dataframe
+    # Make sure the file path is correct after importing!
+    df_stations = import_stations("../StationsHolland.csv")
 
+    # creating dictionary of station coordinates
     station_coordinate_dict = station_dict(df_stations)
 
+    # visualizing the stations
     visualize_stations(station_coordinate_dict)
