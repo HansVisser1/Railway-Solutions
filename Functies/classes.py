@@ -16,10 +16,11 @@ class Traject():
         self.time_condition = False
         self.current_station = None
         self.connections_dict = {}
+        self.total_connections = 0
 
     def run(self, stations_path, connections_path):
         stations_dict, connections_list = read_data(stations_path, connections_path)
-
+        self.total_connections = len(connections_list)
         stations = []
         for station in stations_dict.keys():
             stations.append(station)
@@ -68,3 +69,16 @@ class Traject():
         for connection in self.connections:
             self.time += int(connection[2])
         return self.time
+
+    def calculate_score(self):
+        """
+        This function calculates the score K = p*10000 - (T*100 + Min)
+        """
+
+        p = len(self.connections) / self.total_connections
+        T = 1
+        Min = self.time
+
+        score = int(p * 10000 - (T * 100 + Min))
+        print(self.total_connections)
+        return score
