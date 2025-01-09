@@ -49,7 +49,7 @@ connections_file = 'ConnectiesHolland.csv'
 # Read data function
 stations, connections = read_data(stations_file, connections_file)
 
-pprint.pprint(stations)
-print("##############################")
-pprint.pprint(connections)
-print(stations['Alkmaar']['connections']['Castricum'])
+# pprint.pprint(stations)
+#
+# pprint.pprint(connections)
+# print(stations['Alkmaar']['connections']['Castricum'])
