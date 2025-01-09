@@ -47,13 +47,14 @@ class Traject():
         for key in self.connections_dict['connections'].keys():
             if self.time + int(self.connections_dict['connections'][key]) <= self.max_time:
                 self.available_connections.append(key)
-            else:
+
+            if len(self.available_connections) == 0:
                 self.time_condition = True
 
     def add_connection(self):
         if self.time_condition == False:
-            next_station = random.sample(self.available_connections, 1)
-            print(self.connections_dict)
+            next_station = random.sample(self.available_connections, 1)[0]
+
             self.connections.append([self.current_station, next_station, self.connections_dict['connections'][next_station]])
             if next_station not in self.stations:
                 self.stations.append(next_station)
@@ -65,9 +66,10 @@ class Traject():
         """
         self.time = 0
         for connection in self.connections:
-            self.time += connection.time
+            self.time += int(connection[2])
         return self.time
 
 traject1 = Traject()
 traject1.run('StationsHolland.csv', 'ConnectiesHolland.csv')
 print(traject1.connections)
+print(traject1.time)
