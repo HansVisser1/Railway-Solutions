@@ -1,25 +1,6 @@
 import random
+import pprint
 from read_files import read_data
-
-class Station():
-    def __init__(self, name, x_coord, y_coord):
-        """
-        This method stores the name and coordinates of the station in the station object.
-        """
-        self.name = name
-        self.x = x_coord
-        self.y = y_coord
-
-class Connection():
-    def __init__(self, time, station1):
-        """
-        This method stores the duration and the connected stations in the connection object.
-        """
-        self.time = time
-        self.stations = [station2.name]
-
-    def add_time_and_station(self, time, station):
-
 
 class Traject():
     def __init__(self):
@@ -36,24 +17,33 @@ class Traject():
         self.current_station = None
         self.connections_dict = {}
 
-    def run(self, dictionary):
+    def run(self, stations_path, connections_path):
+        stations_dict, connections_list = read_data(stations_path, connections_path)
+        #pprint.pprint(stations_dict)
+        stations = []
+        for station in stations_dict.keys():
+            stations.append(station)
+        start_station = random.sample(stations, 1)[0]
 
+        self.starting_station(self, start_station)
 
+        self.determine_available_connections(self, stations_dict)
+        print(self.available_connections)
 
     def starting_station(self, station):
         self.current_station = station
         self.stations.append(station)
 
-    def determine_available_connections(self, connections_dict):
+    def determine_available_connections(self, stations_dict):
         """
         This methods adds connections from a list to the Traject object as long as they don't exceed the maximum time.
         It also checks whether the station can be connected.
         """
-        self.connections_dict = connections_dict[current_station]
+        self.connections_dict = stations_dict[current_station]
         self.available_connections = []
 
         for key in connections[self.current_station]['connections'].keys():
-            if duration() + connections[self.current_station]['connections'][key] =< self.max_time:
+            if duration() + connections[self.current_station]['connections'][key] <= self.max_time:
                 self.available_connections.append(key)
 
     def add_connection(self):
@@ -61,6 +51,7 @@ class Traject():
         self.connections.append([self.current_station, next_station, self.connections_dict[next_station]])
         if next_station not in self.stations:
             self.stations.append(next_station)
+        self.current_station = next_station
 
     def duration(self):
         """
@@ -70,3 +61,6 @@ class Traject():
         for connection in self.connections:
             self.time += connection.time
         return self.time
+
+traject1 = Traject()
+traject1.run('StationsHolland.csv', 'ConnectiesHolland.csv')
