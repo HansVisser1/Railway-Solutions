@@ -44,7 +44,7 @@ class Traject():
         self.available_connections = []
 
         for key in connections_dict['connections'].keys():
-            if self.duration() + connections_dict['connections'][key] <= self.max_time:
+            if self.duration() + int(connections_dict['connections'][key]) <= self.max_time:
                 self.available_connections.append(key)
 
     def add_connection(self):
