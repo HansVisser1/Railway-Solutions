@@ -1,6 +1,6 @@
 import csv
 import pprint
-
+ 
 def read_data(stations_file, connections_file):
     """
     This function takes the stations file and the connections file
