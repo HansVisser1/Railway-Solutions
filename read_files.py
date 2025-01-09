@@ -1,5 +1,6 @@
 import csv
 import pprint
+
 def read_data(stations_file, connections_file):
     """
     This function takes the stations file and the connections file
@@ -41,15 +42,3 @@ def read_data(stations_file, connections_file):
             connections.append({'station1': station1, 'station2': station2, 'distance': distance})
 
     return stations, connections
-
-# Files
-# stations_file = 'StationsHolland.csv'
-# connections_file = 'ConnectiesHolland.csv'
-#
-# # Read data function
-# stations, connections = read_data(stations_file, connections_file)
-
-# pprint.pprint(stations)
-#
-# pprint.pprint(connections)
-# print(stations['Alkmaar']['connections']['Castricum'])
