@@ -1,5 +1,5 @@
 import random
-
+from read_files import read_data
 
 class Station():
     def __init__(self, name, x_coord, y_coord):
@@ -35,6 +35,10 @@ class Traject():
         self.time_condition = False
         self.current_station = None
         self.connections_dict = {}
+
+    def run(self, dictionary):
+
+
 
     def starting_station(self, station):
         self.current_station = station
