@@ -1,3 +1,5 @@
+import random
+
 
 class Station():
     def __init__(self, name, x_coord, y_coord):
@@ -9,12 +11,15 @@ class Station():
         self.y = y_coord
 
 class Connection():
-    def __init__(self, time, station1, station2):
+    def __init__(self, time, station1):
         """
         This method stores the duration and the connected stations in the connection object.
         """
         self.time = time
-        self.stations = [station1.name, station2.name]
+        self.stations = [station2.name]
+
+    def add_time_and_station(self, time, station):
+
 
 class Traject():
     def __init__(self):
@@ -24,29 +29,45 @@ class Traject():
         """
         self.stations = []
         self.connections = []
+        self.available_connections = []
         self.time = None
         self.max_time = 120
         self.time_condition = False
+        self.current_station = None
+        self.connections_dict = {}
 
-    def add_connection(self, connection):
-        """
-        This method adds a connection to the connections list stored in the Traject object
-        """
-        self.connections.append(connection)
+    def starting_station(self, station):
+        self.current_station = station
 
-    def add_connections(self, connections_list):
+    def determine_available_connections(self, connections_dict):
         """
         This methods adds connections from a list to the Traject object as long as they don't exceed the maximum time.
         It also checks whether the station can be connected.
         """
+        self.connections_dict = connections_dict[current_station]
+        self.available_connections = []
 
-        for connection in connections_list:
-            if len(self.connections) == 0:
-                add_connection(connection)
-            # else:
-            #     if connection.stations[0] in self.stations or connection.stations[1] in self.stations:
-            #         if duration() + connection.time <= 120:
-            #             add_connection(connection)
+        for key in connections[self.current_station]['connections'].keys():
+            if duration() + connections[self.current_station]['connections'][key] =< 120:
+                self.available_connections.append(key)
+
+    def add_connection(self):
+        next_station = random.sample(self.available_connections)
+        self.connections.append([])
+
+            if key not in self.stations:
+                    self.stations.append(key)
+
+                self.connections.append()
+
+
+        while duration() <= 116 and
+        # choose random next station
+        connection = connections[randint(0, len(connections_dict[current_station]))]
+
+        if duration() + connection.time <= 120:
+            self.connections.append(connection)
+
 
 
     def stations(self):
