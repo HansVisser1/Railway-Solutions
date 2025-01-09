@@ -48,8 +48,8 @@ class Traject():
             if self.time + int(self.connections_dict['connections'][key]) <= self.max_time:
                 self.available_connections.append(key)
 
-            if len(self.available_connections) == 0:
-                self.time_condition = True
+        if len(self.available_connections) == 0:
+            self.time_condition = True
 
     def add_connection(self):
         if self.time_condition == False:
