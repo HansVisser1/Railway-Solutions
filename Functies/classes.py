@@ -1,6 +1,6 @@
 import random
 import pprint
-from read_files import read_data
+from Functies.read_files import read_data
 
 class Traject():
     def __init__(self):
