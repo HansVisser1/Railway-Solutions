@@ -11,7 +11,7 @@ class Traject():
         self.stations = []
         self.connections = []
         self.available_connections = []
-        self.time = None
+        self.time = 0
         self.max_time = 120
         self.time_condition = False
         self.current_station = None
@@ -24,12 +24,13 @@ class Traject():
         for station in stations_dict.keys():
             stations.append(station)
         start_station = (random.sample(stations, 1)[0])
-
-        print(start_station)
         self.starting_station(start_station)
 
-        self.determine_available_connections(stations_dict)
-        print(self.available_connections)
+        while self.time_condition == False:
+            self.determine_available_connections(stations_dict)
+            self.add_connection()
+            self.duration()
+
 
     def starting_station(self, station):
         self.current_station = station
@@ -40,19 +41,23 @@ class Traject():
         This methods adds connections from a list to the Traject object as long as they don't exceed the maximum time.
         It also checks whether the station can be connected.
         """
-        connections_dict = stations_dict[self.current_station]
+        self.connections_dict = stations_dict[self.current_station]
         self.available_connections = []
 
-        for key in connections_dict['connections'].keys():
-            if self.duration() + int(connections_dict['connections'][key]) <= self.max_time:
+        for key in self.connections_dict['connections'].keys():
+            if self.time + int(self.connections_dict['connections'][key]) <= self.max_time:
                 self.available_connections.append(key)
+            else:
+                self.time_condition = True
 
     def add_connection(self):
-        next_station = random.sample(self.available_connections)
-        self.connections.append([self.current_station, next_station, self.connections_dict[next_station]])
-        if next_station not in self.stations:
-            self.stations.append(next_station)
-        self.current_station = next_station
+        if self.time_condition == False:
+            next_station = random.sample(self.available_connections, 1)
+            print(self.connections_dict)
+            self.connections.append([self.current_station, next_station, self.connections_dict['connections'][next_station]])
+            if next_station not in self.stations:
+                self.stations.append(next_station)
+            self.current_station = next_station
 
     def duration(self):
         """
@@ -65,3 +70,4 @@ class Traject():
 
 traject1 = Traject()
 traject1.run('StationsHolland.csv', 'ConnectiesHolland.csv')
+print(traject1.connections)
