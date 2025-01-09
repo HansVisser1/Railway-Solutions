@@ -38,6 +38,7 @@ class Traject():
 
     def starting_station(self, station):
         self.current_station = station
+        self.stations.append(station)
 
     def determine_available_connections(self, connections_dict):
         """
@@ -48,34 +49,14 @@ class Traject():
         self.available_connections = []
 
         for key in connections[self.current_station]['connections'].keys():
-            if duration() + connections[self.current_station]['connections'][key] =< 120:
+            if duration() + connections[self.current_station]['connections'][key] =< self.max_time:
                 self.available_connections.append(key)
 
     def add_connection(self):
         next_station = random.sample(self.available_connections)
-        self.connections.append([])
-
-            if key not in self.stations:
-                    self.stations.append(key)
-
-                self.connections.append()
-
-
-        while duration() <= 116 and
-        # choose random next station
-        connection = connections[randint(0, len(connections_dict[current_station]))]
-
-        if duration() + connection.time <= 120:
-            self.connections.append(connection)
-
-
-
-    def stations(self):
-        for connection in self.connections:
-            if connection.stations[0] not in self.stations:
-                self.stations.append(connection.stations[0])
-            if connection.stations[1] not in self.stations:
-                self.stations.append(connection.stations[1])
+        self.connections.append([self.current_station, next_station, self.connections_dict[next_station]])
+        if next_station not in self.stations:
+            self.stations.append(next_station)
 
     def duration(self):
         """
