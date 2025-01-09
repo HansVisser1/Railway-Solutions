@@ -43,11 +43,11 @@ def read_data(stations_file, connections_file):
     return stations, connections
 
 # Files
-stations_file = 'StationsHolland.csv'
-connections_file = 'ConnectiesHolland.csv'
-
-# Read data function
-stations, connections = read_data(stations_file, connections_file)
+# stations_file = 'StationsHolland.csv'
+# connections_file = 'ConnectiesHolland.csv'
+#
+# # Read data function
+# stations, connections = read_data(stations_file, connections_file)
 
 # pprint.pprint(stations)
 #
