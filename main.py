@@ -1,16 +1,22 @@
 import pprint
-from Functies.classes import Traject
 from Functies.read_files import read_data
-import Visualisation.visualize_railway
+from Functies.random_multiple_trajects import random_multiple_trajects
+from Functies.baseline import baseline
+from Functies.list_connections import list_connections
+from Visualisation.visualize_railway import visualize_all_trajects
 
-traject1 = Traject()
-traject1.run('Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
-print(traject1.connections)
-print(traject1.time)
+# create random number of trajects and return the nr of trajects, trajects objects list and the total cost
+nr, trajects, cost = random_multiple_trajects(1, 7)
+print(cost)
 
-score = traject1.calculate_score()
-print(f"Trajectory Score: {score}")
+# make the connections_list for the visualization
+traject_list = list_connections(trajects)
 
-stations, connections = read_data('Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
-# pprint.pprint(stations)
-# pprint.pprint(connections)
+# read the data for the visualization
+station_dict, connection_dict = read_data('Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
+
+# visualize the trajects
+visualize_all_trajects(station_dict, traject_list)
+
+# baseline cost calculation
+print(baseline(100))
