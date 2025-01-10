@@ -7,4 +7,4 @@ def random_multiple_trajects(min, max):
     """
     nr = random.randint(min, max + 1)
     trajects, cost = multiple_trajects(nr)
-    return trajects, cost
+    return nr, trajects, cost
