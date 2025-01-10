@@ -5,6 +5,6 @@ def random_multiple_trajects(min, max):
     """
     This function generates a random number in the given range and generates that amount of trajects.
     """
-    nr = random.randint(min, max + 1)
+    nr = random.randint(min, max)
     trajects, cost = multiple_trajects(nr)
     return nr, trajects, cost
