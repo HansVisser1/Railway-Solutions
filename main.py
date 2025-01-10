@@ -10,13 +10,13 @@ from Visualisation.visualize_railway import visualize_traject
 nr, trajects, cost = random_multiple_trajects(1, 7)
 
 # make the connections_list for the visualization
-connections_list = list_connections(trajects)
+traject_list = list_connections(trajects)
 
 # read the data for the visualization
 station_dict, connection_dict = read_data('Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
 
 # visualize the trajects
-visualize_traject(station_dict, trajects)
+visualize_traject(station_dict, traject_list)
 
 # baseline cost calculation
 print(baseline(100))
