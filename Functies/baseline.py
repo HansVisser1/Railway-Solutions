@@ -25,5 +25,6 @@ def baseline(iterations):
     sns.relplot(df, x = df.index, y = "Cost", kind="line")
     plt.xlabel("Number of trains")
     plt.ylabel("Cost")
+    plt.title(f"Cost calculated for {iterations} iterations")
     plt.show()
     return cost_dict
