@@ -130,7 +130,7 @@ def visualize_all_trajects(dict_stations, traject_list):
     # callign the three functions
     visualize_stations(dict_stations)
     visualize_connections(dict_stations)
-    visualize_traject(dict_stations, traject_long)
+    visualize_traject(dict_stations, traject_list)
 
 if __name__ == "__main__":
     # example of traject TODO REMOVE AFTERWARDS
