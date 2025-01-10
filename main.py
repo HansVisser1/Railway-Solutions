@@ -7,6 +7,6 @@ from Functies.list_connections import list_connections
 import Visualisation.visualize_railway
 
 nr, trajects, cost = random_multiple_trajects(1, 7)
-connections_list = list_connections(trajects))
+connections_list = list_connections(trajects)
 
 #print(baseline(100))
