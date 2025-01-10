@@ -16,7 +16,7 @@ traject_list = list_connections(trajects)
 station_dict, connection_dict = read_data('Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
 
 # visualize the trajects
-visualize_traject(station_dict, traject_list)
+visualize_all_trajects(station_dict, traject_list)
 
 # baseline cost calculation
 print(baseline(100))
