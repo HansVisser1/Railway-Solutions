@@ -1,13 +1,13 @@
 import pprint
-from Functies.classes import Traject
 from Functies.read_files import read_data
 from Functies.random_multiple_trajects import random_multiple_trajects
 from Functies.baseline import baseline
 from Functies.list_connections import list_connections
-from Visualisation.visualize_railway import visualize_traject
+from Visualisation.visualize_railway import visualize_all_trajects
 
 # create random number of trajects and return the nr of trajects, trajects objects list and the total cost
 nr, trajects, cost = random_multiple_trajects(1, 7)
+print(cost)
 
 # make the connections_list for the visualization
 traject_list = list_connections(trajects)
