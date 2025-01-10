@@ -16,14 +16,12 @@ class Traject():
         self.time_condition = False
         self.current_station = None
         self.connections_dict = {}
-        self.total_connections = None
 
     def run(self, stations_path, connections_path):
         """
         This method runs all the functions which are required to make a trajectory.
         """
-        stations_dict, connections_list = read_data(stations_path, connections_path)
-        self.total_connections = len(connections_list)
+        stations_dict = self.read_csv(stations_path, connections_path)
         # make list of all stations in the data
         stations = []
         for station in stations_dict.keys():
@@ -41,6 +39,10 @@ class Traject():
 
             # update the total duration of the traject.
             self.duration()
+
+    def read_csv(self, stations_path, connections_path):
+        stations_dict, connections_list = read_data(stations_path, connections_path)
+        return stations_dict
 
     def determine_available_connections(self, stations_dict):
         """
@@ -87,11 +89,7 @@ class Traject():
         for connection in self.connections:
             self.time += int(connection[2])
 
-    def calculate_score(self):
-        """
-        This function calculates the score K = p*10000 - (T*100 + Min)
-        """
-        p = (len(self.stations) - 1) / self.total_connections
-        T = 1
-        Min = self.time
-        return int(p * 10000 - (T * 100 + Min))
+    def total_connections(self):
+        stations_dict, connections_list = read_data('Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
+        total_connections = len(connections_list)
+        return total_connections
