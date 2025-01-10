@@ -3,6 +3,7 @@ from Functies.classes import Traject
 from Functies.read_files import read_data
 import Visualisation.visualize_railway
 
+
 traject1 = Traject()
 traject1.run('Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
 print(traject1.connections)

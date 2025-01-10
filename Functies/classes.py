@@ -16,13 +16,14 @@ class Traject():
         self.time_condition = False
         self.current_station = None
         self.connections_dict = {}
+        self.total_connections = None
 
     def run(self, stations_path, connections_path):
         """
         This method runs all the functions which are required to make a trajectory.
         """
         stations_dict, connections_list = read_data(stations_path, connections_path)
-
+        self.total_connections = len(connections_list)
         # make list of all stations in the data
         stations = []
         for station in stations_dict.keys():
@@ -85,7 +86,7 @@ class Traject():
         self.time = 0
         for connection in self.connections:
             self.time += int(connection[2])
-        
+
     def calculate_score(self):
         """
         This function calculates the score K = p*10000 - (T*100 + Min)
