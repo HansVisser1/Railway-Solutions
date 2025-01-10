@@ -2,48 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import csv
 
-def import_stations(csv_file):
-    df = pd.read_csv(csv_file, sep = ',')
-    return df
-
-def read_data(stations_file, connections_file):
-    """
-    This function takes the stations file and the connections file
-    Stations is a dictionary that has the station name as key, and the values are
-    x, y and connections. Connections in turn is a dictionary of all the connections
-    a certain station has.
-    Connections here is a nested dictionary containing the info for its
-    connections.
-    """
-    stations = {}
-    connections = []
-
-    # Reading stations using open
-    with open(stations_file, 'r') as file:
-        document = csv.DictReader(file)
-        for row in document:
-            station_name = row['station']
-            x = row['x']
-            y = row['y']
-            stations[station_name] = {'x': x, 'y': y, 'connections': {}}
-
-    # Reading connections using open
-    with open(connections_file, 'r') as file:
-        document = csv.DictReader(file)
-        for row in document:
-            station1 = row['station1']
-            station2 = row['station2']
-            distance = row['distance']
-
-            stations[station1]['connections'][station2] = distance
-            stations[station2]['connections'][station1] = distance
-            connections.append({'station1': station1, 'station2': station2, 'distance': distance})
-    return stations, connections
-
-def station_dict(dataframe):
-    station_dict = dict(zip(dataframe['station'], zip(dataframe['x'], dataframe['y'])))
-    return station_dict
-
 def visualize_stations(station_dict):
     # creating the names and coordinate lists
     x_coordinates = []
@@ -88,8 +46,6 @@ def visualize_connections(station_dictionary):
 
                 plotted_connections.append((station, destination))
 
-    # print list of plotted connections
-    print(plotted_connections)
 
 def visualize_traject(station_dictionary, traject_list):
     traject_colours = ['gold', 'red', 'darkorange', 'lime', 'magenta', 'cyan', 'silver']
@@ -133,6 +89,40 @@ def visualize_all_trajects(dict_stations, traject_list):
     visualize_traject(dict_stations, traject_list)
 
 if __name__ == "__main__":
+    def read_data(stations_file, connections_file):
+        """
+        This function takes the stations file and the connections file
+        Stations is a dictionary that has the station name as key, and the values are
+        x, y and connections. Connections in turn is a dictionary of all the connections
+        a certain station has.
+        Connections here is a nested dictionary containing the info for its
+        connections.
+        """
+        stations = {}
+        connections = []
+
+        # Reading stations using open
+        with open(stations_file, 'r') as file:
+            document = csv.DictReader(file)
+            for row in document:
+                station_name = row['station']
+                x = row['x']
+                y = row['y']
+                stations[station_name] = {'x': x, 'y': y, 'connections': {}}
+
+        # Reading connections using open
+        with open(connections_file, 'r') as file:
+            document = csv.DictReader(file)
+            for row in document:
+                station1 = row['station1']
+                station2 = row['station2']
+                distance = row['distance']
+
+                stations[station1]['connections'][station2] = distance
+                stations[station2]['connections'][station1] = distance
+                connections.append({'station1': station1, 'station2': station2, 'distance': distance})
+        return stations, connections
+
     # example of traject TODO REMOVE AFTERWARDS
     traject_short = [['Delft', 'Den Haag Centraal', '13'], ['Den Haag Centraal', 'Leiden Centraal','12'],
         ['Leiden Centraal', 'Den Haag Centraal', '12'], ['Den Haag Centraal', 'Leiden Centraal', '12'],
@@ -161,18 +151,8 @@ if __name__ == "__main__":
                       ['Heemstede-Aerdenhout', 'Haarlem', '6'],
                       ['Haarlem', 'Amsterdam Sloterdijk', '11']]]
 
-    # creating a stations dataframe
     # TODO Make sure the file path is correct after importing!
-    df_stations = import_stations("../StationsHolland.csv")
     dict_stations, dict_connections = read_data('../StationsHolland.csv', '../ConnectiesHolland.csv')
-
-    # creating dictionary of station coordinates
-    station_coordinate_dict = station_dict(df_stations)
-
-    # # # visualizing the stations, function order is important TODO MAKE BUNDLING FUNCTION
-    # visualize_stations(dict_stations)
-    # visualize_connections(dict_stations)
-    # visualize_traject(dict_stations, traject_long)
 
     # calling function of complete visual product
     visualize_all_trajects(dict_stations, traject_long)
