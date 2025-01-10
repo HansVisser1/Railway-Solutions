@@ -92,7 +92,7 @@ def visualize_connections(station_dictionary):
     print(plotted_connections)
 
 def visualize_traject(station_dictionary, traject_list):
-    traject_colours = ['gold', 'red', 'darkorange', 'green', 'magenta', 'cyan', 'blueviolet']
+    traject_colours = ['gold', 'red', 'darkorange', 'lime', 'magenta', 'cyan', 'silver']
 
     for traject_number, traject in enumerate(traject_list):
         for connection_number, connection in enumerate(traject):
