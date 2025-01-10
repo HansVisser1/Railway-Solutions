@@ -74,11 +74,7 @@ class Traject():
         """
         This function calculates the score K = p*10000 - (T*100 + Min)
         """
-
-        p = len(self.connections) / self.total_connections
+        p = (len(self.stations) - 1) / self.total_connections
         T = 1
         Min = self.time
-
-        score = int(p * 10000 - (T * 100 + Min))
-        print(self.total_connections)
-        return score
+        return int(p * 10000 - (T * 100 + Min))
