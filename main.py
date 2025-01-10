@@ -11,4 +11,4 @@ for traject in trajects:
     print(traject.connections)
     print()
 
-#print(baseline(10000))
+print(baseline(10000))
