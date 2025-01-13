@@ -25,7 +25,7 @@ class Traject():
         """
         self.stations_path = stations_path
         self.connections_path = connections_path
-        stations_dict = self.read_csv(stations_path, connections_path)
+        stations_dict, connections_dict = read_data(stations_path, connections_path)
         # make list of all stations in the data
         stations = []
         for station in stations_dict.keys():
@@ -43,10 +43,6 @@ class Traject():
 
             # update the total duration of the traject.
             self.duration()
-
-    def read_csv(self, stations_path, connections_path):
-        stations_dict, connections_list = read_data(stations_path, connections_path)
-        return stations_dict
 
     def determine_available_connections(self, stations_dict):
         """
