@@ -6,7 +6,7 @@ from Functies.list_connections import list_connections
 from Visualisation.visualize_railway import visualize_all_trajects
 
 # create random number of trajects and return the nr of trajects, trajects objects list and the total cost
-nr, trajects, cost = random_multiple_trajects(1, 7)
+nr, trajects, quality = random_multiple_trajects(1, 7)
 
 # make the connections_list for the visualization
 traject_list = list_connections(trajects)

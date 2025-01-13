@@ -5,12 +5,12 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 def baseline(iterations):
-    cost_dict = {1:[], 2:[], 3:[], 4:[], 5:[], 6:[], 7:[]}
+    quality_dict = {1:[], 2:[], 3:[], 4:[], 5:[], 6:[], 7:[]}
     for i in range(iterations):
-        nr, trajects, cost = random_multiple_trajects(1, 7)
-        cost_dict[nr].append(cost)
+        nr, trajects, quality = random_multiple_trajects(1, 7)
+        quality_dict[nr].append(quality)
 
-    return cost_dict
+    return quality_dict
 
 
 def collect_baselines(iterations, num_runs):
@@ -23,8 +23,8 @@ def collect_baselines(iterations, num_runs):
     for run in range(num_runs):
 
         # Cost dictionary per baseline
-        cost_dict = baseline(iterations)
-        all_results.append(cost_dict)
+        quality_dict = baseline(iterations)
+        all_results.append(quality_dict)
 
     return all_results
 
@@ -38,10 +38,10 @@ def plot_multiple_baselines(all_results, labels, iterations):
     """
     plt.figure(figsize=(10, 6))
 
-    for i, cost_dict in enumerate(all_results):
-        avg_costs = [sum(cost_dict[k]) / len(cost_dict[k]) for k in range(1, 8)]
+    for i, quality_dict in enumerate(all_results):
+        avg_quality = [sum(quality_dict[k]) / len(quality_dict[k]) for k in range(1, 8)]
 
-        plt.plot(range(1, 8), avg_costs, label=labels[i])
+        plt.plot(range(1, 8), avg_quality, label=labels[i])
 
     plt.xlabel("Trajectories")
     plt.ylabel("Average Quality")
