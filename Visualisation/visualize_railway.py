@@ -3,31 +3,45 @@ import matplotlib.pyplot as plt
 import csv
 
 def visualize_stations(station_dict):
+    """
+    Function takes dictionary of stations produced by the read_data function,
+    retrieves the station names and corresponding station coordinates from this dictionary
+    and uses these to plot the stations in a matplotlib graph as points. The names of the stations
+    are added in the graph next to the plotted station points. The function creates a plot but returns nothing.
+    """
     # creating the names and coordinate lists
     x_coordinates = []
     y_coordinates = []
     station_names = station_dict.keys()
 
+    # looping through dictionary to retrieve station coordinates
     for station in station_dict.keys():
         x_coordinates.append(float(station_dict[station]['x']))
         y_coordinates.append(float(station_dict[station]['y']))
 
-    # plotting the station coordinates
+    # plotting the stations using coordinate list
     plt.figure(figsize = (8, 8))
     plt.scatter(x_coordinates, y_coordinates, color = 'blue', marker = 'o', label = 'stations', zorder = 1)
 
-    # naming the stations at their coordinates
+    # naming the stations at their coordinates using name list
     for name, x, y in zip(station_names, x_coordinates, y_coordinates):
         plt.text(x, y, name, fontsize = 8, ha = 'right', color = 'black')
 
-    # adding labels and title
+    # plotting labels and adding title
     plt.xticks([])
     plt.yticks([])
     plt.title('Stations Noord-Holland')
 
 
 def visualize_connections(station_dictionary):
-    plotted_connections = []
+    """
+    Function takes dictionary of stations produced by the read_data function,
+    retrieves the station coordinates from this dictionary and plots the connections between the
+    stations based on the listed connection in the dictionary and the coordinates corresponding to the
+    connected stations. To ensure each connection is only plotted once, the plotted connections are placed in a set.
+    The function plots the connections in the graph but returns nothing.
+    """
+    plotted_connections = [] #TODO CHANGE TO SET INSTEAD OF LIST
     for station, station_data in station_dictionary.items():
         for destination in station_data['connections']:
             if (station, destination) not in plotted_connections and (destination, station) not in plotted_connections:
@@ -73,7 +87,7 @@ def visualize_traject(station_dictionary, traject_list):
                     linestyle = '--', zorder = 2)
                 plt.legend(loc = 'upper left')
                 plt.draw()
-                plt.pause(0.5)
+                plt.pause(0.25)
     plt.show()
 
 def visualize_all_trajects(dict_stations, traject_list):
