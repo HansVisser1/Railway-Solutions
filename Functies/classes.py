@@ -16,11 +16,15 @@ class Traject():
         self.time_condition = False
         self.current_station = None
         self.connections_dict = {}
+        self.stations_path = None
+        self.connections_path = None
 
     def run(self, stations_path, connections_path):
         """
         This method runs all the functions which are required to make a trajectory.
         """
+        self.stations_path = stations_path
+        self.connections_path = connections_path
         stations_dict = self.read_csv(stations_path, connections_path)
         # make list of all stations in the data
         stations = []
@@ -90,6 +94,6 @@ class Traject():
             self.time += int(connection[2])
 
     def total_connections(self):
-        stations_dict, connections_list = read_data('Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
+        stations_dict, connections_list = read_data(self.stations_path, self.connections_path)
         total_connections = len(connections_list)
         return total_connections
