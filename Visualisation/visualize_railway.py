@@ -27,10 +27,10 @@ def visualize_stations(station_dict):
     for name, x, y in zip(station_names, x_coordinates, y_coordinates):
         plt.text(x, y, name, fontsize = 8, ha = 'right', color = 'black')
 
-    # plotting labels and adding title
+    # plotting empty labels for axes and adding title
     plt.xticks([])
     plt.yticks([])
-    plt.title('Stations Noord-Holland')
+    plt.title('Stations Noord- and Zuid-Holland')
 
 
 def visualize_connections(station_dictionary):
@@ -41,10 +41,17 @@ def visualize_connections(station_dictionary):
     connected stations. To ensure each connection is only plotted once, the plotted connections are placed in a set.
     The function plots the connections in the graph but returns nothing.
     """
-    plotted_connections = [] #TODO CHANGE TO SET INSTEAD OF LIST
+    # creating set to store plotted connections
+    plotted_connections = set()
+
+    # looping through dictionary to retrieve connection coordinates
     for station, station_data in station_dictionary.items():
         for destination in station_data['connections']:
+
+            # checking if connection has already been plotted
             if (station, destination) not in plotted_connections and (destination, station) not in plotted_connections:
+
+                # adding coordinates for connection between stations to lists
                 x_coordinates = []
                 y_coordinates = []
                 x_coordinates.append(float(station_dictionary[station]['x']))
@@ -52,20 +59,32 @@ def visualize_connections(station_dictionary):
                 y_coordinates.append(float(station_dictionary[station]['y']))
                 y_coordinates.append(float(station_dictionary[destination]['y']))
 
-                # ensure connection appears once in legend
+                # plotting connections and ensuring connection label appears only once in graph legend
                 if len(plotted_connections) == 0:
                     plt.plot(x_coordinates, y_coordinates, color = 'black', linestyle = '-', zorder = 0, label = 'connections')
                 else:
                     plt.plot(x_coordinates, y_coordinates, color = 'black', linestyle = '-', zorder = 0)
 
-                plotted_connections.append((station, destination))
+                # adding plotted connection to set of plotted connections
+                plotted_connections.add((station, destination))
 
 
 def visualize_traject(station_dictionary, traject_list):
+    """
+    Function takes dictionary of stations produced by the read_data function and a traject list produced by
+    the list_connections function. It then plots every connection in the different trajects one by one and visualizes every step
+    of the plotting in the graph. Each traject (and corresponding connections) gets its own colour in the plotted graph.
+    This function plots the trajects in the fully visualized graph, and displays the graph, but returns nothing.
+    """
+    # creating list of different colours for the trajects to be plotted in
+    # TODO ADD ADDITIONAL COLOURS FOR 20 TRAJECTS LATER ON
     traject_colours = ['gold', 'red', 'darkorange', 'lime', 'magenta', 'cyan', 'silver']
 
+    # looping through the list of trajects and connections therein
     for traject_number, traject in enumerate(traject_list):
         for connection_number, connection in enumerate(traject):
+
+            # defining stations and adding coordinates to seperate lists
             station = connection[0]
             destination = connection[1]
             x_coordinates = []
@@ -75,32 +94,36 @@ def visualize_traject(station_dictionary, traject_list):
             y_coordinates.append(float(station_dictionary[station]['y']))
             y_coordinates.append(float(station_dictionary[destination]['y']))
 
+            # plotting traject connections and ensuring traject label appears only once in graph legend
             if connection_number == 0:
                 plt.plot(x_coordinates, y_coordinates, color = traject_colours[traject_number],
                     label = f'traject {traject_number + 1}', linestyle = '--', zorder = 2)
                 plt.legend(loc = 'upper left')
                 plt.draw()
-                plt.pause(0.5)
-
+                plt.pause(0.25)
             else:
                 plt.plot(x_coordinates, y_coordinates, color = traject_colours[traject_number],
                     linestyle = '--', zorder = 2)
                 plt.legend(loc = 'upper left')
                 plt.draw()
                 plt.pause(0.25)
+
+    # displaying full visual/graph
     plt.show()
+
 
 def visualize_all_trajects(dict_stations, traject_list):
     """
     Function takes dictionary of stations produced by the read_data function and a traject list produced by
-    the list_connections functions.
-    Function combines all three visualize function for a complete visual product in the form of a matplotlib plot.
+    the list_connections function.
+    Function combines all three visualize functions for a complete visual product in the form of a matplotlib graph.
     The order of the visualize functions is of importance.
     """
-    # callign the three functions
+    # calling the three visualisation functions
     visualize_stations(dict_stations)
     visualize_connections(dict_stations)
     visualize_traject(dict_stations, traject_list)
+
 
 if __name__ == "__main__":
     def read_data(stations_file, connections_file):
