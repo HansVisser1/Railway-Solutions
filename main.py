@@ -7,28 +7,25 @@ from Visualisation.visualize_railway import visualize_all_trajects
 
 # create random number of trajects and return the nr of trajects, trajects objects list and the total cost
 nr, trajects, cost = random_multiple_trajects(1, 7)
-print(cost)
 
 # make the connections_list for the visualization
 traject_list = list_connections(trajects)
-
+count = 0
+for traject in traject_list:
+    count += 1
+    pprint.pprint(f"Traject {count}: {traject}")
+    print()
 # read the data for the visualization
 station_dict, connection_dict = read_data('Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
 
 # visualize the trajects
 visualize_all_trajects(station_dict, traject_list)
 
-
-####
 # Parameters for baseline comparison
-num_runs = 3
-iterations = 15000
+num_runs = 4
+iterations = 150
 
 # Collect baseline results
 all_results = collect_baselines(iterations, num_runs)
 labels = [f"Run {i+1}" for i in range(num_runs)]
 plot_multiple_baselines(all_results, labels, iterations)
-####
-
-# baseline cost calculation
-print(baseline(100))

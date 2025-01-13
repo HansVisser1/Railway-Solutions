@@ -10,23 +10,6 @@ def baseline(iterations):
         nr, trajects, cost = random_multiple_trajects(1, 7)
         cost_dict[nr].append(cost)
 
-    # for key in cost_dict.keys():
-    #     sum = 0
-    #     average = None
-    #     for value in cost_dict[key]:
-    #         sum += value
-    #     average = sum / len(cost_dict[key])
-    #     cost_dict[key] = average
-    #
-    #
-    # cost_series = pd.Series(cost_dict)
-    # df = pd.DataFrame()
-    # df['Cost'] = cost_series
-    # sns.relplot(df, x = df.index, y = "Cost", kind="line")
-    # plt.xlabel("Number of trains")
-    # plt.ylabel("Cost")
-    # plt.title(f"Cost calculated for {iterations} iterations")
-    # plt.show()
     return cost_dict
 
 
@@ -61,7 +44,7 @@ def plot_multiple_baselines(all_results, labels, iterations):
         plt.plot(range(1, 8), avg_costs, label=labels[i])
 
     plt.xlabel("Trajectories")
-    plt.ylabel("Average Cost")
+    plt.ylabel("Average Quality")
     plt.title(f"Baseline comparison for {iterations} Iterations")
     plt.legend()
     plt.grid(True)
