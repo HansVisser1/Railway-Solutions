@@ -10,21 +10,59 @@ def baseline(iterations):
         nr, trajects, cost = random_multiple_trajects(1, 7)
         cost_dict[nr].append(cost)
 
-    for key in cost_dict.keys():
-        sum = 0
-        average = None
-        for value in cost_dict[key]:
-            sum += value
-        average = sum / len(cost_dict[key])
-        cost_dict[key] = average
-
-
-    cost_series = pd.Series(cost_dict)
-    df = pd.DataFrame()
-    df['Cost'] = cost_series
-    sns.relplot(df, x = df.index, y = "Cost", kind="line")
-    plt.xlabel("Number of trains")
-    plt.ylabel("Cost")
-    plt.title(f"Cost calculated for {iterations} iterations")
-    plt.show()
+    # for key in cost_dict.keys():
+    #     sum = 0
+    #     average = None
+    #     for value in cost_dict[key]:
+    #         sum += value
+    #     average = sum / len(cost_dict[key])
+    #     cost_dict[key] = average
+    #
+    #
+    # cost_series = pd.Series(cost_dict)
+    # df = pd.DataFrame()
+    # df['Cost'] = cost_series
+    # sns.relplot(df, x = df.index, y = "Cost", kind="line")
+    # plt.xlabel("Number of trains")
+    # plt.ylabel("Cost")
+    # plt.title(f"Cost calculated for {iterations} iterations")
+    # plt.show()
     return cost_dict
+
+
+def collect_baselines(iterations, num_runs):
+    """
+    Collect the results from multiple baseline runs, interchangable how many.
+    And it returns list of dictionaries with results from each baseline run.
+    """
+    # List of dicts for baseline costs.
+    all_results = []
+    for run in range(num_runs):
+
+        # Cost dictionary per baseline
+        cost_dict = baseline(iterations)
+        all_results.append(cost_dict)
+
+    return all_results
+
+
+def plot_multiple_baselines(all_results, labels, iterations):
+    """
+    Plots multiple baseline results on the same graph.
+    all_results is a list of dictionaries containing costs for each run.
+    List of labels corresponding to each run.
+    On the x-axis the trajectories 1 to 7 and on the y axis the average cost.
+    """
+    plt.figure(figsize=(10, 6))
+
+    for i, cost_dict in enumerate(all_results):
+        avg_costs = [sum(cost_dict[k]) / len(cost_dict[k]) for k in range(1, 8)]
+
+        plt.plot(range(1, 8), avg_costs, label=labels[i])
+
+    plt.xlabel("Trajectories")
+    plt.ylabel("Average Cost")
+    plt.title(f"Baseline comparison for {iterations} Iterations")
+    plt.legend()
+    plt.grid(True)
+    plt.show()

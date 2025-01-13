@@ -1,7 +1,7 @@
 import pprint
 from Functies.read_files import read_data
 from Functies.random_multiple_trajects import random_multiple_trajects
-from Functies.baseline import baseline
+from Functies.baseline import baseline, collect_baselines, plot_multiple_baselines
 from Functies.list_connections import list_connections
 from Visualisation.visualize_railway import visualize_all_trajects
 
@@ -17,6 +17,18 @@ station_dict, connection_dict = read_data('Data/StationsHolland.csv', 'Data/Conn
 
 # visualize the trajects
 visualize_all_trajects(station_dict, traject_list)
+
+
+####
+# Parameters for baseline comparison
+num_runs = 3
+iterations = 15000
+
+# Collect baseline results
+all_results = collect_baselines(iterations, num_runs)
+labels = [f"Run {i+1}" for i in range(num_runs)]
+plot_multiple_baselines(all_results, labels, iterations)
+####
 
 # baseline cost calculation
 print(baseline(100))
