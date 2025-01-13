@@ -1,4 +1,4 @@
-from Functies.classes import Traject
+from Functies.Traject import Traject
 from Functies.calculate_score import calculate_score
 
 
