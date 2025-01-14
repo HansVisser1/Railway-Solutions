@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-def baseline(iterations, min, max stations_path, connections_path):
+def baseline(iterations, min, max, stations_path, connections_path):
     quality_dict = {1:[], 2:[], 3:[], 4:[], 5:[], 6:[], 7:[]}
     for i in range(iterations):
         nr, trajects, quality = random_multiple_trajects(min, max, stations_path, connections_path)
