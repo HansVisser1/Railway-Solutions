@@ -1,8 +1,8 @@
-from Functies.Traject import Traject
+from Functies.Traject import Traject, RandomTraject
 from Functies.calculate_score import calculate_score
 
 
-def multiple_trajects(nr, stations_path, connections_path):
+def multiple_trajects(nr, traject_type, stations_path, connections_path):
     """
     this function multiple trajects and puts them in a list
     """
@@ -10,7 +10,10 @@ def multiple_trajects(nr, stations_path, connections_path):
     stations = []
     total_time = 0
     for i in range(nr):
-        traject = Traject()
+        if traject_type == 'Random':
+            traject = RandomTraject()
+        if traject_type == 'Greedy':
+            traject = GreedyTraject()
         traject.run(stations_path, connections_path)
         trajects.append(traject)
         total_time += traject.time
