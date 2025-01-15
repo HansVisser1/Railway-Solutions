@@ -27,6 +27,7 @@ class Traject():
         self.stations_path = stations_path
         self.connections_path = connections_path
         self.stations_dict, connections_dict = read_data(stations_path, connections_path)
+        self.total_connections = len(connections_dict)
 
     def determine_available_connections(self, stations_dict):
         """
