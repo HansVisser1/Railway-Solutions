@@ -44,6 +44,7 @@ def plot_quality_distribution(all_results, iterations):
         for k, values in quality_dict.items():
             for value in values:
                 qualities.append((k, value))
+    print(qualities)
 
     # Create a DataFrame for easier plotting
     df = pd.DataFrame(qualities, columns=["Trajectories", "Quality"])
