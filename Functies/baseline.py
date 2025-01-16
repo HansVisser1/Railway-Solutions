@@ -12,7 +12,7 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
     quality_dict = {}
     for i in range(min_trajects, max_trajects + 1):
         quality_dict[i] = []
-    
+
     for i in range(iterations):
         nr, trajects, quality = random_multiple_trajects(traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth)
         quality_dict[nr].append(quality)
@@ -36,7 +36,7 @@ def collect_baselines(iterations, traject_type, num_runs, min_trajects, max_traj
     return all_results
 
 
-def plot_quality_distribution(all_results, iterations):
+def plot_quality_distribution(all_results, iterations, traject_type):
     """
     Plot the distribution of quality scores for each trajectory count (1-7).
     Creates separate histograms or KDEs for each trajectory count.
@@ -58,7 +58,6 @@ def plot_quality_distribution(all_results, iterations):
 
     plt.xlabel("Quality")
     plt.ylabel("Frequency")
-    plt.title(f"Distribution of Quality Scores Across {iterations} Iterations")
-    # plt.legend(title="Trajectories")
+    plt.title(f"Distribution of Quality Scores Across {iterations} Iterations, with the {traject_type} algorithm.")
     plt.grid(True)
     plt.show()
