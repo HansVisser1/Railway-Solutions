@@ -9,7 +9,10 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
     """
     Run a baseline trajectory generation multiple times and collect quality scores.
     """
-    quality_dict = {1:[], 2:[], 3:[], 4:[], 5:[], 6:[], 7:[]}
+    quality_dict = {}
+    for i in range(min_trajects, max_trajects + 1):
+        quality_dict[i] = []
+    
     for i in range(iterations):
         nr, trajects, quality = random_multiple_trajects(traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth)
         quality_dict[nr].append(quality)

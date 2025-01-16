@@ -10,12 +10,12 @@ from Functies.greedy import GreedyTraject
 from Functies.convert_station_list_to_connections import convert_station_list_to_connections
 
 # possible types: 'DepthFirst', 'Random', Greedy
-traject_type = 'DepthFirst'
+traject_type = 'Greedy'
 visualize_condition = False
 
 # create random number of trajects and return the nr of trajects, trajects objects list and the total cost
 nr, trajects, quality = random_multiple_trajects(traject_type, 1, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv', 15)
-pprint.pprint(trajects)
+
 # make the connections_list for the visualization
 if traject_type == 'DepthFirst':
     traject_list = []
