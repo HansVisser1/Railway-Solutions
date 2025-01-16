@@ -1,4 +1,6 @@
 from Functies.Traject import Traject, RandomTraject
+from Functies.greedy import GreedyTraject
+
 from Functies.calculate_score import calculate_score
 
 

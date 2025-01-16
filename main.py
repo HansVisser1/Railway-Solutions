@@ -1,9 +1,11 @@
 import pprint
 from Functies.read_files import read_data
 from Functies.random_multiple_trajects import random_multiple_trajects
-from Functies.baseline import baseline, collect_baselines, plot_multiple_baselines
+from Functies.baseline import baseline, collect_baselines, plot_quality_distribution
 from Functies.list_connections import list_connections
 from Visualisation.visualize_railway import visualize_all_trajects
+from Functies.Traject import Traject
+from Functies.greedy import GreedyTraject
 
 traject_type = 'Random'
 
@@ -25,9 +27,11 @@ visualize_all_trajects(station_dict, traject_list)
 
 # Parameters for baseline comparison
 num_runs = 4
-iterations = 150
+iterations = 1500
 
 # Collect baseline results
-all_results = collect_baselines(iterations, traject_type, num_runs, 1, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
+all_results = collect_baselines(iterations, traject_type, num_runs, 1, 1, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
+# all_results = collect_baselines(iterations=100, traject_type='Greedy', num_runs=3, min_trajects=1, max_trajects=7, stations_file='Data/StationsHolland.csv', connections_file='Data/ConnectiesHolland.csv')
 labels = [f"Run {i+1}" for i in range(num_runs)]
-plot_multiple_baselines(all_results, labels, iterations)
+# plot_multiple_baselines(all_results, labels, iterations)
+plot_quality_distribution(all_results, iterations)
