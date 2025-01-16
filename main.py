@@ -11,6 +11,7 @@ from Functies.convert_station_list_to_connections import convert_station_list_to
 
 # possible types: 'DepthFirst', 'Random', Greedy
 traject_type = 'DepthFirst'
+visualize_condition = False
 
 # create random number of trajects and return the nr of trajects, trajects objects list and the total cost
 nr, trajects, quality = random_multiple_trajects(traject_type, 1, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv', 15)
@@ -41,10 +42,11 @@ for traject in traject_list:
 station_dict, connection_dict = read_data('Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
 
 # visualize the trajects
-visualize_all_trajects(station_dict, traject_list)
+if visualize_condition == True:
+    visualize_all_trajects(station_dict, traject_list)
 
 # Parameters for baseline comparison
-num_runs = 4
+num_runs = 1
 iterations = 15000
 
 # Collect baseline results

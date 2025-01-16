@@ -13,6 +13,8 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
     for i in range(iterations):
         nr, trajects, quality = random_multiple_trajects(traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth)
         quality_dict[nr].append(quality)
+        if i % 100 == 0:
+            print(f"iteration {i}/{iterations}")
 
     return quality_dict
 
@@ -37,7 +39,7 @@ def plot_quality_distribution(all_results, iterations):
     Creates separate histograms or KDEs for each trajectory count.
     """
     plt.figure(figsize=(12, 8))
-    
+
     # Flatten the data into a list of (trajectory count, quality) pairs
     qualities = []
     for quality_dict in all_results:
