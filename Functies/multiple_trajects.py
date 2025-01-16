@@ -17,7 +17,7 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
         traject.run(stations_path, connections_path)
         traject.depth_first_search(DFS_depth, nr)
         trajects = traject.trajects
-        connection_nr = len(traject.all_trajects_connections)
+        connection_nr = len(traject.all_trajects_connections) / 2
         for key in trajects.keys():
             total_time += trajects[key]['duration']
         total_connections = traject.total_connections()
@@ -33,7 +33,7 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
             total_time += traject.time
 
             for connection in traject.connections:
-                if connection not in total_connections_trajects: 
+                if connection not in total_connections_trajects:
                     total_connections_trajects.append(connection)
                     total_connections_trajects.append([connection[1], connection[0], connection[2]])
 
@@ -44,5 +44,7 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
         print(connection_nr)
         print(total_connections)
         print(total_connections_trajects)
+        print("Error in connections_nr")
+
     cost = calculate_score(connection_nr, nr, total_connections, total_time)
     return trajects, cost
