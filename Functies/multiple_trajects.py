@@ -15,7 +15,7 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
     if traject_type == 'DepthFirst':
         traject = DepthFirstTraject()
         traject.run(stations_path, connections_path)
-        traject.depth_first_search(nr, DFS_depth)
+        traject.depth_first_search(DFS_depth, nr)
         trajects = traject.trajects
         connection_nr = len(traject.all_trajects_connections)
         for key in trajects.keys():
