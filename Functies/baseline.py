@@ -4,15 +4,16 @@ import seaborn as sns
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-def baseline(iterations, traject_type, min, max, stations_path, connections_path):
+
+def baseline(iterations, traject_type, min, max, stations_path, connections_path, DFS_depth):
     quality_dict = {1:[], 2:[], 3:[], 4:[], 5:[], 6:[], 7:[]}
     for i in range(iterations):
-        nr, trajects, quality = random_multiple_trajects(traject_type, min, max, stations_path, connections_path)
+        nr, trajects, quality = random_multiple_trajects(traject_type, min, max, stations_path, connections_path, DFS_depth)
         quality_dict[nr].append(quality)
 
     return quality_dict
 
-def collect_baselines(iterations, traject_type, num_runs, min, max, stations_path, connections_path):
+def collect_baselines(iterations, traject_type, num_runs, min, max, stations_path, connections_path, DFS_depth):
     """
     Collect the results from multiple baseline runs, interchangable how many.
     And it returns list of dictionaries with results from each baseline run.
@@ -22,7 +23,7 @@ def collect_baselines(iterations, traject_type, num_runs, min, max, stations_pat
     for run in range(num_runs):
 
         # Cost dictionary per baseline
-        quality_dict = baseline(iterations, traject_type, min, max, stations_path, connections_path)
+        quality_dict = baseline(iterations, traject_type, min, max, stations_path, connections_path, DFS_depth)
         all_results.append(quality_dict)
 
     return all_results

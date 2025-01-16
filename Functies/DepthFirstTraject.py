@@ -10,6 +10,8 @@ class DepthFirstTraject(Traject):
         self.states = {}
         self.state_time_condition = False
         self.trajects = None
+        self.all_trajects_connections = []
+        self.all_connections = None
         super().__init__()
 
     def run(self, stations_path, connections_path):
@@ -23,7 +25,9 @@ class DepthFirstTraject(Traject):
         """
         This method uses a depth first search to determine the specified number of trajects with the most new connections from a random starting station for each traject.
         """
+
         total_connections = self.total_connections()
+        
         # make list of all stations in the data
         stations = []
         for station in self.stations_dict.keys():
@@ -33,7 +37,7 @@ class DepthFirstTraject(Traject):
         start_station = random.choice(stations)
 
         # list containing all the connections of all the trajects
-        all_trajects_connections = []
+        self.all_trajects_connections = []
 
         # dictionary containing the routes of the individual trajects and their duration
         trajects = {}
@@ -44,7 +48,7 @@ class DepthFirstTraject(Traject):
         # loop to make a traject for the specified nr of trajects
         for i in range(nr_of_trajects):
             # check if all the connections have not already been done (times 2 because both directions of a connection are added separately to the all_trajects_connections list)
-            if len(all_trajects_connections) < (total_connections * 2):
+            if len(self.all_trajects_connections) < (total_connections * 2):
 
                 # empty the most_new_connections_list for the new traject
                 most_new_connections_list = []
@@ -88,7 +92,7 @@ class DepthFirstTraject(Traject):
                     for connection in state_connections_list:
 
                         # check if they have already been done by this or other trajects, if the connection is new, it is appended to state_new_connections
-                        if connection not in all_trajects_connections:
+                        if connection not in self.all_trajects_connections:
                             state_new_connections.append(connection)
 
                     # if the current state contains more new connections than the previous current traject with the most connections, it is set to be the traject with the most connections
@@ -99,7 +103,7 @@ class DepthFirstTraject(Traject):
                         most_new_connections_list = []
                         most_connections_list = convert_station_list_to_connections(most_new_connections['stations'])
                         for connection in most_connections_list:
-                            if connection not in all_trajects_connections:
+                            if connection not in self.all_trajects_connections:
                                 most_new_connections_list.append(connection)
 
                     # set the duration to be the duration of the current state, so that the determine_available_connections function can check if the time limit is exceeded
@@ -135,9 +139,9 @@ class DepthFirstTraject(Traject):
 
                 # append all the connections that have not been done yet by other trajects to the list with all the trajects
                 for connection in connection_list:
-                    if connection not in all_trajects_connections:
-                        all_trajects_connections.append(connection)
-                        all_trajects_connections.append([connection[1], connection[0]])
+                    if connection not in self.all_trajects_connections:
+                        self.all_trajects_connections.append(connection)
+                        self.all_trajects_connections.append([connection[1], connection[0]])
 
                 # append all new stations to the list with all the stations
                 for station in most_new_connections['stations']:
