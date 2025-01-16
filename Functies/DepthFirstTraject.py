@@ -23,6 +23,7 @@ class DepthFirstTraject(Traject):
         """
         This method uses a depth first search to determine the specified number of trajects with the most new connections from a random starting station for each traject.
         """
+        total_connections = self.total_connections()
         # make list of all stations in the data
         stations = []
         for station in self.stations_dict.keys():
@@ -43,8 +44,8 @@ class DepthFirstTraject(Traject):
         # loop to make a traject for the specified nr of trajects
         for i in range(nr_of_trajects):
             # check if all the connections have not already been done (times 2 because both directions of a connection are added separately to the all_trajects_connections list)
-            if len(all_trajects_connections) < (self.total_connections * 2):
-                # print('not all connections travelled yet')
+            if len(all_trajects_connections) < (total_connections * 2):
+
                 # empty the most_new_connections_list for the new traject
                 most_new_connections_list = []
 
