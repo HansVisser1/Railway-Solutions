@@ -27,7 +27,7 @@ class DepthFirstTraject(Traject):
         """
 
         total_connections = self.total_connections()
-        
+
         # make list of all stations in the data
         stations = []
         for station in self.stations_dict.keys():

@@ -33,11 +33,16 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
             total_time += traject.time
 
             for connection in traject.connections:
-                if connection not in total_connections_trajects:
+                if connection not in total_connections_trajects: 
                     total_connections_trajects.append(connection)
-                    total_connections_trajects.append([connection[1], connection[0]])
+                    total_connections_trajects.append([connection[1], connection[0], connection[2]])
 
         connection_nr = len(total_connections_trajects) / 2
         total_connections = trajects[0].total_connections()
+
+    if connection_nr > total_connections:
+        print(connection_nr)
+        print(total_connections)
+        print(total_connections_trajects)
     cost = calculate_score(connection_nr, nr, total_connections, total_time)
     return trajects, cost
