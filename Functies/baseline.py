@@ -5,47 +5,55 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 
-def baseline(iterations, traject_type, min, max, stations_path, connections_path, DFS_depth):
+def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth):
+    """
+    Run a baseline trajectory generation multiple times and collect quality scores.
+    """
     quality_dict = {1:[], 2:[], 3:[], 4:[], 5:[], 6:[], 7:[]}
     for i in range(iterations):
-        nr, trajects, quality = random_multiple_trajects(traject_type, min, max, stations_path, connections_path, DFS_depth)
+        nr, trajects, quality = random_multiple_trajects(traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth)
         quality_dict[nr].append(quality)
 
     return quality_dict
 
-def collect_baselines(iterations, traject_type, num_runs, min, max, stations_path, connections_path, DFS_depth):
+
+def collect_baselines(iterations, traject_type, num_runs, min_trajects, max_trajects, stations_file, connections_file, DFS_depth):
     """
     Collect the results from multiple baseline runs, interchangable how many.
     And it returns list of dictionaries with results from each baseline run.
     """
-    # List of dicts for baseline costs.
     all_results = []
     for run in range(num_runs):
-
-        # Cost dictionary per baseline
-        quality_dict = baseline(iterations, traject_type, min, max, stations_path, connections_path, DFS_depth)
+        quality_dict = baseline(
+            iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth)
         all_results.append(quality_dict)
 
     return all_results
 
 
-def plot_multiple_baselines(all_results, labels, iterations):
+def plot_quality_distribution(all_results, iterations):
     """
-    Plots multiple baseline results on the same graph.
-    all_results is a list of dictionaries containing costs for each run.
-    List of labels corresponding to each run.
-    On the x-axis the trajectories 1 to 7 and on the y axis the average cost.
+    Plot the distribution of quality scores for each trajectory count (1-7).
+    Creates separate histograms or KDEs for each trajectory count.
     """
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(12, 8))
 
-    for i, quality_dict in enumerate(all_results):
-        avg_quality = [sum(quality_dict[k]) / len(quality_dict[k]) for k in range(1, 8)]
+    # Flatten the data into a list of (trajectory count, quality) pairs
+    qualities = []
+    for quality_dict in all_results:
+        for k, values in quality_dict.items():
+            for value in values:
+                qualities.append((k, value))
 
-        plt.plot(range(1, 8), avg_quality, label=labels[i])
+    # Create a DataFrame for easier plotting
+    df = pd.DataFrame(qualities, columns=["Trajectories", "Quality"])
+    print(len(qualities))
+    # Plot histograms for each trajectory count
+    sns.histplot(data=df, x="Quality", hue="Trajectories", multiple="stack", bins=100, legend=True)
 
-    plt.xlabel("Trajectories")
-    plt.ylabel("Average Quality")
-    plt.title(f"Baseline comparison for {iterations} Iterations")
-    plt.legend()
+    plt.xlabel("Quality")
+    plt.ylabel("Frequency")
+    plt.title(f"Distribution of Quality Scores Across {iterations} Iterations")
+    # plt.legend(title="Trajectories")
     plt.grid(True)
     plt.show()
