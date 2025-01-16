@@ -45,7 +45,7 @@ visualize_all_trajects(station_dict, traject_list)
 
 # Parameters for baseline comparison
 num_runs = 4
-iterations = 1500
+iterations = 100
 
 # Collect baseline results
 all_results = collect_baselines(iterations, traject_type, num_runs, 1, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv', 15)
