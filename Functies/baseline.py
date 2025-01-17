@@ -37,7 +37,7 @@ def plot_quality_distribution(all_results, iterations):
     Creates separate histograms or KDEs for each trajectory count.
     """
     plt.figure(figsize=(12, 8))
-    
+
     # Flatten the data into a list of (trajectory count, quality) pairs
     qualities = []
     for quality_dict in all_results:

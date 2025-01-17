@@ -10,7 +10,7 @@ from Functies.greedy import GreedyTraject
 from Functies.convert_station_list_to_connections import convert_station_list_to_connections
 
 # possible types: 'DepthFirst', 'Random', Greedy
-traject_type = 'DepthFirst'
+traject_type = 'Random'
 
 # create random number of trajects and return the nr of trajects, trajects objects list and the total cost
 nr, trajects, quality = random_multiple_trajects(traject_type, 1, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv', 15)
@@ -44,11 +44,11 @@ station_dict, connection_dict = read_data('Data/StationsHolland.csv', 'Data/Conn
 visualize_all_trajects(station_dict, traject_list)
 
 # Parameters for baseline comparison
-num_runs = 4
-iterations = 100
+num_runs = 1
+iterations = 15000
 
 # Collect baseline results
-all_results = collect_baselines(iterations, traject_type, num_runs, 1, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv', 15)
+all_results = collect_baselines(iterations, traject_type, num_runs, 7, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv', 15)
 labels = [f"Run {i+1}" for i in range(num_runs)]
 # plot_multiple_baselines(all_results, labels, iterations)
 plot_quality_distribution(all_results, iterations)
