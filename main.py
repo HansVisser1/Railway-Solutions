@@ -10,11 +10,16 @@ from Functies.greedy import GreedyTraject
 from Functies.convert_station_list_to_connections import convert_station_list_to_connections
 
 # possible types: 'DepthFirst', 'Random', Greedy
+<<<<<<< HEAD
 traject_type = 'Random'
+=======
+traject_type = 'DepthFirst'
+visualize_condition = False
+>>>>>>> dc2b8d804f0a504f19247fe5b43a7cc8f326ae42
 
 # create random number of trajects and return the nr of trajects, trajects objects list and the total cost
 nr, trajects, quality = random_multiple_trajects(traject_type, 1, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv', 15)
-pprint.pprint(trajects)
+
 # make the connections_list for the visualization
 if traject_type == 'DepthFirst':
     traject_list = []
@@ -41,14 +46,19 @@ for traject in traject_list:
 station_dict, connection_dict = read_data('Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
 
 # visualize the trajects
-visualize_all_trajects(station_dict, traject_list)
+if visualize_condition == True:
+    visualize_all_trajects(station_dict, traject_list)
 
 # Parameters for baseline comparison
 num_runs = 1
+<<<<<<< HEAD
 iterations = 15000
+=======
+iterations = 150
+>>>>>>> dc2b8d804f0a504f19247fe5b43a7cc8f326ae42
 
 # Collect baseline results
 all_results = collect_baselines(iterations, traject_type, num_runs, 7, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv', 15)
 labels = [f"Run {i+1}" for i in range(num_runs)]
 # plot_multiple_baselines(all_results, labels, iterations)
-plot_quality_distribution(all_results, iterations)
+plot_quality_distribution(all_results, iterations, traject_type)
