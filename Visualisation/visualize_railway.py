@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import csv
 import geopandas as gpd
 
-def visualize_area(plt_axis, province = True):
+def visualize_area(plt_axis, province):
     """
     Function uses a GeoJSON file (not received as argument) and plots the outline of the area the trains will operate in.
     The argument plt_axis is the shared axis between all matplotlib plots/figures. Passing ensures plotting in the same figure.
@@ -29,7 +29,7 @@ def visualize_area(plt_axis, province = True):
         geo_data.plot(ax = plt_axis, edgecolor = 'grey', facecolor = 'none', zorder = 0)
         plt_axis.set_title('Stations Netherlands')
 
-def visualize_stations(plt_axis, station_dict):
+def visualize_stations(plt_axis, station_dict, province):
     """
     Function takes dictionary of stations produced by the read_data function,
     retrieves the station names and corresponding station coordinates from this dictionary
@@ -50,23 +50,29 @@ def visualize_stations(plt_axis, station_dict):
     # plotting the stations using coordinate list
     plt_axis.scatter(x_coordinates, y_coordinates, color = 'blue', marker = 'o', label = 'stations', zorder = 2)
 
-    # naming the stations at their coordinates using name list
-    va_dict = {'Alphen a/d Rijn': 'bottom','Den Helder': 'bottom', 'Gouda': 'bottom', 'Rotterdam Centraal': 'center',
-                'Rotterdam Alexander': 'bottom', 'Schiphol Airport': 'top', 'Zaandam': 'center',
-                'Amsterdam Centraal': 'center', 'Amsterdam Amstel': 'center', 'Amsterdam Zuid': 'top',
-                'Amsterdam Sloterdijk': 'bottom', 'Heemstede-Aerdenhout': 'center'}
-    ha_dict = {'Alphen a/d Rijn': 'left', 'Den Helder': 'left', 'Gouda': 'left', 'Rotterdam Centraal': 'left',
-                'Rotterdam Alexander': 'left', 'Schiphol Airport': 'left', 'Zaandam': 'left',
-                'Amsterdam Centraal': 'left', 'Amsterdam Amstel': 'left', 'Amsterdam Zuid': 'left',
-                'Amsterdam Sloterdijk': 'left', 'Heemstede-Aerdenhout': 'right'}
+    if province:
+        # vertical and horizontal name placement dictionary for province(s)
+        va_dict = {'Alphen a/d Rijn': 'bottom','Den Helder': 'bottom', 'Gouda': 'bottom', 'Rotterdam Centraal': 'center',
+                    'Rotterdam Alexander': 'bottom', 'Schiphol Airport': 'top', 'Zaandam': 'center',
+                    'Amsterdam Centraal': 'center', 'Amsterdam Amstel': 'center', 'Amsterdam Zuid': 'top',
+                    'Amsterdam Sloterdijk': 'bottom', 'Heemstede-Aerdenhout': 'center'}
+        ha_dict = {'Alphen a/d Rijn': 'left', 'Den Helder': 'left', 'Gouda': 'left', 'Rotterdam Centraal': 'left',
+                    'Rotterdam Alexander': 'left', 'Schiphol Airport': 'left', 'Zaandam': 'left',
+                    'Amsterdam Centraal': 'left', 'Amsterdam Amstel': 'left', 'Amsterdam Zuid': 'left',
+                    'Amsterdam Sloterdijk': 'left', 'Heemstede-Aerdenhout': 'right'}
+    else:
+        # vertical and horizontal name placement dictionary for whole country
+        va_dict = {'Leeuwarden': 'bottom', 'Groningen': 'bottom', 'Heerenveen': 'top'}
+        ha_dict = {'Leeuwarden': 'right', 'Groningen': 'left', 'Heerenveen': 'right'}
 
+    # naming the stations at their coordinates using name list
     for name, x, y in zip(station_names, x_coordinates, y_coordinates):
         if name in va_dict or name in ha_dict:
             pass
             plt_axis.text(x, y, name, fontsize = 8, ha = ha_dict[name], va = va_dict[name], color = 'black')
-        else:
+        elif name not in va_dict and not province:
             pass # TODO REMOVE
-            plt_axis.text(x, y, name, fontsize = 8, ha = 'right', va = 'bottom', color = 'black')
+            # plt_axis.text(x, y, name, fontsize = 8, ha = 'right', va = 'bottom', color = 'black')
 
 
 def visualize_connections(plt_axis, station_dictionary):
@@ -159,7 +165,7 @@ def visualize_all_trajects(dict_stations, traject_list, province = True):
 
     # calling the three visualisation functions
     visualize_area(plt_axis, province)
-    visualize_stations(plt_axis, dict_stations)
+    visualize_stations(plt_axis, dict_stations, province)
     visualize_connections(plt_axis, dict_stations)
     visualize_traject(plt_axis, dict_stations, traject_list)
 
