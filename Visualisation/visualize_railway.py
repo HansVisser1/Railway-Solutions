@@ -1,13 +1,41 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import csv
+import geopandas as gpd
 
-def visualize_stations(station_dict):
+def visualize_area(plt_axis, province = True):
+    """
+    Function uses a GeoJSON file (not received as argument) and plots the outline of the area the trains will operate in.
+    The argument plt_axis is the shared axis between all matplotlib plots/figures. Passing ensures plotting in the same figure.
+    The province argument indicates if this is for the two provinces or for the entire country.
+
+    GEOPANDAS NEEDS TO BE INSTALLED FOR THIS FUNCTION TO PROPERLY EXECUTE !
+    terminal ---> pip install geopandas
+    """
+    # opening GeoJSON file
+    geo_data = gpd.read_file("nl-all-provinces.geojson")
+    plt_axis.set_xticks([])
+    plt_axis.set_yticks([])
+
+    # plotting the province borders
+    if province:
+        provinces = ["Noord-Holland", "Zuid-Holland"]
+        province_geo_data = geo_data[geo_data["name"].isin(provinces)]
+        province_geo_data.plot(ax = plt_axis, edgecolor = 'black', facecolor = 'none')
+        plt_axis.set_title('Stations Noord- and Zuid-Holland')
+
+    # plotting the country borders
+    else:
+        geo_data.plot(ax = plt_axis, edgecolor = 'black', facecolor = 'none')
+        plt_axis.set_title('Stations Netherlands')
+
+def visualize_stations(plt_axis, station_dict):
     """
     Function takes dictionary of stations produced by the read_data function,
     retrieves the station names and corresponding station coordinates from this dictionary
     and uses these to plot the stations in a matplotlib graph as points. The names of the stations
     are added in the graph next to the plotted station points. The function creates a plot but returns nothing.
+    The argument plt_axis is the shared axis between all matplotlib plots/figures. Passing ensures plotting in the same figure.
     """
     # creating the names and coordinate lists
     x_coordinates = []
@@ -20,25 +48,20 @@ def visualize_stations(station_dict):
         y_coordinates.append(float(station_dict[station]['y']))
 
     # plotting the stations using coordinate list
-    plt.figure(figsize = (8, 8))
-    plt.scatter(x_coordinates, y_coordinates, color = 'blue', marker = 'o', label = 'stations', zorder = 1)
+    plt_axis.scatter(x_coordinates, y_coordinates, color = 'blue', marker = 'o', label = 'stations', zorder = 1)
 
     # naming the stations at their coordinates using name list
     for name, x, y in zip(station_names, x_coordinates, y_coordinates):
-        plt.text(x, y, name, fontsize = 8, ha = 'right', color = 'black')
-
-    # plotting empty labels for axes and adding title
-    plt.xticks([])
-    plt.yticks([])
-    plt.title('Stations Noord- and Zuid-Holland')
+        plt_axis.text(x, y, name, fontsize = 8, ha = 'right', color = 'black')
 
 
-def visualize_connections(station_dictionary):
+def visualize_connections(plt_axis, station_dictionary):
     """
     Function takes dictionary of stations produced by the read_data function,
     retrieves the station coordinates from this dictionary and plots the connections between the
     stations based on the listed connection in the dictionary and the coordinates corresponding to the
     connected stations. To ensure each connection is only plotted once, the plotted connections are placed in a set.
+    The argument plt_axis is the shared axis between all matplotlib plots/figures. Passing ensures plotting in the same figure.
     The function plots the connections in the graph but returns nothing.
     """
     # creating set to store plotted connections
@@ -61,19 +84,20 @@ def visualize_connections(station_dictionary):
 
                 # plotting connections and ensuring connection label appears only once in graph legend
                 if len(plotted_connections) == 0:
-                    plt.plot(x_coordinates, y_coordinates, color = 'black', linestyle = '-', zorder = 0, label = 'connections')
+                    plt_axis.plot(x_coordinates, y_coordinates, color = 'black', linestyle = '-', zorder = 0, label = 'connections')
                 else:
-                    plt.plot(x_coordinates, y_coordinates, color = 'black', linestyle = '-', zorder = 0)
+                    plt_axis.plot(x_coordinates, y_coordinates, color = 'black', linestyle = '-', zorder = 0)
 
                 # adding plotted connection to set of plotted connections
                 plotted_connections.add((station, destination))
 
 
-def visualize_traject(station_dictionary, traject_list):
+def visualize_traject(plt_axis, station_dictionary, traject_list):
     """
     Function takes dictionary of stations produced by the read_data function and a traject list produced by
     the list_connections function. It then plots every connection in the different trajects one by one and visualizes every step
     of the plotting in the graph. Each traject (and corresponding connections) gets its own colour in the plotted graph.
+    The argument plt_axis is the shared axis between all matplotlib plots/figures. Passing ensures plotting in the same figure.
     This function plots the trajects in the fully visualized graph, and displays the graph, but returns nothing.
     """
     # creating list of different colours for the trajects to be plotted in
@@ -96,33 +120,37 @@ def visualize_traject(station_dictionary, traject_list):
 
             # plotting traject connections and ensuring traject label appears only once in graph legend
             if connection_number == 0:
-                plt.plot(x_coordinates, y_coordinates, color = traject_colours[traject_number],
+                plt_axis.plot(x_coordinates, y_coordinates, color = traject_colours[traject_number],
                     label = f'traject {traject_number + 1}', linestyle = '--', zorder = 2)
-                plt.legend(loc = 'upper left')
+                plt_axis.legend(loc = 'upper left')
                 plt.draw()
                 plt.pause(0.25)
             else:
-                plt.plot(x_coordinates, y_coordinates, color = traject_colours[traject_number],
+                plt_axis.plot(x_coordinates, y_coordinates, color = traject_colours[traject_number],
                     linestyle = '--', zorder = 2)
-                plt.legend(loc = 'upper left')
+                plt_axis.legend(loc = 'upper left')
                 plt.draw()
                 plt.pause(0.25)
 
-    # displaying full visual/graph
-    plt.show()
 
-
-def visualize_all_trajects(dict_stations, traject_list):
+def visualize_all_trajects(dict_stations, traject_list, province = True):
     """
     Function takes dictionary of stations produced by the read_data function and a traject list produced by
     the list_connections function.
     Function combines all three visualize functions for a complete visual product in the form of a matplotlib graph.
     The order of the visualize functions is of importance.
     """
+    # defining figure and figure axis
+    fig, plt_axis = plt.subplots(figsize=(8, 8))
+
     # calling the three visualisation functions
-    visualize_stations(dict_stations)
-    visualize_connections(dict_stations)
-    visualize_traject(dict_stations, traject_list)
+    visualize_area(plt_axis, province)
+    visualize_stations(plt_axis, dict_stations)
+    visualize_connections(plt_axis, dict_stations)
+    visualize_traject(plt_axis, dict_stations, traject_list)
+
+    # displaying the full final visual/graph
+    plt.show()
 
 
 if __name__ == "__main__":
@@ -189,7 +217,9 @@ if __name__ == "__main__":
                       ['Haarlem', 'Amsterdam Sloterdijk', '11']]]
 
     # TODO Make sure the file path is correct after importing!
-    dict_stations, dict_connections = read_data('../StationsHolland.csv', '../ConnectiesHolland.csv')
+    dict_stations_holland, dict_connections_holland = read_data('../StationsHolland.csv', '../ConnectiesHolland.csv')
+    dict_stations_nl, dict_connections_nl = read_data('../StationsNationaal.csv', '../ConnectiesNationaal.csv')
 
     # calling function of complete visual product
-    visualize_all_trajects(dict_stations, traject_long)
+    visualize_all_trajects(dict_stations_holland, traject_long, True)
+    # visualize_all_trajects(dict_stations_nl, traject_long, False)
