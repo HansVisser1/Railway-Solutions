@@ -21,12 +21,12 @@ def visualize_area(plt_axis, province = True):
     if province:
         provinces = ["Noord-Holland", "Zuid-Holland"]
         province_geo_data = geo_data[geo_data["name"].isin(provinces)]
-        province_geo_data.plot(ax = plt_axis, edgecolor = 'black', facecolor = 'none')
+        province_geo_data.plot(ax = plt_axis, edgecolor = 'grey', facecolor = 'none', zorder = 0)
         plt_axis.set_title('Stations Noord- and Zuid-Holland')
 
     # plotting the country borders
     else:
-        geo_data.plot(ax = plt_axis, edgecolor = 'black', facecolor = 'none')
+        geo_data.plot(ax = plt_axis, edgecolor = 'grey', facecolor = 'none', zorder = 0)
         plt_axis.set_title('Stations Netherlands')
 
 def visualize_stations(plt_axis, station_dict):
@@ -48,11 +48,25 @@ def visualize_stations(plt_axis, station_dict):
         y_coordinates.append(float(station_dict[station]['y']))
 
     # plotting the stations using coordinate list
-    plt_axis.scatter(x_coordinates, y_coordinates, color = 'blue', marker = 'o', label = 'stations', zorder = 1)
+    plt_axis.scatter(x_coordinates, y_coordinates, color = 'blue', marker = 'o', label = 'stations', zorder = 2)
 
     # naming the stations at their coordinates using name list
+    va_dict = {'Alphen a/d Rijn': 'bottom','Den Helder': 'bottom', 'Gouda': 'bottom', 'Rotterdam Centraal': 'center',
+                'Rotterdam Alexander': 'bottom', 'Schiphol Airport': 'top', 'Zaandam': 'center',
+                'Amsterdam Centraal': 'center', 'Amsterdam Amstel': 'center', 'Amsterdam Zuid': 'top',
+                'Amsterdam Sloterdijk': 'bottom', 'Heemstede-Aerdenhout': 'center'}
+    ha_dict = {'Alphen a/d Rijn': 'left', 'Den Helder': 'left', 'Gouda': 'left', 'Rotterdam Centraal': 'left',
+                'Rotterdam Alexander': 'left', 'Schiphol Airport': 'left', 'Zaandam': 'left',
+                'Amsterdam Centraal': 'left', 'Amsterdam Amstel': 'left', 'Amsterdam Zuid': 'left',
+                'Amsterdam Sloterdijk': 'left', 'Heemstede-Aerdenhout': 'right'}
+
     for name, x, y in zip(station_names, x_coordinates, y_coordinates):
-        plt_axis.text(x, y, name, fontsize = 8, ha = 'right', color = 'black')
+        if name in va_dict or name in ha_dict:
+            pass
+            plt_axis.text(x, y, name, fontsize = 8, ha = ha_dict[name], va = va_dict[name], color = 'black')
+        else:
+            pass # TODO REMOVE
+            plt_axis.text(x, y, name, fontsize = 8, ha = 'right', va = 'bottom', color = 'black')
 
 
 def visualize_connections(plt_axis, station_dictionary):
@@ -84,9 +98,9 @@ def visualize_connections(plt_axis, station_dictionary):
 
                 # plotting connections and ensuring connection label appears only once in graph legend
                 if len(plotted_connections) == 0:
-                    plt_axis.plot(x_coordinates, y_coordinates, color = 'black', linestyle = '-', zorder = 0, label = 'connections')
+                    plt_axis.plot(x_coordinates, y_coordinates, color = 'black', linestyle = '-', zorder = 1, label = 'connections')
                 else:
-                    plt_axis.plot(x_coordinates, y_coordinates, color = 'black', linestyle = '-', zorder = 0)
+                    plt_axis.plot(x_coordinates, y_coordinates, color = 'black', linestyle = '-', zorder = 1)
 
                 # adding plotted connection to set of plotted connections
                 plotted_connections.add((station, destination))
@@ -121,13 +135,13 @@ def visualize_traject(plt_axis, station_dictionary, traject_list):
             # plotting traject connections and ensuring traject label appears only once in graph legend
             if connection_number == 0:
                 plt_axis.plot(x_coordinates, y_coordinates, color = traject_colours[traject_number],
-                    label = f'traject {traject_number + 1}', linestyle = '--', zorder = 2)
+                    label = f'traject {traject_number + 1}', linestyle = '--', zorder = 3)
                 plt_axis.legend(loc = 'upper left')
                 plt.draw()
                 plt.pause(0.25)
             else:
                 plt_axis.plot(x_coordinates, y_coordinates, color = traject_colours[traject_number],
-                    linestyle = '--', zorder = 2)
+                    linestyle = '--', zorder = 3)
                 plt_axis.legend(loc = 'upper left')
                 plt.draw()
                 plt.pause(0.25)
@@ -221,5 +235,5 @@ if __name__ == "__main__":
     dict_stations_nl, dict_connections_nl = read_data('../StationsNationaal.csv', '../ConnectiesNationaal.csv')
 
     # calling function of complete visual product
-    visualize_all_trajects(dict_stations_holland, traject_long, True)
-    # visualize_all_trajects(dict_stations_nl, traject_long, False)
+    # visualize_all_trajects(dict_stations_holland, traject_long, province = True)
+    visualize_all_trajects(dict_stations_nl, traject_long, province = False)
