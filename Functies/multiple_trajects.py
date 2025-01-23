@@ -9,7 +9,7 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
     """
     this function multiple trajects and puts them in a list
     """
-    trajects = None
+    trajects = []
     total_connections_trajects = []
     total_time = 0
     if traject_type == 'DepthFirst':
@@ -18,8 +18,7 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
         traject.depth_first_search(DFS_depth, nr)
         trajects = traject.trajects
         connection_nr = len(traject.all_trajects_connections) / 2
-        for key in trajects.keys():
-            total_time += trajects[key]['duration']
+
         total_connections = traject.total_connections()
     else:
         trajects = []
@@ -46,5 +45,5 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
         print(total_connections_trajects)
         print("Error in connections_nr")
 
-    cost = calculate_score(connection_nr, nr, total_connections, total_time)
-    return trajects, cost
+    quality = calculate_score(connection_nr, nr, total_connections, total_time)
+    return trajects, quality

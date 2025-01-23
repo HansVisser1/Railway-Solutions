@@ -9,7 +9,7 @@ class DepthFirstTraject(Traject):
         self.previous_station = None
         self.states = {}
         self.state_time_condition = False
-        self.trajects = None
+        self.trajects = {}
         self.all_trajects_connections = []
         self.all_connections = None
         super().__init__()
@@ -33,9 +33,6 @@ class DepthFirstTraject(Traject):
         for station in self.stations_dict.keys():
             stations.append(station)
 
-        # determine starting station for the first traject
-        start_station = random.choice(stations)
-
         # list containing all the connections of all the trajects
         self.all_trajects_connections = []
 
@@ -50,8 +47,8 @@ class DepthFirstTraject(Traject):
             # check if all the connections have not already been done (times 2 because both directions of a connection are added separately to the all_trajects_connections list)
             if len(self.all_trajects_connections) < (total_connections * 2):
 
-                # empty the most_new_connections_list for the new traject
-                most_new_connections_list = []
+                # empty the best_solution_total_connections_list for the new traject
+                best_solution_total_connections = []
 
                 # set time condition for new traject to False
                 self.state_time_condition = False
@@ -59,19 +56,11 @@ class DepthFirstTraject(Traject):
                 # set new_connections to None for new traject
                 new_connections = None
 
-                # choose random station that has not already been used
-                if len(all_stations) < len(stations):
-                    while start_station in all_stations:
-                        start_station = random.choice(stations)
-
-                # if all the stations have been used already, a random station is good enough
-                else:
-                    start_station = random.choice(stations)
-
-                self.current_station = start_station
+                # determine the starting station for the current traject
+                self.station_choice(all_stations, stations)
 
                 # most new connections will contain the traject with the most new connections found using the depth first search
-                most_new_connections = {'stations': [self.current_station], 'duration': 0}
+                best_solution_stations = {'stations': [self.current_station], 'duration': 0}
 
                 # make stack for the depth first search, starting with just the starting station and duration set to 0
                 stack = [[{'stations': [self.current_station], 'duration': 0}]]
@@ -96,15 +85,8 @@ class DepthFirstTraject(Traject):
                             state_new_connections.append(connection)
 
                     # if the current state contains more new connections than the previous current traject with the most connections, it is set to be the traject with the most connections
-                    if len(state_new_connections) > len(most_new_connections_list):
-                        most_new_connections = state[0]
-
-                        # make a most_new_connections_list, so that this one can be compared to future states
-                        most_new_connections_list = []
-                        most_connections_list = convert_station_list_to_connections(most_new_connections['stations'])
-                        for connection in most_connections_list:
-                            if connection not in self.all_trajects_connections:
-                                most_new_connections_list.append(connection)
+                    if len(state_new_connections) > len(best_solution_total_connections):
+                        best_solution_total_connections, best_solution_stations = self.save_solution(state, state_new_connections, best_solution_total_connections)
 
                     # set the duration to be the duration of the current state, so that the determine_available_connections function can check if the time limit is exceeded
                     state_duration = state[0]['duration']
@@ -112,30 +94,15 @@ class DepthFirstTraject(Traject):
                     # determine the available connections
                     self.determine_available_connections(self.stations_dict, state[0]['stations'][len(state[0]['stations']) - 1], state_duration)
 
-                    # if the time condition is still false, a child state can be made
-                    if self.state_time_condition == False:
-
-                        # check if the max number of stations hasn't been exceeded TODO: maybe this is unnecessary?
-                        if len(state[0]['stations']) < depth:
-                            # loop over the stations in the available connections
-                            for station in self.available_connections:
-                                # make sure that the traject can't go back over the same connection if that isn't the only possibility
-                                if len(self.available_connections) > 1 and station != state[0]['stations'][(len(state[0]['stations']) - 2)] or len(self.available_connections) == 1:
-                                    # create a child state
-                                    child = copy.deepcopy(state[0])
-
-                                    # add the new station and duration to the child state
-                                    child['stations'].append(station)
-                                    child['duration'] += int(self.connections_dict['connections'][station])
-
-                                    # add the child state to the stack
-                                    stack.append([child])
+                    # run build children function to add all possible children to the stack
+                    stack = self.build_children(depth, state, stack, station)
 
                 # set the traject with the most new_connections for the current depth first search as the i'th traject in the traject dictionary
-                trajects[i] = most_new_connections
+                trajects[i] = best_solution_stations
+
 
                 # make a connection list for the traject with the most new connections in the current depth first search
-                connection_list = convert_station_list_to_connections(most_new_connections['stations'])
+                connection_list = convert_station_list_to_connections(best_solution_stations['stations'])
 
                 # append all the connections that have not been done yet by other trajects to the list with all the trajects
                 for connection in connection_list:
@@ -144,13 +111,13 @@ class DepthFirstTraject(Traject):
                         self.all_trajects_connections.append([connection[1], connection[0]])
 
                 # append all new stations to the list with all the stations
-                for station in most_new_connections['stations']:
+                for station in best_solution_stations['stations']:
                     if station not in all_stations:
                         all_stations.append(station)
 
         # store trajects in self so that it can be used later
-        self.trajects = trajects
-
+        self.generate_output(trajects)
+        self.connections = self.all_trajects_connections
 
     def determine_available_connections(self, stations_dict, station, duration):
         """
@@ -169,3 +136,80 @@ class DepthFirstTraject(Traject):
         # so if this is the case the tim_condition is set to True.
         if len(self.available_connections) == 0:
             self.state_time_condition = True
+
+    def build_children(self, depth, state, stack, station):
+        """
+        This method adds the possible children to the depth first search stack.
+        """
+        # if the time condition is still false, a child state can be made
+        if self.state_time_condition == False:
+
+            # check if the max number of stations hasn't been exceeded
+            if len(state[0]['stations']) < depth:
+                # loop over the stations in the available connections
+                for station in self.available_connections:
+                    # make sure that the traject can't go back over the same connection if that isn't the only possibility
+                    if len(self.available_connections) > 1 and station != state[0]['stations'][(len(state[0]['stations']) - 2)] or len(self.available_connections) == 1:
+                        # create a child state
+                        child = copy.deepcopy(state[0])
+
+                        # add the new station and duration to the child state
+                        child['stations'].append(station)
+                        child['duration'] += int(self.connections_dict['connections'][station])
+
+                        # add the child state to the stack
+                        stack.append([child])
+        return stack
+
+    def save_solution(self, state, state_new_connections, best_solution_total_connections):
+        """
+        This method checks if the current state is better than the previously stored best state, and
+        if that is the case it saves the state.
+        """
+
+        best_solution_stations = state[0]
+
+        # make a best_solution_total_connections list, so that this solution one can be compared to future states
+        best_solution_total_connections = []
+        most_connections_list = convert_station_list_to_connections(best_solution_stations['stations'])
+        for connection in most_connections_list:
+            if connection not in self.all_trajects_connections:
+                best_solution_total_connections.append(connection)
+        return best_solution_total_connections, best_solution_stations
+
+    def station_choice(self, all_stations, stations):
+        """
+        This method chooses a random starting station for the trajects of the depth first search,
+        from the pool of stations that haven't been used yet (as long as possible).
+        """
+        # choose random station that has not already been used
+
+        # determine starting station for the first traject
+        start_station = random.choice(stations)
+
+        if len(all_stations) < len(stations):
+            while start_station in all_stations:
+                start_station = random.choice(stations)
+
+        # store the current station in the object
+        self.current_station = start_station
+
+    def generate_output(self, trajects):
+        # make the connections_list for the visualization
+
+        traject_list = []
+
+        for key in trajects.keys():
+            station_list= []
+            station_list = trajects[key]['stations']
+            connection_list = convert_station_list_to_connections(station_list)
+
+            for i in range(len(connection_list)):
+                connection_list[i].append(0)
+            traject_list.append(connection_list)
+        count = 0
+
+        for traject in traject_list:
+            count += 1
+            
+            self.trajects[count] = traject
