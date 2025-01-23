@@ -22,9 +22,6 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
         if i % 100 == 0:
             print(f"iteration {i}/{iterations}")
 
-
-
-
         # Update the highest score if this run's score is better
         if quality > highest_score:
             highest_score = quality

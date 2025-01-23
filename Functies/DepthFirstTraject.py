@@ -14,13 +14,6 @@ class DepthFirstTraject(Traject):
         self.all_connections = None
         super().__init__()
 
-    def run(self, stations_path, connections_path):
-        """
-        This method chooses a random start station and at every step determines a random next connection to be added to the traject.
-        """
-        super().run(stations_path, connections_path)
-
-
     def depth_first_search(self, depth, nr_of_trajects):
         """
         This method uses a depth first search to determine the specified number of trajects with the most new connections from a random starting station for each traject.
@@ -211,5 +204,5 @@ class DepthFirstTraject(Traject):
 
         for traject in traject_list:
             count += 1
-            
+
             self.trajects[count] = traject
