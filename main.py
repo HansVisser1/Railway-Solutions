@@ -3,22 +3,19 @@ from Functies.read_files import read_data
 from Functies.random_multiple_trajects import random_multiple_trajects
 from Functies.baseline import baseline, collect_baselines, plot_quality_distribution
 from Functies.list_connections import list_connections
-from Functies.DepthFirstTraject import DepthFirstTraject
+from Functies.DepthFirstTrajectv2 import DepthFirstTraject
 from Visualisation.visualize_railway import visualize_all_trajects
 from Functies.Traject import Traject
 from Functies.greedy import GreedyTraject
 from Functies.convert_station_list_to_connections import convert_station_list_to_connections
 
 # possible types: 'DepthFirst', 'Random', Greedy
-<<<<<<< HEAD
-traject_type = 'Random'
-=======
 traject_type = 'DepthFirst'
-visualize_condition = False
->>>>>>> dc2b8d804f0a504f19247fe5b43a7cc8f326ae42
+visualize_condition = True
+
 
 # create random number of trajects and return the nr of trajects, trajects objects list and the total cost
-nr, trajects, quality = random_multiple_trajects(traject_type, 1, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv', 15)
+nr, trajects, quality = random_multiple_trajects(traject_type, 5, 5, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv', 15)
 
 # make the connections_list for the visualization
 if traject_type == 'DepthFirst':
@@ -44,6 +41,7 @@ for traject in traject_list:
     print()
 # read the data for the visualization
 station_dict, connection_dict = read_data('Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
+#print(traject_list)
 
 # visualize the trajects
 if visualize_condition == True:
@@ -51,14 +49,12 @@ if visualize_condition == True:
 
 # Parameters for baseline comparison
 num_runs = 1
-<<<<<<< HEAD
-iterations = 15000
-=======
-iterations = 150
->>>>>>> dc2b8d804f0a504f19247fe5b43a7cc8f326ae42
+
+iterations = 100
+
 
 # Collect baseline results
-all_results = collect_baselines(iterations, traject_type, num_runs, 7, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv', 15)
+all_results = collect_baselines(iterations, traject_type, num_runs, 1, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv', 15)
 labels = [f"Run {i+1}" for i in range(num_runs)]
 # plot_multiple_baselines(all_results, labels, iterations)
 plot_quality_distribution(all_results, iterations, traject_type)
