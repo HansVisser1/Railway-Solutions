@@ -33,8 +33,8 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
     # Printing the highest score and the corresponding trajectories
     print(f"\nThe highest quality score achieved with the {traject_type} algorithm is: {highest_score}")
 
-    if traject_type != 'DepthFirst'
-        Printing the best trajectory solution in a readable format for the print
+    if traject_type != 'DepthFirst':
+        #Printing the best trajectory solution in a readable format for the print
         print("Best trajectory solution:")
         for i, traject in enumerate(best_trajects, start = 1):
             print(f"Traject {i}:")
@@ -45,6 +45,7 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
             print(" ")
             print(f"Total Time: {traject.time} minutes")
             print(" ")
+
 
 
     return quality_dict
