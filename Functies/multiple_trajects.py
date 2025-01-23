@@ -18,9 +18,11 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
         traject.depth_first_search(DFS_depth, nr)
         trajects = traject.trajects
         connection_nr = len(traject.all_trajects_connections) / 2
+        new_nr = len(trajects.keys())
 
         total_connections = traject.total_connections()
     else:
+        new_nr = nr
         trajects = []
         for i in range(nr):
             if traject_type == 'Random':
@@ -46,4 +48,4 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
         print("Error in connections_nr")
 
     quality = calculate_score(connection_nr, nr, total_connections, total_time)
-    return trajects, quality
+    return trajects, quality, new_nr

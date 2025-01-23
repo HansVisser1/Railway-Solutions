@@ -17,7 +17,7 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
 
     for i in range(iterations):
         nr, trajects, quality = random_multiple_trajects(traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth)
-        print(trajects)
+
         quality_dict[nr].append(quality)
         if i % 100 == 0:
             print(f"iteration {i}/{iterations}")
@@ -33,17 +33,18 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
     # Printing the highest score and the corresponding trajectories
     print(f"\nThe highest quality score achieved with the {traject_type} algorithm is: {highest_score}")
 
-    #Printing the best trajectory solution in a readable format for the print
-    # print("Best trajectory solution:")
-    # for i, traject in enumerate(best_trajects, start = 1):
-    #     print(f"Traject {i}:")
-    #     print(" ")
-    #     print(f"Stations: {traject.stations}")
-    #     print(" ")
-    #     print(f"Connections: {traject.connections}")
-    #     print(" ")
-    #     print(f"Total Time: {traject.time} minutes")
-    #     print(" ")
+    if traject_type != 'DepthFirst'
+        Printing the best trajectory solution in a readable format for the print
+        print("Best trajectory solution:")
+        for i, traject in enumerate(best_trajects, start = 1):
+            print(f"Traject {i}:")
+            print(" ")
+            print(f"Stations: {traject.stations}")
+            print(" ")
+            print(f"Connections: {traject.connections}")
+            print(" ")
+            print(f"Total Time: {traject.time} minutes")
+            print(" ")
 
 
     return quality_dict
