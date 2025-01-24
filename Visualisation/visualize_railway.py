@@ -294,7 +294,31 @@ if __name__ == "__main__":
 
     # calling function of complete visual product
     # visualize_all_trajects(dict_stations_holland, traject_long, province = True)
-    visualize_all_trajects(dict_stations_nl, traject_long, province = False)
+    # visualize_all_trajects(dict_stations_nl, traject_long, province = False)
+
+    count_connection_1 = set()
+    for connection in dict_connections_holland:
+        # print(connection.values())
+        if connection.values() not in count_connection_1:
+            count_connection_1.add(tuple(connection.values()))
+    # print(count_connection_1)
+
+    total_time_1 = 0
+    for connection in count_connection_1:
+        total_time_1 += float(connection[2])
+    print(f"Total time for Noord- and Zuid-Holland is {total_time_1}")
+
+    count_connection_2 = set()
+    for connection in dict_connections_nl:
+        # print(connection.values())
+        if connection.values() not in count_connection_2:
+            count_connection_2.add(tuple(connection.values()))
+    # print(count_connection_2)
+
+    total_time_2 = 0
+    for connection in count_connection_2:
+        total_time_2 += float(connection[2])
+    print(f"Total time for Netherlands is {total_time_2}")
 
     # exit () prevents last block from executing
     exit()
