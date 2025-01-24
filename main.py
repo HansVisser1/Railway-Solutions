@@ -20,7 +20,7 @@ visualize_condition = False
 
 
 # create random number of trajects and return the nr of trajects, trajects objects list and the total cost
-nr, trajects, quality = random_multiple_trajects(traject_type, 5, 5, stations, connections, 15)
+nr, trajects, quality = random_multiple_trajects(traject_type, 1, 7, stations, connections, 15)
 
 traject_list = traject_list(trajects, traject_type)
 

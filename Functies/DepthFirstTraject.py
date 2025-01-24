@@ -176,16 +176,24 @@ class DepthFirstTraject(Traject):
     def station_choice(self, all_stations, stations):
         """
         This method chooses a random starting station for the trajects of the depth first search,
-        from the pool of stations that haven't been used yet (as long as possible).
+        from the pool of stations where not all connections have been done yet.
         """
-        # choose random station that has not already been used
 
-        # determine starting station for the first traject
-        start_station = random.choice(stations)
+        count = 0
+        connections = []
 
-        if len(all_stations) < len(stations):
-            while start_station in all_stations:
-                start_station = random.choice(stations)
+        # determine starting station for the traject, the loop makes sure that at least 1 connection of the starting station has not been done yet.
+        while count == len(connections):
+            start_station = random.choice(stations)
+
+            connections = []
+            for key in self.stations_dict[start_station]['connections'].keys():
+                connections.append([start_station, key])
+
+            count = 0
+            for connection in connections:
+                if connection in self.all_trajects_connections:
+                    count += 1
 
         # store the current station in the object
         self.current_station = start_station
