@@ -18,7 +18,7 @@ class Traject():
         self.connections_dict = {}
         self.stations_path = None
         self.connections_path = None
-        self.station_dict = None
+        self.stations_dict = None
 
     def run(self, stations_path, connections_path):
         """

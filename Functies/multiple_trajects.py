@@ -15,12 +15,13 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
     total_time = 0
     if traject_type == 'DepthFirst':
         traject = DepthFirstTraject()
-        traject.run(stations_path, connections_path)
-        traject.depth_first_search(DFS_depth, nr)
+
+        traject.depth_first_search(DFS_depth, nr, stations_path, connections_path)
         trajects = traject.trajects
         connection_nr = len(traject.all_trajects_connections) / 2
         new_nr = len(trajects.keys())
-
+        for key in traject.traject_durations.keys():
+            total_time += traject.traject_durations[key]
         total_connections = traject.total_connections()
     else:
         new_nr = nr

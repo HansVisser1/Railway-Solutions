@@ -1,6 +1,6 @@
 import csv
 import pprint
- 
+
 def read_data(stations_file, connections_file):
     """
     This function takes the stations file and the connections file
@@ -29,7 +29,7 @@ def read_data(stations_file, connections_file):
         for row in document:
             station1 = row['station1']
             station2 = row['station2']
-            distance = row['distance']
+            distance = row['distance'].split('.')[0]
 
             # Add connections by retrieves the dictionary for station1, then accesses
             # the connections dictionary for station1. [station2] = travel_time adds

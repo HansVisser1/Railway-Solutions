@@ -11,7 +11,7 @@ from Functies.convert_station_list_to_connections import convert_station_list_to
 from Functies.traject_list  import traject_list
 
 # possible types: 'DepthFirst', 'Random', Greedy
-traject_type = 'Random'
+traject_type = 'DepthFirst'
 visualize_condition = False
 
 
@@ -31,7 +31,7 @@ if visualize_condition == True:
 #Parameters for baseline comparison
 num_runs = 1
 
-iterations = 100
+iterations = 15000
 
 
 # Collect baseline results

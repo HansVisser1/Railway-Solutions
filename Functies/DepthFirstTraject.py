@@ -12,13 +12,14 @@ class DepthFirstTraject(Traject):
         self.trajects = {}
         self.all_trajects_connections = []
         self.all_connections = None
+        self.traject_durations = {}
         super().__init__()
 
-    def depth_first_search(self, depth, nr_of_trajects):
+    def depth_first_search(self, depth, nr_of_trajects, stations_path, connections_path):
         """
         This method uses a depth first search to determine the specified number of trajects with the most new connections from a random starting station for each traject.
         """
-
+        self.run(stations_path, connections_path)
         total_connections = self.total_connections()
 
         # make list of all stations in the data
@@ -80,6 +81,7 @@ class DepthFirstTraject(Traject):
                     # if the current state contains more new connections than the previous current traject with the most connections, it is set to be the traject with the most connections
                     if len(state_new_connections) > len(best_solution_total_connections):
                         best_solution_total_connections, best_solution_stations = self.save_solution(state, state_new_connections, best_solution_total_connections)
+                        self.traject_durations[i] = state[0]['duration']
 
                     # set the duration to be the duration of the current state, so that the determine_available_connections function can check if the time limit is exceeded
                     state_duration = state[0]['duration']
@@ -111,6 +113,7 @@ class DepthFirstTraject(Traject):
         # store trajects in self so that it can be used later
         self.generate_output(trajects)
         self.connections = self.all_trajects_connections
+
 
     def determine_available_connections(self, stations_dict, station, duration):
         """
@@ -196,9 +199,9 @@ class DepthFirstTraject(Traject):
             station_list= []
             station_list = trajects[key]['stations']
             connection_list = convert_station_list_to_connections(station_list)
-
             for i in range(len(connection_list)):
                 connection_list[i].append(0)
+
             traject_list.append(connection_list)
         count = 0
 
@@ -206,3 +209,19 @@ class DepthFirstTraject(Traject):
             count += 1
 
             self.trajects[count] = traject
+
+    def state_duration(self, state):
+        """
+        This method calculates the duration of a state.
+        """
+        state_stations = state[0]['stations']
+        time = 0
+
+        # loop over all the stations in a state to add all the durations of the connections
+        for i in range(len(state_stations)):
+            # the last station in the list does not have a connection so that is why this check is done.
+            if i < len(state_stations) - 1:
+                station1 = state_stations[i]
+                station2 = state_stations[i + 1]
+                time += int(self.stations_dict[station1]['connections'][station2])
+        return time
