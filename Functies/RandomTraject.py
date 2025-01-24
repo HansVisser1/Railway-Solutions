@@ -27,3 +27,22 @@ class RandomTraject(Traject):
 
             # update the total duration of the traject.
             self.duration()
+
+    def add_connection(self):
+        """
+        This method randomly chooses a new connection from the available connections and adds this to the list of connections for the traject.
+        """
+        # check if max time hasn't been exceeded
+        if self.time_condition == False:
+            # choose random station from available stations
+            next_station = random.sample(self.available_connections, 1)[0]
+
+            # a list with the current station, next station and duration of the connection is appended to the connections list.
+            self.connections.append([self.current_station, next_station, self.connections_dict['connections'][next_station]])
+
+            # to add the next station to a list of unique stations, it is checked whether the next station is already in the stations list
+            if next_station not in self.stations:
+                self.stations.append(next_station)
+
+            # set the next station as the current station
+            self.current_station = next_station

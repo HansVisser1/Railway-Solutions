@@ -42,8 +42,8 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
             print(" ")
             print(f"Total Time: {traject.time} minutes")
             print(" ")
-
-
+    else:
+        print(trajects)
 
     return quality_dict
 

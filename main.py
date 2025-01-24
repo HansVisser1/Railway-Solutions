@@ -11,7 +11,7 @@ from Functies.convert_station_list_to_connections import convert_station_list_to
 from Functies.traject_list  import traject_list
 
 # possible types: 'DepthFirst', 'Random', Greedy
-traject_type = 'DepthFirst'
+traject_type = 'Random'
 visualize_condition = False
 
 
