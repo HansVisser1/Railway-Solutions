@@ -72,9 +72,6 @@ def hillclimber(nr_of_trajects, iterations, stations_path, connections_path):
 
             children.append(connections)
 
-
-
-
         child = random.choice(children)
         unique_connections = []
 
@@ -90,7 +87,7 @@ def hillclimber(nr_of_trajects, iterations, stations_path, connections_path):
                unique_connections.append(connection)
                unique_connections.append([connection[1], connection[0], connection[2]])
 
-        new_quality = calculate_score(len(unique_connections) / 2, len(all_trajects_state), total_connections, total_time)
+        new_quality = calculate_score(len(unique_connections) / 2, nr_of_trajects, total_connections, total_time)
 
         delta_quality = new_quality - quality
         if new_quality >= quality:
@@ -100,9 +97,6 @@ def hillclimber(nr_of_trajects, iterations, stations_path, connections_path):
         else:
             starting_state[count].connections = original_state
 
-        all_trajects_state = []
-        for state in starting_state:
-            all_trajects_state.append(state.connections)
         count += 1
 
 

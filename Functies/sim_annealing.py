@@ -26,7 +26,7 @@ def sim_annealing(nr_of_trajects, iterations, stations_path, connections_path):
                 unique_connections.append(connection)
                 unique_connections.append([connection[1], connection[0], connection[2]])
 
-    quality = calculate_score(len(unique_connections) / 2, len(all_trajects_state), traject.total_connections(), total_time)
+    quality = calculate_score(len(unique_connections) / 2, nr_of_trajects, traject.total_connections(), total_time)
 
     for iter in range(iterations):
         # if iter % 100 == 0:
@@ -109,9 +109,7 @@ def sim_annealing(nr_of_trajects, iterations, stations_path, connections_path):
 
 
 
-        all_trajects_state = []
-        for state in starting_state:
-            all_trajects_state.append(state.connections)
+        
         count += 1
 
         if T > 0.000000001:

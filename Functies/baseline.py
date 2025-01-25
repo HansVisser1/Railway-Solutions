@@ -42,7 +42,7 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
 
     elif traject_type == 'HillClimber' or traject_type == 'SimulatedAnnealing':
         count = 1
-        for traject in trajects:
+        for traject in best_trajects:
             print(f"Traject {count}:")
             print(traject)
             print()
