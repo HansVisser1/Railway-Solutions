@@ -5,7 +5,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 
-def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth):
+def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations):
     """
     Run a baseline trajectory generation multiple times and collect quality scores.
     """
@@ -16,11 +16,12 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
         quality_dict[i] = []
 
     for i in range(iterations):
-        nr, trajects, quality = random_multiple_trajects(traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth)
+        nr, trajects, quality = random_multiple_trajects(traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations)
 
         quality_dict[nr].append(quality)
         if i % 100 == 0:
-            print(f"iteration {i}/{iterations}")
+            pass
+        print(f"iteration {i}/{iterations}")
 
         # Update the highest score if this run's score is better
         if quality > highest_score:
@@ -49,7 +50,7 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
     return quality_dict
 
 
-def collect_baselines(iterations, traject_type, num_runs, min_trajects, max_trajects, stations_file, connections_file, DFS_depth):
+def collect_baselines(iterations, traject_type, num_runs, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations):
     """
     Collect the results from multiple baseline runs, interchangable how many.
     And it returns list of dictionaries with results from each baseline run.
@@ -57,7 +58,7 @@ def collect_baselines(iterations, traject_type, num_runs, min_trajects, max_traj
     all_results = []
     for run in range(num_runs):
         quality_dict = baseline(
-            iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth)
+            iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations)
         all_results.append(quality_dict)
 
     return all_results

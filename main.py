@@ -14,15 +14,20 @@ stations = 'Data/StationsHolland.csv'
 connections = 'Data/ConnectiesHolland.csv'
 min_trajects = 1
 max_trajects = 7
-# possible types: 'DepthFirst', 'Random', Greedy
-traject_type = 'DepthFirst'
-visualize_condition = False
+# possible types: 'DepthFirst', 'Random', 'Greedy', 'Hillclimber', 'SimulatedAnnealing'
+traject_type = 'SimulatedAnnealing'
+algorithm_iterations = 2000
+visualize_condition = True
 
 
 # create random number of trajects and return the nr of trajects, trajects objects list and the total cost
-nr, trajects, quality = random_multiple_trajects(traject_type, 1, 7, stations, connections, 15)
+nr, trajects, quality = random_multiple_trajects(traject_type, 1, 7, stations, connections, 15, algorithm_iterations)
 
-traject_list = traject_list(trajects, traject_type)
+if traject_type == 'HillClimber' or traject_type == 'SimulatedAnnealing':
+    traject_list = trajects
+else:
+    traject_list = traject_list(trajects, traject_type)
+
 
 # read the data for the visualization
 station_dict, connection_dict = read_data(stations, connections)
@@ -35,11 +40,11 @@ if visualize_condition == True:
 #Parameters for baseline comparison
 num_runs = 1
 
-iterations = 15000
+iterations = 20
 
 
 # Collect baseline results
-all_results = collect_baselines(iterations, traject_type, num_runs, min_trajects, max_trajects, stations, connections, 15)
+all_results = collect_baselines(iterations, traject_type, num_runs, min_trajects, max_trajects, stations, connections, 15, algorithm_iterations)
 labels = [f"Run {i+1}" for i in range(num_runs)]
 # plot_multiple_baselines(all_results, labels, iterations)
 plot_quality_distribution(all_results, iterations, traject_type)
