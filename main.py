@@ -40,7 +40,7 @@ if visualize_condition == True:
 #Parameters for baseline comparison
 num_runs = 1
 
-iterations = 10
+iterations = 300
 
 
 # Collect baseline results

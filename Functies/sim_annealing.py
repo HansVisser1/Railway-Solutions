@@ -17,9 +17,9 @@ def sim_annealing(nr_of_trajects, iterations, stations_path, connections_path):
 
     all_trajects_state = []
     unique_connections = []
+    total_time = 0
     for state in starting_state:
-        all_trajects_state.append(state.connections)
-        total_time = 0
+        all_trajects_state.append(state.connections)        
         for connection in state.connections:
             total_time += int(connection[2])
             if connection not in unique_connections:
@@ -82,9 +82,9 @@ def sim_annealing(nr_of_trajects, iterations, stations_path, connections_path):
         original_state = copy.deepcopy(starting_state[count].connections)
         starting_state[count].connections = child
         all_trajects_state = []
+        total_time = 0
         for state in starting_state:
           all_trajects_state.append(state.connections)
-          total_time = 0
           for connection in state.connections:
            total_time += int(connection[2])
            if connection not in unique_connections:
@@ -109,7 +109,7 @@ def sim_annealing(nr_of_trajects, iterations, stations_path, connections_path):
 
 
 
-        
+
         count += 1
 
         if T > 0.000000001:
