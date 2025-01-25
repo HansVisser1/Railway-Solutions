@@ -14,10 +14,10 @@ stations = 'Data/StationsHolland.csv'
 connections = 'Data/ConnectiesHolland.csv'
 min_trajects = 1
 max_trajects = 7
-# possible types: 'DepthFirst', 'Random', 'Greedy', 'Hillclimber', 'SimulatedAnnealing'
-traject_type = 'SimulatedAnnealing'
+# possible types: 'DepthFirst', 'Random', 'Greedy', 'HillClimber', 'SimulatedAnnealing'
+traject_type = 'HillClimber'
 algorithm_iterations = 2000
-visualize_condition = True
+visualize_condition = False
 
 
 # create random number of trajects and return the nr of trajects, trajects objects list and the total cost
@@ -40,7 +40,7 @@ if visualize_condition == True:
 #Parameters for baseline comparison
 num_runs = 1
 
-iterations = 100
+iterations = 10
 
 
 # Collect baseline results

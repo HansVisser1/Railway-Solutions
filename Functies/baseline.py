@@ -39,6 +39,14 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
             for step in traject:
                 print(step)
             print()
+
+    elif traject_type == 'HillClimber' or traject_type == 'SimulatedAnnealing':
+        count = 1
+        for traject in trajects:
+            print(f"Traject {count}:")
+            print(traject)
+            print()
+            count += 1
     else:
         for i, traject in enumerate(best_trajects, start=1):
             print(f"Traject {i}:")
@@ -59,7 +67,7 @@ def collect_baselines(iterations, traject_type, num_runs, min_trajects, max_traj
     highest_score = int(-10000)
 
     for run in range(num_runs):
-        quality_dict = baseline(
+        quality_dict, run_highest_score = baseline(
             iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations)
         all_results.append(quality_dict)
         if run_highest_score > highest_score:
