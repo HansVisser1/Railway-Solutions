@@ -19,7 +19,7 @@ def sim_annealing(nr_of_trajects, iterations, stations_path, connections_path):
     unique_connections = []
     total_time = 0
     for state in starting_state:
-        all_trajects_state.append(state.connections)        
+        all_trajects_state.append(state.connections)
         for connection in state.connections:
             total_time += int(connection[2])
             if connection not in unique_connections:
@@ -113,7 +113,7 @@ def sim_annealing(nr_of_trajects, iterations, stations_path, connections_path):
         count += 1
 
         if T > 0.000000001:
-            T *= 0.99
+            T *= 0.999
 
 
     return all_trajects_state, quality
