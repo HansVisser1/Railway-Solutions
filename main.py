@@ -40,13 +40,13 @@ if visualize_condition == True:
 #Parameters for baseline comparison
 num_runs = 1
 
-iterations = 20
+iterations = 100
 
 
 # Collect baseline results
-all_results = collect_baselines(iterations, traject_type, num_runs, min_trajects, max_trajects, stations, connections, 15, algorithm_iterations)
-labels = [f"Run {i+1}" for i in range(num_runs)]
+all_results, highest_score = collect_baselines(iterations, traject_type, num_runs, min_trajects, max_trajects, stations, connections, 15, algorithm_iterations)
+# labels = [f"Run {i+1}" for i in range(num_runs)]
 # plot_multiple_baselines(all_results, labels, iterations)
-plot_quality_distribution(all_results, iterations, traject_type)
+plot_quality_distribution(all_results, iterations, traject_type, highest_score)
 
-quality_dict = baseline(iterations, traject_type, min_trajects, max_trajects, stations, connections, 15)
+# quality_dict = baseline(iterations, traject_type, min_trajects, max_trajects, stations, connections, 15)

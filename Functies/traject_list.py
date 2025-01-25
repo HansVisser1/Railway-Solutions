@@ -17,6 +17,6 @@ def traject_list(trajects, traject_type):
     count = 0
     for traject in traject_list:
         count += 1
-        pprint.pprint(f"Traject {count}: {traject}")
-        print()
+        # pprint.pprint(f"Traject {count}: {traject}")
+        # print()
     return traject_list

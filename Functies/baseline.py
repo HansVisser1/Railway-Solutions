@@ -28,26 +28,26 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
             highest_score = quality
             best_trajects = trajects
 
-    # Printing the highest score and the corresponding trajectories
+    # Print the best result
     print(f"\nThe highest quality score achieved with the {traject_type} algorithm is: {highest_score}")
+    print("Best trajectory solution:")
 
-    if traject_type != 'DepthFirst':
-        #Printing the best trajectory solution in a readable format for the print
-        print("Best trajectory solution:")
-        for i, traject in enumerate(best_trajects, start = 1):
+
+    if traject_type == 'DepthFirst':
+        for i, (key, traject) in enumerate(best_trajects.items(), start=1):
             print(f"Traject {i}:")
-            print(" ")
-            print(f"Stations: {traject.stations}")
-            print(" ")
-            print(f"Connections: {traject.connections}")
-            print(" ")
-            print(f"Total Time: {traject.time} minutes")
-            print(" ")
+            for step in traject:
+                print(step)
+            print()
     else:
-        pass
-        # print(trajects)
+        for i, traject in enumerate(best_trajects, start=1):
+            print(f"Traject {i}:")
+            for step in traject.connections:
+                print(step)
+            print()
 
-    return quality_dict
+    return quality_dict, highest_score
+
 
 
 def collect_baselines(iterations, traject_type, num_runs, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations):
@@ -56,15 +56,21 @@ def collect_baselines(iterations, traject_type, num_runs, min_trajects, max_traj
     And it returns list of dictionaries with results from each baseline run.
     """
     all_results = []
+    highest_score = int(-10000)
+
     for run in range(num_runs):
         quality_dict = baseline(
             iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations)
         all_results.append(quality_dict)
+        if run_highest_score > highest_score:
+            highest_score = run_highest_score
 
-    return all_results
 
 
-def plot_quality_distribution(all_results, iterations, traject_type):
+    return all_results, highest_score
+
+
+def plot_quality_distribution(all_results, iterations, traject_type, highest_score):
     """
     Plot the distribution of quality scores for each trajectory count (1-7).
     Creates separate histograms or KDEs for each trajectory count.
@@ -83,6 +89,11 @@ def plot_quality_distribution(all_results, iterations, traject_type):
 
     # Plot histograms for each trajectory count
     sns.histplot(data=df, x="Quality", hue="Trajectories", multiple="stack", bins=100, legend=True)
+
+    # # Highlight highest score
+    # plt.axvline(x=highest_score, color='red', linestyle='--', label=f'Highest Score: {highest_score}')
+    # plt.legend()
+
 
     plt.xlabel("Quality")
     plt.ylabel("Frequency")
