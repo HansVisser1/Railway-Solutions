@@ -21,12 +21,14 @@ def visualize_area(plt_axis, province, algorithm):
     if province:
         provinces = ["Noord-Holland", "Zuid-Holland"]
         province_geo_data = geo_data[geo_data["name"].isin(provinces)]
-        province_geo_data.plot(ax = plt_axis, edgecolor = 'grey', facecolor = 'none', zorder = 0)
+        province_geo_data.boundary.plot(ax = plt_axis, edgecolor = 'grey', alpha = 1, zorder = 0)
+        province_geo_data.plot(ax = plt_axis, facecolor = 'yellow', alpha = 0.1, zorder = 0)
         plt_axis.set_title(f'Stations Noord- and Zuid-Holland ({algorithm})')
 
     # plotting the country borders
     else:
-        geo_data.plot(ax = plt_axis, edgecolor = 'grey', facecolor = 'none', zorder = 0)
+        geo_data.boundary.plot(ax = plt_axis, edgecolor = 'grey', alpha = 1, zorder = 0)
+        geo_data.plot(ax = plt_axis, facecolor = 'yellow', alpha = 0.1, zorder = 0)
         plt_axis.set_title(f'Stations Netherlands ({algorithm})')
 
 def visualize_stations(plt_axis, station_dict, province):
@@ -62,18 +64,24 @@ def visualize_stations(plt_axis, station_dict, province):
                     'Amsterdam Sloterdijk': 'left', 'Heemstede-Aerdenhout': 'right'}
     else:
         # vertical and horizontal name placement dictionary for whole country
-        va_dict = {'Leeuwarden': 'bottom', 'Groningen': 'bottom', 'Heerenveen': 'top'}
-        ha_dict = {'Leeuwarden': 'right', 'Groningen': 'left', 'Heerenveen': 'right'}
+        va_dict = {'Leeuwarden': 'bottom', 'Groningen': 'bottom', 'Heerenveen': 'top', 'Zwolle': 'bottom',
+                    'Vlissingen': 'top', 'Maastricht': 'top', 'Venlo': 'bottom', 's-Hertogenbosch': 'center',
+                    'Den Helder': 'top', 'Den Haag Centraal': 'bottom', 'Enschede': 'top', 'Rotterdam Centraal': 'top',
+                    'Roosendaal': 'top'}
+        ha_dict = {'Leeuwarden': 'right', 'Groningen': 'left', 'Heerenveen': 'right', 'Zwolle': 'right',
+                    'Vlissingen': 'right','Maastricht': 'right', 'Venlo': 'left', 's-Hertogenbosch': 'left',
+                    'Den Helder': 'right', 'Den Haag Centraal': 'right', 'Enschede': 'left', 'Rotterdam Centraal': 'right',
+                    'Roosendaal': 'left'}
 
     # naming the stations at their coordinates using name list
     for name, x, y in zip(station_names, x_coordinates, y_coordinates):
         if name in va_dict or name in ha_dict:
-            plt_axis.text(x, y, name, fontsize = 9, ha = ha_dict[name], va = va_dict[name], color = 'black')
+            plt_axis.text(x, y, name, fontsize = 9, ha = ha_dict[name], va = va_dict[name], color = 'black', weight = 'bold')
 
         elif name not in va_dict and not province:
             pass
         else:
-            plt_axis.text(x, y, name, fontsize = 9, ha = 'right', va = 'bottom', color = 'black')
+            plt_axis.text(x, y, name, fontsize = 9, ha = 'right', va = 'bottom', color = 'black', weight = 'bold')
 
 def visualize_connections(plt_axis, station_dictionary):
     """
@@ -292,33 +300,9 @@ if __name__ == "__main__":
     dict_stations_holland, dict_connections_holland = read_data('../StationsHolland.csv', '../ConnectiesHolland.csv')
     dict_stations_nl, dict_connections_nl = read_data('../StationsNationaal.csv', '../ConnectiesNationaal.csv')
 
-    # calling function of complete visual product
-    # visualize_all_trajects(dict_stations_holland, traject_long, province = True)
+    # # calling function of complete visual product
+    visualize_all_trajects(dict_stations_holland, traject_long, province = True)
     # visualize_all_trajects(dict_stations_nl, traject_long, province = False)
-
-    count_connection_1 = set()
-    for connection in dict_connections_holland:
-        # print(connection.values())
-        if connection.values() not in count_connection_1:
-            count_connection_1.add(tuple(connection.values()))
-    # print(count_connection_1)
-
-    total_time_1 = 0
-    for connection in count_connection_1:
-        total_time_1 += float(connection[2])
-    print(f"Total time for Noord- and Zuid-Holland is {total_time_1}")
-
-    count_connection_2 = set()
-    for connection in dict_connections_nl:
-        # print(connection.values())
-        if connection.values() not in count_connection_2:
-            count_connection_2.add(tuple(connection.values()))
-    # print(count_connection_2)
-
-    total_time_2 = 0
-    for connection in count_connection_2:
-        total_time_2 += float(connection[2])
-    print(f"Total time for Netherlands is {total_time_2}")
 
     # exit () prevents last block from executing
     exit()
@@ -329,3 +313,24 @@ if __name__ == "__main__":
                             file_name = 'visualisation_random.png', algorithm = 'Random')
     visualize_all_trajects(dict_stations_holland, traject_greedy, province = True, save_figure = True,
                             file_name = 'visualisation_greedy.png', algorithm = 'Greedy')
+
+    # code block for counting connections in dictionary
+    count_connection_1 = set()
+    for connection in dict_connections_holland:
+        if connection.values() not in count_connection_1:
+            count_connection_1.add(tuple(connection.values()))
+
+    total_time_1 = 0
+    for connection in count_connection_1:
+        total_time_1 += float(connection[2])
+    print(f"Total time for Noord- and Zuid-Holland is {total_time_1}")
+
+    count_connection_2 = set()
+    for connection in dict_connections_nl:
+        if connection.values() not in count_connection_2:
+            count_connection_2.add(tuple(connection.values()))
+
+    total_time_2 = 0
+    for connection in count_connection_2:
+        total_time_2 += float(connection[2])
+    print(f"Total time for Netherlands is {total_time_2}")
