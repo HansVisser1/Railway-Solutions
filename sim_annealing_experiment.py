@@ -1,10 +1,11 @@
-from sim_annealing import sim_annealing
+from Functies.sim_annealing import sim_annealing
 import random
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import csv
 import numpy as np
+import time
 
 stations = 'Data/StationsHolland.csv'
 connections = 'Data/ConnectiesHolland.csv'
@@ -32,16 +33,28 @@ def sim_annealing_temperature_test(iterations, min_temp, max_temp, step_size, mi
 
 
         count = 0
+        start = time.perf_counter()
         for temp in temps:
             print(f"step {count}/{len(temps)*len(cooling_rates)}")
             for cooling_rate in cooling_rates:
                 for i in range(iterations):
-                    print(f"step {count}/{len(temps)*len(cooling_rates)}: {(i/iterations)*100}%")
+
                     nr_of_trajects = random.randint(min_trajects, max_trajects)
                     state, quality = sim_annealing(nr_of_trajects, algorithm_iterations, stations_path, connections_path, temp)
                     writer.writerow([nr_of_trajects, temp, cooling_rate,  quality])
+                    end = time.perf_counter()
+
+                    if i % 50 == 0:
+                        print(f"step {count}/{len(temps)*len(cooling_rates)}: {(i/iterations)*100}%")
+                        if (end - start) < 60:
+                            print(f"The experiment has been running for {int(end - start)} seconds")
+                        elif 120 > (end - start) > 60:
+                            print(f"The experiment has been running for {int((end - start) / 60)} minute and {int((end - start) % 60)} seconds")
+                        else:
+                            print(f"The experiment has been running for {int((end - start) / 60)} minutes and {int((end - start) % 60)} seconds")
 
                 count += 1
+
 
 
 def plot_sim_annealing_temp_test(file='simulated_annealing_temp_test.csv'):
@@ -63,10 +76,11 @@ def plot_sim_annealing_temp_test(file='simulated_annealing_temp_test.csv'):
         annot=False,  # Set to True to display values in the cells
         cbar_kws={'label': 'Quality'},  # Label for the color bar
     )
+    plt.yticks(rotation=0)
     plt.title('Heatmap of Quality by Temperature and Cooling Rate')
     plt.xlabel('Temperature')
     plt.ylabel('Cooling Rate')
-    plt.show()
+
 
      # saving figure as png image
     plt.savefig('Simulated_Annealing_experiment.png', bbox_inches = 'tight')
@@ -75,5 +89,5 @@ def plot_sim_annealing_temp_test(file='simulated_annealing_temp_test.csv'):
 
 # arguments for sim_annealing_temperature_test function:
 # (iterations, min_temp, max_temp, step_size, min_cooling, max_cooling, cooling_step_size, algorithm_iterations, stations_path, connections_path, min_trajects, max_trajects)
-sim_annealing_temperature_test(50, 0, 500, 50, 0.985, 0.999, 0.001, 2000, stations, connections, 1, 7)
+sim_annealing_temperature_test(1000, 0, 650, 50, 0.980, 0.999, 0.001, 2000, stations, connections, 1, 7)
 plot_sim_annealing_temp_test()
