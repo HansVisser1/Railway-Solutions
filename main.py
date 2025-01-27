@@ -17,8 +17,8 @@ min_trajects = 1
 max_trajects = 7
 time_limit = 120
 # possible types: 'DepthFirst', 'Random', 'Greedy', 'HillClimber', 'SimulatedAnnealing'
-traject_type = 'SimulatedAnnealing'
-if traject_type not in ['DepthFirst', 'SimulatedAnnealing', 'Greedy', 'Random', 'HillClimber']:
+traject_type = 'Random'
+while traject_type not in ['DepthFirst', 'SimulatedAnnealing', 'Greedy', 'Random', 'HillClimber']:
     print(f"ERROR: Spelling of traject_type is incorrect, it should be one of these: {['DepthFirst', 'SimulatedAnnealing', 'Greedy', 'Random', 'HillClimber']}")
     break
 algorithm_iterations = 2000
