@@ -4,7 +4,7 @@ import random
 import copy
 import math
 
-def sim_annealing(nr_of_trajects, iterations, stations_path, connections_path, temp=100):
+def sim_annealing(nr_of_trajects, iterations, stations_path, connections_path, temp=120, cooling_rate=0.999):
     """
     This function randomly adds a connection to an end of the trajects, and if this improves the quality,
     the new state is saved. Also there is a temperature, which will introduce a probability to accept
@@ -145,6 +145,6 @@ def sim_annealing(nr_of_trajects, iterations, stations_path, connections_path, t
 
         # cool the temperature down
         if T > 0.000000001:
-            T *= 0.999
+            T *= cooling_rate
 
     return all_trajects_state, quality

@@ -3,6 +3,8 @@ import pandas as pd
 import seaborn as sns
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import time
+
 
 
 def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations):
@@ -15,6 +17,7 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
     for i in range(min_trajects, max_trajects + 1):
         quality_dict[i] = []
 
+    start = time.perf_counter()
     for i in range(iterations):
         nr, trajects, quality = random_multiple_trajects(traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations)
 
@@ -27,6 +30,16 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
         if quality > highest_score:
             highest_score = quality
             best_trajects = trajects
+
+        end = time.perf_counter()
+        if traject_type == 'DepthFirst' or traject_type == 'SimulatedAnnealing':
+            if (end - start) < 60:
+                print(f"The experiment has been running for {int(end - start)} seconds")
+            elif 120 > (end - start) > 60:
+                print(f"The experiment has been running for {int((end - start) / 60)} minute and {int((end - start) % 60)} seconds")
+            else:
+                print(f"The experiment has been running for {int((end - start) / 60)} minutes and {int((end - start) % 60)} seconds")
+    
 
     # Print the best result
     print(f"\nThe highest quality score achieved with the {traject_type} algorithm is: {highest_score}")

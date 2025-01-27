@@ -15,8 +15,8 @@ connections = 'Data/ConnectiesHolland.csv'
 min_trajects = 1
 max_trajects = 7
 # possible types: 'DepthFirst', 'Random', 'Greedy', 'HillClimber', 'SimulatedAnnealing'
-traject_type = 'HillClimber'
-algorithm_iterations = 1500
+traject_type = 'SimulatedAnnealing'
+algorithm_iterations = 2000
 visualize_condition = False
 
 
@@ -40,7 +40,7 @@ if visualize_condition == True:
 #Parameters for baseline comparison
 num_runs = 1
 
-iterations = 100
+iterations = 1000
 
 
 # Collect baseline results
