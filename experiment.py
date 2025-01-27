@@ -2,6 +2,7 @@ import time
 import matplotlib.pyplot as plt
 from Functies.baseline import baseline
 from Functies.read_files import read_data
+import csv
 
 # Paths for station and connection data
 stations_file = 'Data/StationsNationaal.csv'
@@ -51,6 +52,7 @@ for algorithm in algorithms:
                 DFS_depth=None,
                 algorithm_iterations=10000,
                 time_limit=time_limit)
+
         elif algorithm == 'HillClimber':
             quality_dict, highest_score, best_trajects = baseline(
                 iterations=1,
@@ -101,6 +103,11 @@ for algorithm in algorithms:
         iteration += 1
         if iteration >= iterations:
             break
+
+        with open(f"Experiment_{algorithm}.csv", 'w') as f:
+            # make writer and make row with the traject type
+            writer = csv.writer(f)
+            writer.writerow([elapsed_time, highest_quality, iteration])
 
     # Store results for the algorithm
     results[algorithm] = {'time_intervals': time_intervals, 'quality_over_time': quality_over_time}
