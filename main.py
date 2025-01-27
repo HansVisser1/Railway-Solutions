@@ -16,14 +16,21 @@ connections = 'Data/ConnectiesHolland.csv'
 min_trajects = 1
 max_trajects = 7
 time_limit = 120
+visualize_condition = True
+
 # possible types: 'DepthFirst', 'Random', 'Greedy', 'HillClimber', 'SimulatedAnnealing'
 traject_type = 'Random'
+
+# required for HillClimber and SimulatedAnnealing
+algorithm_iterations = 2000
+
+# required for depthfirst
+depthfirst_depth = 15
+
+
 while traject_type not in ['DepthFirst', 'SimulatedAnnealing', 'Greedy', 'Random', 'HillClimber']:
     print(f"ERROR: Spelling of traject_type is incorrect, it should be one of these: {['DepthFirst', 'SimulatedAnnealing', 'Greedy', 'Random', 'HillClimber']}")
     break
-algorithm_iterations = 2000
-visualize_condition = True
-depthfirst_depth = 15
 
 #
 # # create random number of trajects and return the nr of trajects, trajects objects list and the total cost
