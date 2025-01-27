@@ -111,6 +111,19 @@ def plot_quality_distribution(all_results, iterations, traject_type, highest_sco
     df = pd.DataFrame(qualities, columns=["Trajectories", "Quality"])
 
     # Plot histograms for each trajectory count
+    sns.histplot(data=df, x="Quality", hue="Trajectories", multiple="stack", bins=100, legend=True)
+
+    # # Highlight highest score
+    # plt.axvline(x=highest_score, color='red', linestyle='--', label=f'Highest Score: {highest_score}')
+    # plt.legend()
+
+
+    plt.xlabel("Quality")
+    plt.ylabel("Frequency")
+    plt.title(f"Distribution of Quality Scores Across {iterations} Iterations, with the {traject_type} algorithm.")
+    plt.grid(True)
+    plt.show()
+
     sns.histplot(data=df, x="Quality", hue="Trajectories", multiple="stack", bins=100, legend=True, palette='coolwarm')
 
     # # Highlight highest score
