@@ -15,8 +15,12 @@ stations = 'Data/StationsHolland.csv'
 connections = 'Data/ConnectiesHolland.csv'
 min_trajects = 1
 max_trajects = 7
+time_limit = 120
 # possible types: 'DepthFirst', 'Random', 'Greedy', 'HillClimber', 'SimulatedAnnealing'
-traject_type = 'HillClimber'
+traject_type = 'SimulatedAnnealing'
+if traject_type not in ['DepthFirst', 'SimulatedAnnealing', 'Greedy', 'Random', 'HillClimber']:
+    print(f"ERROR: Spelling of traject_type is incorrect, it should be one of these: {['DepthFirst', 'SimulatedAnnealing', 'Greedy', 'Random', 'HillClimber']}")
+    break
 algorithm_iterations = 2000
 visualize_condition = True
 depthfirst_depth = 15
@@ -41,7 +45,7 @@ iterations = 20
 
 
 # Collect baseline results
-all_results, highest_score, best_trajects = collect_baselines(iterations, traject_type, num_runs, min_trajects, max_trajects, stations, connections, depthfirst_depth, algorithm_iterations)
+all_results, highest_score, best_trajects = collect_baselines(iterations, traject_type, num_runs, min_trajects, max_trajects, stations, connections, depthfirst_depth, algorithm_iterations, time_limit)
 # labels = [f"Run {i+1}" for i in range(num_runs)]
 
 # plot_multiple_baselines(all_results, labels, iterations)

@@ -7,9 +7,11 @@ import csv
 import numpy as np
 import time
 
+time_limit = 120
+
 stations = 'Data/StationsHolland.csv'
 connections = 'Data/ConnectiesHolland.csv'
-def sim_annealing_temperature_test(iterations, min_temp, max_temp, step_size, min_cooling, max_cooling, cooling_step_size, algorithm_iterations, stations_path, connections_path, min_trajects, max_trajects):
+def sim_annealing_temperature_test(iterations, min_temp, max_temp, step_size, min_cooling, max_cooling, cooling_step_size, algorithm_iterations, stations_path, connections_path, min_trajects, max_trajects, time_limit):
 
     temps = []
     temperature= min_temp
@@ -40,7 +42,7 @@ def sim_annealing_temperature_test(iterations, min_temp, max_temp, step_size, mi
                 for i in range(iterations):
 
                     nr_of_trajects = random.randint(min_trajects, max_trajects)
-                    state, quality = sim_annealing(nr_of_trajects, algorithm_iterations, stations_path, connections_path, temp)
+                    state, quality = sim_annealing(nr_of_trajects, algorithm_iterations, stations_path, connections_path, temp, time_limit)
                     writer.writerow([nr_of_trajects, temp, cooling_rate,  quality])
                     end = time.perf_counter()
 
@@ -89,5 +91,5 @@ def plot_sim_annealing_temp_test(file='simulated_annealing_temp_test.csv'):
 
 # arguments for sim_annealing_temperature_test function:
 # (iterations, min_temp, max_temp, step_size, min_cooling, max_cooling, cooling_step_size, algorithm_iterations, stations_path, connections_path, min_trajects, max_trajects)
-sim_annealing_temperature_test(1000, 0, 650, 50, 0.980, 0.999, 0.001, 2000, stations, connections, 1, 7)
+sim_annealing_temperature_test(1000, 0, 650, 50, 0.980, 0.999, 0.001, 2000, stations, connections, 1, 7, time_limit)
 plot_sim_annealing_temp_test()

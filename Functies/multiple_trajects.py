@@ -8,7 +8,7 @@ from Functies.calculate_score import calculate_score
 from Functies.DepthFirstTraject import DepthFirstTraject
 
 
-def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_depth, algorithm_iterations):
+def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_depth, algorithm_iterations, time_limit):
     """
     this function multiple trajects and puts them in a list
     """
@@ -17,6 +17,7 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
     total_time = 0
     if traject_type == 'DepthFirst':
         traject = DepthFirstTraject()
+        traject.max_time = time_limit
         traject.depth_first_search(DFS_depth, nr, stations_path, connections_path)
         trajects = traject.trajects
         connection_nr = len(traject.all_trajects_connections) / 2
@@ -29,15 +30,16 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
         new_nr = nr
         trajects = []
         if traject_type == 'HillClimber':
-            trajects, quality = hillclimber(nr, algorithm_iterations, stations_path, connections_path)
+            trajects, quality = hillclimber(nr, algorithm_iterations, stations_path, connections_path, time_limit)
         if traject_type == 'SimulatedAnnealing':
-            trajects, quality = sim_annealing(nr, algorithm_iterations, stations_path, connections_path)
+            trajects, quality = sim_annealing(nr, algorithm_iterations, stations_path, connections_path, time_limit)
         elif traject_type == 'Random' or traject_type == 'Greedy':
             for i in range(nr):
                 if traject_type == 'Random':
                     traject = RandomTraject()
                 if traject_type == 'Greedy':
                     traject = GreedyTraject()
+                traject.max_time = time_limit
                 traject.run(stations_path, connections_path)
                 trajects.append(traject)
                 total_time += traject.time

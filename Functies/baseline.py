@@ -8,7 +8,7 @@ import time
 
 
 
-def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations):
+def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations, time_limit):
     """
     Run a baseline trajectory generation multiple times and collect quality scores.
     """
@@ -20,7 +20,7 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
 
     start = time.perf_counter()
     for i in range(iterations):
-        nr, trajects, quality = random_multiple_trajects(traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations)
+        nr, trajects, quality = random_multiple_trajects(traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations, time_limit)
 
         quality_dict[nr].append(quality)
         if i % 100 == 0:
@@ -72,7 +72,7 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
 
 
 
-def collect_baselines(iterations, traject_type, num_runs, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations):
+def collect_baselines(iterations, traject_type, num_runs, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations, time_limit):
     """
     Collect the results from multiple baseline runs, interchangable how many.
     And it returns list of dictionaries with results from each baseline run.
@@ -82,7 +82,7 @@ def collect_baselines(iterations, traject_type, num_runs, min_trajects, max_traj
 
     for run in range(num_runs):
         quality_dict, run_highest_score, best_trajects = baseline(
-            iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations)
+            iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations, time_limit)
         all_results.append(quality_dict)
         if run_highest_score > highest_score:
             highest_score = run_highest_score
