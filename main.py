@@ -27,19 +27,11 @@ algorithm_iterations = 2000
 # required for depthfirst
 depthfirst_depth = 15
 
-
+# check if input is correct
 while traject_type not in ['DepthFirst', 'SimulatedAnnealing', 'Greedy', 'Random', 'HillClimber']:
     print(f"ERROR: Spelling of traject_type is incorrect, it should be one of these: {['DepthFirst', 'SimulatedAnnealing', 'Greedy', 'Random', 'HillClimber']}")
     break
 
-#
-# # create random number of trajects and return the nr of trajects, trajects objects list and the total cost
-# nr, trajects, quality = random_multiple_trajects(traject_type, 1, 7, stations, connections, 15, algorithm_iterations)
-#
-# if traject_type == 'HillClimber' or traject_type == 'SimulatedAnnealing':
-#     traject_list = trajects
-# else:
-#     traject_list = traject_list(trajects, traject_type)
 
 # read the data for the visualization
 station_dict, connection_dict = read_data(stations, connections)
