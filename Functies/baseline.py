@@ -25,48 +25,50 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
         quality_dict[nr].append(quality)
         if i % 100 == 0:
             pass
-        print(f"iteration {i}/{iterations}")
+        # print(f"iteration {i}/{iterations}")
 
         # Update the highest score if this run's score is better
         if quality > highest_score:
             highest_score = quality
             best_trajects = trajects
 
-        end = time.perf_counter()
-        if traject_type == 'DepthFirst' or traject_type == 'SimulatedAnnealing':
-            if (end - start) < 60:
-                print(f"The experiment has been running for {int(end - start)} seconds")
-            elif 120 > (end - start) > 60:
-                print(f"The experiment has been running for {int((end - start) / 60)} minute and {int((end - start) % 60)} seconds")
-            else:
-                print(f"The experiment has been running for {int((end - start) / 60)} minutes and {int((end - start) % 60)} seconds")
+        # end = time.perf_counter()
+        # if traject_type == 'DepthFirst' or traject_type == 'SimulatedAnnealing':
+        #     if (end - start) < 60:
+        #         print(f"The experiment has been running for {int(end - start)} seconds")
+        #     elif 120 > (end - start) > 60:
+        #         print(f"The experiment has been running for {int((end - start) / 60)} minute and {int((end - start) % 60)} seconds")
+        #     else:
+        #         print(f"The experiment has been running for {int((end - start) / 60)} minutes and {int((end - start) % 60)} seconds")
 
 
-    # Print the best result
-    print(f"\nThe highest quality score achieved with the {traject_type} algorithm is: {highest_score}")
-    print("Best trajectory solution:")
+    # # Print the best result
+    # print(f"\nThe highest quality score achieved with the {traject_type} algorithm is: {highest_score}")
+    # print("Best trajectory solution:")
 
 
     if traject_type == 'DepthFirst':
         for i, (key, traject) in enumerate(best_trajects.items(), start=1):
-            print(f"Traject {i}:")
+            # print(f"Traject {i}:")
             for step in traject:
-                print(step)
-            print()
+                pass
+                # print(step)
+            # print()
 
     elif traject_type == 'HillClimber' or traject_type == 'SimulatedAnnealing':
         count = 1
         for traject in best_trajects:
-            print(f"Traject {count}:")
-            print(traject)
-            print()
+            # print(f"Traject {count}:")
+            # print(traject)
+            # print()
             count += 1
     else:
         for i, traject in enumerate(best_trajects, start=1):
-            print(f"Traject {i}:")
+            # print(f"Traject {i}:")
             for step in traject.connections:
-                print(step)
-            print()
+                pass
+            #     print(step)
+            # print()
 
     return quality_dict, highest_score, best_trajects
 
