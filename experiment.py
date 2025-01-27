@@ -39,74 +39,76 @@ for algorithm in algorithms:
     elapsed_time = 0
 
     iteration = 0
-    while elapsed_time < max_time:
-        # Run one iteration of the algorithm
-        if algorithm == 'SimulatedAnnealing':
-            quality_dict, highest_score, best_trajects = baseline(
-                iterations=1,
-                traject_type=algorithm,
-                min_trajects=min_trajects,
-                max_trajects=max_trajects,
-                stations_file=stations_file,
-                connections_file=connections_file,
-                DFS_depth=None,
-                algorithm_iterations=10000,
-                time_limit=time_limit)
+    with open(f"Experiment_{algorithm}.csv", 'w') as f:
 
-        elif algorithm == 'HillClimber':
-            quality_dict, highest_score, best_trajects = baseline(
-                iterations=1,
-                traject_type=algorithm,
-                min_trajects=min_trajects,
-                max_trajects=max_trajects,
-                stations_file=stations_file,
-                connections_file=connections_file,
-                DFS_depth=None,
-                algorithm_iterations=10000,
-                time_limit=time_limit)
-        elif algorithm == 'DepthFirst':
-            quality_dict, highest_score, best_trajects = baseline(
-                iterations=1,
-                traject_type=algorithm,
-                min_trajects=min_trajects,
-                max_trajects=max_trajects,
-                stations_file=stations_file,
-                connections_file=connections_file,
-                DFS_depth=22,
-                algorithm_iterations=None,
-                time_limit=time_limit)
-        else:
-            quality_dict, highest_score, best_trajects = baseline(
-                iterations=1,
-                traject_type=algorithm,
-                min_trajects=min_trajects,
-                max_trajects=max_trajects,
-                stations_file=stations_file,
-                connections_file=connections_file,
-                DFS_depth=None,
-                algorithm_iterations=None,
-                time_limit=time_limit)
+        writer = csv.writer(f)
+        writer.writerow(['elapsed_time', 'highest_quality', 'iteration'])
 
-        # Update the highest quality if the current score is better
-        if highest_score > highest_quality:
-            highest_quality = highest_score
+        while elapsed_time < max_time:
+            # Run one iteration of the algorithm
+            if algorithm == 'SimulatedAnnealing':
+                quality_dict, highest_score, best_trajects = baseline(
+                    iterations=1,
+                    traject_type=algorithm,
+                    min_trajects=min_trajects,
+                    max_trajects=max_trajects,
+                    stations_file=stations_file,
+                    connections_file=connections_file,
+                    DFS_depth=None,
+                    algorithm_iterations=10000,
+                    time_limit=time_limit)
 
-        # Track elapsed time
-        elapsed_time = int(time.time() - start_time)
+            elif algorithm == 'HillClimber':
+                quality_dict, highest_score, best_trajects = baseline(
+                    iterations=1,
+                    traject_type=algorithm,
+                    min_trajects=min_trajects,
+                    max_trajects=max_trajects,
+                    stations_file=stations_file,
+                    connections_file=connections_file,
+                    DFS_depth=None,
+                    algorithm_iterations=10000,
+                    time_limit=time_limit)
+            elif algorithm == 'DepthFirst':
+                quality_dict, highest_score, best_trajects = baseline(
+                    iterations=1,
+                    traject_type=algorithm,
+                    min_trajects=min_trajects,
+                    max_trajects=max_trajects,
+                    stations_file=stations_file,
+                    connections_file=connections_file,
+                    DFS_depth=22,
+                    algorithm_iterations=None,
+                    time_limit=time_limit)
+            else:
+                quality_dict, highest_score, best_trajects = baseline(
+                    iterations=1,
+                    traject_type=algorithm,
+                    min_trajects=min_trajects,
+                    max_trajects=max_trajects,
+                    stations_file=stations_file,
+                    connections_file=connections_file,
+                    DFS_depth=None,
+                    algorithm_iterations=None,
+                    time_limit=time_limit)
 
-        # Record data at every second
-        if len(time_intervals) == 0 or elapsed_time > time_intervals[-1]:
-            time_intervals.append(elapsed_time)
-            quality_over_time.append(highest_quality)
+            # Update the highest quality if the current score is better
+            if highest_score > highest_quality:
+                highest_quality = highest_score
 
-        # Increment iteration count
-        iteration += 1
-        if iteration >= iterations:
-            break
+            # Track elapsed time
+            elapsed_time = int(time.time() - start_time)
 
-        with open(f"Experiment_{algorithm}.csv", 'w') as f:
-            # make writer and make row with the traject type
-            writer = csv.writer(f)
+            # Record data at every second
+            if len(time_intervals) == 0 or elapsed_time > time_intervals[-1]:
+                time_intervals.append(elapsed_time)
+                quality_over_time.append(highest_quality)
+
+            # Increment iteration count
+            iteration += 1
+            if iteration >= iterations:
+                break
+
             writer.writerow([elapsed_time, highest_quality, iteration])
 
     # Store results for the algorithm
