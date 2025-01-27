@@ -1,4 +1,5 @@
 from Functies.random_multiple_trajects import random_multiple_trajects
+from Functies.highest_score_convert import highest_score_convert
 import pandas as pd
 import seaborn as sns
 import matplotlib as mpl
@@ -39,7 +40,7 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
                 print(f"The experiment has been running for {int((end - start) / 60)} minute and {int((end - start) % 60)} seconds")
             else:
                 print(f"The experiment has been running for {int((end - start) / 60)} minutes and {int((end - start) % 60)} seconds")
-    
+
 
     # Print the best result
     print(f"\nThe highest quality score achieved with the {traject_type} algorithm is: {highest_score}")
@@ -67,7 +68,7 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
                 print(step)
             print()
 
-    return quality_dict, highest_score
+    return quality_dict, highest_score, best_trajects
 
 
 
@@ -80,15 +81,16 @@ def collect_baselines(iterations, traject_type, num_runs, min_trajects, max_traj
     highest_score = int(-10000)
 
     for run in range(num_runs):
-        quality_dict, run_highest_score = baseline(
+        quality_dict, run_highest_score, best_trajects = baseline(
             iterations, traject_type, min_trajects, max_trajects, stations_file, connections_file, DFS_depth, algorithm_iterations)
         all_results.append(quality_dict)
         if run_highest_score > highest_score:
             highest_score = run_highest_score
 
+    best_result = highest_score_convert(best_trajects, traject_type)
 
 
-    return all_results, highest_score
+    return all_results, highest_score, best_result
 
 
 def plot_quality_distribution(all_results, iterations, traject_type, highest_score):
@@ -109,7 +111,7 @@ def plot_quality_distribution(all_results, iterations, traject_type, highest_sco
     df = pd.DataFrame(qualities, columns=["Trajectories", "Quality"])
 
     # Plot histograms for each trajectory count
-    sns.histplot(data=df, x="Quality", hue="Trajectories", multiple="stack", bins=100, legend=True)
+    sns.histplot(data=df, x="Quality", hue="Trajectories", multiple="stack", bins=100, legend=True, palette='coolwarm')
 
     # # Highlight highest score
     # plt.axvline(x=highest_score, color='red', linestyle='--', label=f'Highest Score: {highest_score}')
