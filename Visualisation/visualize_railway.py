@@ -76,12 +76,15 @@ def visualize_stations(plt_axis, station_dict, province):
     # naming the stations at their coordinates using name list
     for name, x, y in zip(station_names, x_coordinates, y_coordinates):
         if name in va_dict or name in ha_dict:
-            plt_axis.text(x, y, name, fontsize = 9, ha = ha_dict[name], va = va_dict[name], color = 'black', weight = 'bold')
+            if not province:
+                plt_axis.text(x, y, name, fontsize = 9, ha = ha_dict[name], va = va_dict[name], color = 'black', weight = 'bold')
+            else:
+                plt_axis.text(x, y, name, fontsize = 9, ha = ha_dict[name], va = va_dict[name], color = 'black')
 
         elif name not in va_dict and not province:
             pass
         else:
-            plt_axis.text(x, y, name, fontsize = 9, ha = 'right', va = 'bottom', color = 'black', weight = 'bold')
+            plt_axis.text(x, y, name, fontsize = 9, ha = 'right', va = 'bottom', color = 'black')
 
 def visualize_connections(plt_axis, station_dictionary):
     """
@@ -130,7 +133,9 @@ def visualize_traject(plt_axis, station_dictionary, traject_list):
     """
     # creating list of different colours for the trajects to be plotted in
     # TODO ADD ADDITIONAL COLOURS FOR 20 TRAJECTS LATER ON
-    traject_colours = ['gold', 'red', 'darkorange', 'lime', 'magenta', 'cyan', 'silver']
+    traject_colours = ['gold', 'red', 'darkorange', 'lime', 'magenta', 'cyan', 'silver', 'dodgerblue', 'yellowgreen',
+                        'pink', 'mediumorchid', 'lightcoral', 'saddlebrown', 'deepskyblue',  'deeppink',
+                        'olive', 'peru', 'mistyrose', 'mediumaquamarine',  'lightsteelblue']
 
     # looping through the list of trajects and connections therein
     for traject_number, traject in enumerate(traject_list):
@@ -152,13 +157,15 @@ def visualize_traject(plt_axis, station_dictionary, traject_list):
                     label = f'traject {traject_number + 1}', linestyle = '--', zorder = 3)
                 plt_axis.legend(loc = 'upper left')
                 plt.draw()
-                plt.pause(0.25)
+                # plt.pause(0.25)
+                plt.pause(0.10)
             else:
                 plt_axis.plot(x_coordinates, y_coordinates, color = traject_colours[traject_number],
                     linestyle = '--', zorder = 3)
                 plt_axis.legend(loc = 'upper left')
                 plt.draw()
-                plt.pause(0.25)
+                # plt.pause(0.25)
+                plt.pause(0.10)
 
 
 def visualize_all_trajects(dict_stations, traject_list, file_name = None, province = True, save_figure = False, algorithm = 'Test'):
@@ -296,13 +303,138 @@ if __name__ == "__main__":
         ['Den Haag Centraal', 'Delft', 13], ['Delft', 'Schiedam Centrum', 7], ['Schiedam Centrum', 'Rotterdam Centraal', 5],
         ['Rotterdam Centraal', 'Rotterdam Alexander', 8], ['Rotterdam Alexander', 'Gouda', 10], ['Gouda', 'Den Haag Centraal', 18]]]
 
+    traject_best_result = [[
+        ['Alkmaar', 'Castricum', 0],
+        ['Castricum', 'Zaandam', 0],
+        ['Zaandam', 'Amsterdam Sloterdijk', 0],
+        ['Amsterdam Sloterdijk', 'Amsterdam Centraal', 0],
+        ['Amsterdam Centraal', 'Amsterdam Amstel', 0],
+        ['Amsterdam Amstel', 'Amsterdam Zuid', 0],
+        ['Amsterdam Zuid', 'Schiphol Airport', 0],
+        ['Schiphol Airport', 'Leiden Centraal', 0],
+        ['Leiden Centraal', 'Den Haag Laan v NOI', 0],
+        ['Den Haag Laan v NOI', 'Delft', 0],
+        ['Delft', 'Schiedam Centrum', 0],
+        ['Schiedam Centrum', 'Rotterdam Centraal', 0],
+        ['Rotterdam Centraal', 'Rotterdam Alexander', 0],
+        ['Rotterdam Alexander', 'Rotterdam Blaak', 0],
+        ['Rotterdam Blaak', 'Schiedam Centrum', 0],
+        ['Schiedam Centrum', 'Rotterdam Centraal', 0],
+        ['Rotterdam Centraal', 'Rotterdam Alexander', 0],
+        ['Rotterdam Alexander', 'Rotterdam Blaak', 0],
+        ['Rotterdam Blaak', 'Schiedam Centrum', 0],
+        ['Schiedam Centrum', 'Delft', 0],
+        ['Delft', 'Schiedam Centrum', 0]],[
+        ['Sittard', 'Roermond', 0],
+        ['Roermond', 'Weert', 0],
+        ['Weert', 'Eindhoven', 0],
+        ['Eindhoven', 'Tilburg', 0],
+        ['Tilburg', 's-Hertogenbosch', 0],
+        ['s-Hertogenbosch', 'Oss', 0],
+        ['Oss', 'Nijmegen', 0],
+        ['Nijmegen', 'Arnhem Centraal', 0],
+        ['Arnhem Centraal', 'Dieren', 0],
+        ['Dieren', 'Zutphen', 0],
+        ['Zutphen', 'Deventer', 0],
+        ['Deventer', 'Apeldoorn', 0],
+        ['Apeldoorn', 'Deventer', 0]],
+        [['s-Hertogenbosch', 'Tilburg', 0],
+        ['Tilburg', 'Breda', 0],
+        ['Breda', 'Dordrecht', 0],
+        ['Dordrecht', 'Rotterdam Blaak', 0],
+        ['Rotterdam Blaak', 'Rotterdam Alexander', 0],
+        ['Rotterdam Alexander', 'Gouda', 0],
+        ['Gouda', 'Den Haag Centraal', 0],
+        ['Den Haag Centraal', 'Leiden Centraal', 0],
+        ['Leiden Centraal', 'Den Haag HS', 0],
+        ['Den Haag HS', 'Delft', 0],
+        ['Delft', 'Den Haag Centraal', 0],
+        ['Den Haag Centraal', 'Leiden Centraal', 0],
+        ['Leiden Centraal', 'Heemstede-Aerdenhout', 0],
+        ['Heemstede-Aerdenhout', 'Haarlem', 0],
+        ['Haarlem', 'Heemstede-Aerdenhout', 0]],[
+        ['Amsterdam Centraal', 'Utrecht Centraal', 0],
+        ['Utrecht Centraal', 'Amersfoort', 0],
+        ['Amersfoort', 'Zwolle', 0],
+        ['Zwolle', 'Deventer', 0],
+        ['Deventer', 'Almelo', 0],
+        ['Almelo', 'Hengelo', 0],
+        ['Hengelo', 'Enschede', 0],
+        ['Enschede', 'Hengelo', 0],
+        ['Hengelo', 'Almelo', 0],
+        ['Almelo', 'Hengelo', 0],
+        ['Hengelo', 'Enschede', 0]],
+        [['Heerenveen', 'Leeuwarden', 0],
+        ['Leeuwarden', 'Groningen', 0],
+        ['Groningen', 'Assen', 0],
+        ['Assen', 'Zwolle', 0],
+        ['Zwolle', 'Steenwijk', 0],
+        ['Steenwijk', 'Heerenveen', 0],
+        ['Heerenveen', 'Leeuwarden', 0],
+        ['Leeuwarden', 'Heerenveen', 0]],
+        [['Lelystad Centrum', 'Almere Centrum', 0],
+        ['Almere Centrum', 'Hilversum', 0],
+        ['Hilversum', 'Utrecht Centraal', 0],
+        ['Utrecht Centraal', 'Gouda', 0],
+        ['Gouda', 'Den Haag HS', 0],
+        ['Den Haag HS', 'Delft', 0],
+        ['Delft', 'Schiedam Centrum', 0],
+        ['Schiedam Centrum', 'Rotterdam Centraal', 0],
+        ['Rotterdam Centraal', 'Dordrecht', 0],
+        ['Dordrecht', 'Roosendaal', 0],
+        ['Roosendaal', 'Etten-Leur', 0],
+        ['Etten-Leur', 'Breda', 0],
+        ['Breda', 'Etten-Leur', 0]],
+        [['Helmond', 'Eindhoven', 0],
+        ['Eindhoven', 'Weert', 0],
+        ['Weert', 'Roermond', 0],
+        ['Roermond', 'Sittard', 0],
+        ['Sittard', 'Heerlen', 0],
+        ['Heerlen', 'Sittard', 0],
+        ['Sittard', 'Maastricht', 0],
+        ['Maastricht', 'Sittard', 0],
+        ['Sittard', 'Heerlen', 0],
+        ['Heerlen', 'Sittard', 0],
+        ['Sittard', 'Maastricht', 0],
+        ['Maastricht', 'Sittard', 0]],
+        [['Venlo', 'Helmond', 0],
+        ['Helmond', 'Eindhoven', 0],
+        ['Eindhoven', 's-Hertogenbosch', 0],
+        ['s-Hertogenbosch', 'Utrecht Centraal', 0],
+        ['Utrecht Centraal', 'Schiphol Airport', 0],
+        ['Schiphol Airport', 'Amsterdam Zuid', 0],
+        ['Amsterdam Zuid', 'Amsterdam Sloterdijk', 0],
+        ['Amsterdam Sloterdijk', 'Haarlem', 0],
+        ['Haarlem', 'Beverwijk', 0],
+        ['Beverwijk', 'Castricum', 0]],
+        [['Gouda', 'Alphen a/d Rijn', 0],
+        ['Alphen a/d Rijn', 'Utrecht Centraal', 0],
+        ['Utrecht Centraal', 'Amsterdam Amstel', 0],
+        ['Amsterdam Amstel', 'Amsterdam Centraal', 0],
+        ['Amsterdam Centraal', 'Almere Centrum', 0],
+        ['Almere Centrum', 'Amsterdam Amstel', 0],
+        ['Amsterdam Amstel', 'Utrecht Centraal', 0],
+        ['Utrecht Centraal', 'Ede-Wageningen', 0],
+        ['Ede-Wageningen', 'Arnhem Centraal', 0]],
+        [['Zutphen', 'Apeldoorn', 0],
+        ['Apeldoorn', 'Deventer', 0],
+        ['Deventer', 'Zutphen', 0],
+        ['Zutphen', 'Apeldoorn', 0],
+        ['Apeldoorn', 'Deventer', 0],
+        ['Deventer', 'Zutphen', 0],
+        ['Zutphen', 'Apeldoorn', 0],
+        ['Apeldoorn', 'Deventer', 0],
+        ['Deventer', 'Zutphen', 0],
+        ['Zutphen', 'Apeldoorn', 0],
+        ['Apeldoorn', 'Amersfoort', 0]]]
+
     # TODO Make sure the file path is correct after importing!
     dict_stations_holland, dict_connections_holland = read_data('../StationsHolland.csv', '../ConnectiesHolland.csv')
     dict_stations_nl, dict_connections_nl = read_data('../StationsNationaal.csv', '../ConnectiesNationaal.csv')
 
     # # calling function of complete visual product
-    visualize_all_trajects(dict_stations_holland, traject_long, province = True)
-    # visualize_all_trajects(dict_stations_nl, traject_long, province = False)
+    # visualize_all_trajects(dict_stations_holland, traject_long, province = True)
+    visualize_all_trajects(dict_stations_nl, traject_best_result, province = False)
 
     # exit () prevents last block from executing
     exit()
