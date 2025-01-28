@@ -4,33 +4,33 @@ from Functies.baseline import baseline
 from Functies.read_files import read_data
 import csv
 
-# Paths for station and connection data
+# Paths for station and connection data, interchangable for NH and ZH
 stations_file = 'Data/StationsNationaal.csv'
 connections_file = 'Data/ConnectiesNationaal.csv'
 
-# Algorithms to compare
+# List of algorithms to compare
 algorithms = ['Random', 'Greedy', 'DepthFirst', 'SimulatedAnnealing', 'HillClimber']
 
 # Parameters for the experiment, max_time in sec
 min_trajects = 1
 max_trajects = 20
-iterations = 1500000
-max_time = 10
+iterations = 1000000000000
+max_time = 7200
 visualize_condition = False
 time_limit = 180
 
 # Read station and connection data
 stations_data, connections_data = read_data(stations_file, connections_file)
 
-# Store results
+# Store results and the iterations
 results = {}
 iteration_counts = {}
 
-# Run experiments for each algorithm
+# Runs the experiments for each algorithm
 for algorithm in algorithms:
     print(f"\nRunning experiment for algorithm: {algorithm}")
 
-    # Initialize tracking
+    # Initialize tracking for the highest quality, time intervals and the quality over time.
     highest_quality = 0
     time_intervals = []
     quality_over_time = []
@@ -41,6 +41,7 @@ for algorithm in algorithms:
     iteration = 0
     with open(f"Experiment_{algorithm}.csv", 'w') as f:
 
+        # Adding resuls to a CSV
         writer = csv.writer(f)
         writer.writerow(['elapsed_time', 'highest_quality', 'iteration'])
 
@@ -69,6 +70,7 @@ for algorithm in algorithms:
                     DFS_depth=None,
                     algorithm_iterations=10000,
                     time_limit=time_limit)
+
             elif algorithm == 'DepthFirst':
                 quality_dict, highest_score, best_trajects = baseline(
                     iterations=1,
@@ -80,6 +82,7 @@ for algorithm in algorithms:
                     DFS_depth=22,
                     algorithm_iterations=None,
                     time_limit=time_limit)
+
             else:
                 quality_dict, highest_score, best_trajects = baseline(
                     iterations=1,
@@ -96,7 +99,7 @@ for algorithm in algorithms:
             if highest_score > highest_quality:
                 highest_quality = highest_score
 
-            # Track elapsed time
+            # Track elapsed time for time intervals
             elapsed_time = int(time.time() - start_time)
 
             # Record data at every second
@@ -109,16 +112,17 @@ for algorithm in algorithms:
             if iteration >= iterations:
                 break
 
+            # Adding the results to CSV files
             writer.writerow([elapsed_time, highest_quality, iteration])
 
-    # Store results for the algorithm
+    # Save results for the algorithm and add them to the dictionary
     results[algorithm] = {'time_intervals': time_intervals, 'quality_over_time': quality_over_time}
 
-    # Store the total iterations
+    # Save the total iterations
     iteration_counts[algorithm] = iteration
 
     # Print progress
-    print(f"Completed {algorithm}: {len(time_intervals)} seconds tracked, {iteration} iterations completed.")
+    print(f"Completed {algorithm}: {max_time} seconds tracked, {iteration} iterations completed.")
 
 # Plot quality vs. time for each algorithm
 plt.figure(figsize=(12, 8))
@@ -135,7 +139,7 @@ for algorithm, data in results.items():
 
 plt.xlabel('Time (seconds)')
 plt.ylabel('Highest Quality (Score)')
-plt.title('Quality vs. Time for All Algorithms')
+plt.title(f'Quality vs. Time ({max_time} seconds) for All Algorithms')
 plt.legend(loc='lower right', fontsize=10)
 plt.grid(True)
 plt.show()
