@@ -49,7 +49,7 @@ def sim_annealing_temperature_test(iterations, min_temp, max_temp, step_size, mi
                     writer.writerow([nr_of_trajects, temp, cooling_rate,  quality])
                     end = time.perf_counter()
 
-                    if i % 50 == 0:
+                    if i % 25 == 0:
                         print(f"step {count}/{len(temps)*len(cooling_rates)}: {(i/iterations)*100}%")
                         if (end - start) < 60:
                             print(f"The experiment has been running for {int(end - start)} seconds")
@@ -62,7 +62,7 @@ def sim_annealing_temperature_test(iterations, min_temp, max_temp, step_size, mi
 
 
 
-def plot_sim_annealing_temp_test(file='simulated_annealing_temp_test.csv'):
+def plot_sim_annealing_temp_test(file='simulated_annealing_temp_test_nl.csv'):
     df = pd.read_csv(file)
     # normalized_df=(df-df.min())/(df.max()-df.min())
     # normalized_df['temp_cooling_rate'] = normalized_df.apply(lambda row: f"{row['temperature']}-{row['cooling rate']}", axis=1)
@@ -82,7 +82,7 @@ def plot_sim_annealing_temp_test(file='simulated_annealing_temp_test.csv'):
         cbar_kws={'label': 'Quality'},  # Label for the color bar
     )
     plt.yticks(rotation=0)
-    plt.title('Quality by Temperature and Cooling Rate. Simulated Annealing (100 iterations)')
+    plt.title('Quality by Temperature and Cooling Rate. Simulated Annealing (50 iterations)')
     plt.xlabel('Temperature')
     plt.ylabel('Cooling Rate')
 
@@ -95,5 +95,5 @@ def plot_sim_annealing_temp_test(file='simulated_annealing_temp_test.csv'):
 # arguments for sim_annealing_temperature_test function:
 # (iterations, min_temp, max_temp, step_size, min_cooling, max_cooling, cooling_step_size, algorithm_iterations, stations_path, connections_path, min_trajects, max_trajects)
 # sim_annealing_temperature_test(500, 0, 650, 50, 0.980, 0.999, 0.001, 2000, stations, connections, 1, 7)
-sim_annealing_temperature_test(100, 0, 650, 50, 0.9980, 0.9999, 0.0001, 10000, stations_nl, connections_nl, 1, 20, 180)
+# sim_annealing_temperature_test(50, 0, 650, 50, 0.9980, 0.9999, 0.0001, 10000, stations_nl, connections_nl, 1, 20, 180)
 plot_sim_annealing_temp_test()
