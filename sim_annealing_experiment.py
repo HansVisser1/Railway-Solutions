@@ -42,7 +42,7 @@ def sim_annealing_temperature_test(iterations, min_temp, max_temp, step_size, mi
                 for i in range(iterations):
 
                     nr_of_trajects = random.randint(min_trajects, max_trajects)
-                    state, quality = sim_annealing(nr_of_trajects, algorithm_iterations, stations_path, connections_path, temp, time_limit)
+                    state, quality = sim_annealing(nr_of_trajects, algorithm_iterations, stations_path, connections_path, temp, cooling_rate, time_limit)
                     writer.writerow([nr_of_trajects, temp, cooling_rate,  quality])
                     end = time.perf_counter()
 

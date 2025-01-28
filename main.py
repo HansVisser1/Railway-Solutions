@@ -11,21 +11,21 @@ from Functies.convert_station_list_to_connections import convert_station_list_to
 from Functies.traject_list  import traject_list
 from Functies.highest_score_convert import highest_score_convert
 
-stations = 'Data/StationsHolland.csv'
-connections = 'Data/ConnectiesHolland.csv'
+stations = 'Data/StationsNationaal.csv'
+connections = 'Data/ConnectiesNationaal.csv'
 min_trajects = 1
-max_trajects = 7
-time_limit = 120
+max_trajects = 22
+time_limit = 180
 visualize_condition = True
 
 # possible types: 'DepthFirst', 'Random', 'Greedy', 'HillClimber', 'SimulatedAnnealing'
-traject_type = 'Random'
+traject_type = 'DepthFirst'
 
 # required for HillClimber and SimulatedAnnealing
 algorithm_iterations = 2000
 
 # required for depthfirst
-depthfirst_depth = 15
+depthfirst_depth = 22
 
 # check if input is correct
 while traject_type not in ['DepthFirst', 'SimulatedAnnealing', 'Greedy', 'Random', 'HillClimber']:
@@ -40,7 +40,7 @@ station_dict, connection_dict = read_data(stations, connections)
 #Parameters for baseline comparison
 num_runs = 1
 
-iterations = 20
+iterations = 500
 
 
 # Collect baseline results
