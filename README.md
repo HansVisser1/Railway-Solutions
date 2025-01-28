@@ -4,5 +4,5 @@ Railway Solutions
 RUNNING EXPERIMENTS:
 
 Temp & Cooling rate simulated annealing:
-To run the Simulated_Annealing_experiment scroll down to the bottom of the file, where the parameters for the experiment are set.
+Scroll down in 'sim_annealing_experiment.py'. At the bottom of the file the parameters for the experiment can be set.
 Then run file through the terminal.
