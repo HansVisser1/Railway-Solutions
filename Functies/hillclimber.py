@@ -3,7 +3,7 @@ from Functies.calculate_score import calculate_score
 import random
 import copy
 
-def hillclimber(nr_of_trajects, iterations, stations_path, connections_path):
+def hillclimber(nr_of_trajects, iterations, stations_path, connections_path, time_limit):
     """
     This function randomly adds a connection to an end of the trajects, and if this improves the quality,
     the new state is saved.
@@ -16,6 +16,7 @@ def hillclimber(nr_of_trajects, iterations, stations_path, connections_path):
     # add trajects to state using random algorithm
     for i in range(nr_of_trajects):
         traject = RandomTraject()
+        traject.max_time = time_limit
         traject.run(stations_path, connections_path)
         state.append(traject)
 
