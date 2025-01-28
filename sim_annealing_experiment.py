@@ -103,5 +103,5 @@ def plot_sim_annealing_temp_test(file='simulated_annealing_temp_test_nl.csv'):
 # arguments for sim_annealing_temperature_test function:
 # (iterations, min_temp, max_temp, step_size, min_cooling, max_cooling, cooling_step_size, algorithm_iterations, stations_path, connections_path, min_trajects, max_trajects)
 # sim_annealing_temperature_test(500, 0, 650, 50, 0.980, 0.999, 0.001, 2000, stations, connections, 1, 7)
-# sim_annealing_temperature_test(50, 0, 650, 50, 0.9980, 0.9999, 0.0001, 10000, stations_nl, connections_nl, 1, 20, 180)
+sim_annealing_temperature_test(50, 0, 650, 50, 0.9980, 0.9999, 0.0001, 10000, stations_nl, connections_nl, 1, 20, 180)
 plot_sim_annealing_temp_test()
