@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import csv
 import geopandas as gpd
+import math
 
 def visualize_area(plt_axis, province, algorithm):
     """
@@ -131,11 +132,13 @@ def visualize_traject(plt_axis, station_dictionary, traject_list):
     The argument plt_axis is the shared axis between all matplotlib plots/figures. Passing ensures plotting in the same figure.
     This function plots the trajects in the fully visualized graph, and displays the graph, but returns nothing.
     """
-    # creating list of different colours for the trajects to be plotted in
-    # TODO ADD ADDITIONAL COLOURS FOR 20 TRAJECTS LATER ON
+
+    # list of different colours for the trajects to be plotted in
     traject_colours = ['gold', 'red', 'darkorange', 'lime', 'magenta', 'cyan', 'silver', 'dodgerblue', 'yellowgreen',
                         'pink', 'mediumorchid', 'lightcoral', 'saddlebrown', 'deepskyblue',  'deeppink',
                         'olive', 'peru', 'mistyrose', 'mediumaquamarine',  'lightsteelblue']
+
+    traject_colours_short = ['red', 'darkorange', 'lime', 'magenta', 'cyan', 'silver']
 
     # looping through the list of trajects and connections therein
     for traject_number, traject in enumerate(traject_list):
@@ -153,18 +156,16 @@ def visualize_traject(plt_axis, station_dictionary, traject_list):
 
             # plotting traject connections and ensuring traject label appears only once in graph legend
             if connection_number == 0:
-                plt_axis.plot(x_coordinates, y_coordinates, color = traject_colours[traject_number],
+                plt_axis.plot(x_coordinates, y_coordinates, color = traject_colours_short[traject_number% len(traject_colours_short)],
                     label = f'traject {traject_number + 1}', linestyle = '--', zorder = 3)
                 plt_axis.legend(loc = 'upper left')
                 plt.draw()
-                # plt.pause(0.25)
                 plt.pause(0.10)
             else:
-                plt_axis.plot(x_coordinates, y_coordinates, color = traject_colours[traject_number],
+                plt_axis.plot(x_coordinates, y_coordinates, color = traject_colours_short[traject_number % len(traject_colours_short)],
                     linestyle = '--', zorder = 3)
                 plt_axis.legend(loc = 'upper left')
                 plt.draw()
-                # plt.pause(0.25)
                 plt.pause(0.10)
 
 
@@ -174,6 +175,8 @@ def visualize_all_trajects(dict_stations, traject_list, file_name = None, provin
     the list_connections function.
     Function combines all three visualize functions for a complete visual product in the form of a matplotlib graph.
     The order of the visualize functions is of importance.
+    The arguments file_name, save_figure and algorithm are for plotting and saving the visualisation. To save the figure,
+    a file name has to be given, save_figure set to True and an algorithm name can be added to plot it in the figure title.
     """
     # defining figure and figure axis
     fig, plt_axis = plt.subplots(figsize=(10, 10))
