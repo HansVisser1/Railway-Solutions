@@ -44,6 +44,6 @@ This is a list describing the data structure of this project and what the differ
 
 **Authors**
 
-Hans Visser
-Victor Brouns
-Leander Gall
+- Hans Visser
+- Victor Brouns
+- Leander Gall
