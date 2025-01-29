@@ -2,18 +2,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import csv
 import geopandas as gpd
-import math
 
 def visualize_area(plt_axis, province, algorithm):
     """
     Function uses a GeoJSON file (not received as argument) and plots the outline of the area the trains will operate in.
     The argument plt_axis is the shared axis between all matplotlib plots/figures. Passing ensures plotting in the same figure.
-    The province argument indicates if this is for the two provinces or for the entire country.
-
-    GEOPANDAS NEEDS TO BE INSTALLED FOR THIS FUNCTION TO PROPERLY EXECUTE !
-    terminal ---> pip install geopandas
+    The province argument indicates if this is for the two provinces or for the entire country. The algorithm argument is
+    the name of the algorithm that produced the to be visualed answer, and is used to plot the correct figure title.
     """
     # opening GeoJSON file
+    # TODO change to Data/nl-all-provinces.geojson
     geo_data = gpd.read_file("nl-all-provinces.geojson")
     plt_axis.set_xticks([])
     plt_axis.set_yticks([])
@@ -231,6 +229,8 @@ if __name__ == "__main__":
         return stations, connections
 
     # example of traject TODO REMOVE AFTERWARDS
+    traject_empty = []
+
     traject_short = [['Delft', 'Den Haag Centraal', '13'], ['Den Haag Centraal', 'Leiden Centraal','12'],
         ['Leiden Centraal', 'Den Haag Centraal', '12'], ['Den Haag Centraal', 'Leiden Centraal', '12'],
         ['Leiden Centraal', 'Heemstede-Aerdenhout', '13'], ['Heemstede-Aerdenhout', 'Haarlem', '6'],
@@ -437,17 +437,21 @@ if __name__ == "__main__":
 
     # # calling function of complete visual product
     # visualize_all_trajects(dict_stations_holland, traject_long, province = True)
-    visualize_all_trajects(dict_stations_nl, traject_best_result, province = False)
+    # visualize_all_trajects(dict_stations_nl, traject_best_result, province = False)
+    visualize_all_trajects(dict_stations_holland, traject_empty, province = True, save_figure = True,
+                            file_name = 'empty_map.png', algorithm = 'Empty')
 
     # exit () prevents last block from executing
     exit()
 
     visualize_all_trajects(dict_stations_holland, traject_depthfirst, province = True, save_figure = True,
-                            file_name = 'visualisation_depthfirst.png', algorithm = 'DepthFirst')
+                            file_name = 'visualisation_depthfirst_v2.png', algorithm = 'DepthFirst')
     visualize_all_trajects(dict_stations_holland, traject_random, province = True, save_figure = True,
-                            file_name = 'visualisation_random.png', algorithm = 'Random')
+                            file_name = 'visualisation_random_v2.png', algorithm = 'Random')
     visualize_all_trajects(dict_stations_holland, traject_greedy, province = True, save_figure = True,
-                            file_name = 'visualisation_greedy.png', algorithm = 'Greedy')
+                            file_name = 'visualisation_greedy_v2.png', algorithm = 'Greedy')
+
+
 
     # code block for counting connections in dictionary
     count_connection_1 = set()
