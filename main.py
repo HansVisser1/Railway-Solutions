@@ -18,7 +18,7 @@ visualize_condition = True
 traject_type = 'Random'
 
 # iterations for the baseline
-iterations = 150
+iterations = 300
 
 # required for HillClimber and SimulatedAnnealing (iterations per model run)
 algorithm_iterations = 2000
@@ -49,4 +49,8 @@ plot_quality_distribution(all_results, iterations, traject_type, highest_score)
 # visualize the trajects
 # arguments: (dict_stations, traject_list, file_name = None, province = True, save_figure = False, algorithm = 'Test', save_gif = False)
 if visualize_condition == True:
-    visualize_all_trajects(station_dict, best_trajects)
+    if network == 'Nationaal':
+        province = True
+    else:
+        province = False
+    visualize_all_trajects(station_dict, best_trajects, province)
