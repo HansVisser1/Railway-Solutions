@@ -47,5 +47,6 @@ output_to_csv(best_trajects, highest_score, traject_type, network, iterations)
 plot_quality_distribution(all_results, iterations, traject_type, highest_score)
 
 # visualize the trajects
+# arguments: (dict_stations, traject_list, file_name = None, province = True, save_figure = False, algorithm = 'Test', save_gif = False)
 if visualize_condition == True:
     visualize_all_trajects(station_dict, best_trajects)
