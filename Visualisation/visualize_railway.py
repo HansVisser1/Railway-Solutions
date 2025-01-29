@@ -1,7 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import imageio.v2 as imageio
 import csv
 import geopandas as gpd
+import numpy as np
 
 def visualize_area(plt_axis, province, algorithm):
     """
@@ -122,21 +124,23 @@ def visualize_connections(plt_axis, station_dictionary):
                 plotted_connections.add((station, destination))
 
 
-def visualize_traject(plt_axis, station_dictionary, traject_list):
+def visualize_traject(plt_axis, station_dictionary, traject_list, save_gif, gif_name):
     """
     Function takes dictionary of stations produced by the read_data function and a traject list produced by
     the list_connections function. It then plots every connection in the different trajects one by one and visualizes every step
     of the plotting in the graph. Each traject (and corresponding connections) gets its own colour in the plotted graph.
     The argument plt_axis is the shared axis between all matplotlib plots/figures. Passing ensures plotting in the same figure.
-    This function plots the trajects in the fully visualized graph, and displays the graph, but returns nothing.
+    If the save_gif argument is set to True, a GIF of the visualisation will be produced.
+    This function plots the trajects in the fully visualized graph, creates a GIF and displays the graph, but returns nothing.
     """
 
+    # TODO REMOVE COLOUR LOOP
     # list of different colours for the trajects to be plotted in
     traject_colours = ['gold', 'red', 'darkorange', 'lime', 'magenta', 'cyan', 'silver', 'dodgerblue', 'yellowgreen',
                         'pink', 'mediumorchid', 'lightcoral', 'saddlebrown', 'deepskyblue',  'deeppink',
                         'olive', 'peru', 'mistyrose', 'mediumaquamarine',  'lightsteelblue']
 
-    traject_colours_short = ['red', 'darkorange', 'lime', 'magenta', 'cyan', 'silver']
+    gif_frames = []
 
     # looping through the list of trajects and connections therein
     for traject_number, traject in enumerate(traject_list):
@@ -154,20 +158,28 @@ def visualize_traject(plt_axis, station_dictionary, traject_list):
 
             # plotting traject connections and ensuring traject label appears only once in graph legend
             if connection_number == 0:
-                plt_axis.plot(x_coordinates, y_coordinates, color = traject_colours_short[traject_number% len(traject_colours_short)],
+                plt_axis.plot(x_coordinates, y_coordinates, color = traject_colours[traject_number],
                     label = f'traject {traject_number + 1}', linestyle = '--', zorder = 3)
                 plt_axis.legend(loc = 'upper left')
-                plt.draw()
-                plt.pause(0.10)
             else:
-                plt_axis.plot(x_coordinates, y_coordinates, color = traject_colours_short[traject_number % len(traject_colours_short)],
+                plt_axis.plot(x_coordinates, y_coordinates, color = traject_colours[traject_number],
                     linestyle = '--', zorder = 3)
                 plt_axis.legend(loc = 'upper left')
-                plt.draw()
-                plt.pause(0.10)
 
+            plt.draw()
+            plt.pause(0.10)
 
-def visualize_all_trajects(dict_stations, traject_list, file_name = None, province = True, save_figure = False, algorithm = 'Test'):
+            # capturing frames and storing them
+            plt_axis.figure.canvas.draw()
+            frame = np.array(plt_axis.figure.canvas.renderer.buffer_rgba())
+            plt.tight_layout(pad=0.1)
+            gif_frames.append(frame)
+
+    if save_gif:
+        # saving the GIF
+        imageio.mimsave(gif_name, gif_frames, duration=0.1, loop=0)
+
+def visualize_all_trajects(dict_stations, traject_list, file_name = None, province = True, save_figure = False, algorithm = 'Test', save_gif = False):
     """
     Function takes dictionary of stations produced by the read_data function and a traject list produced by
     the list_connections function.
@@ -175,7 +187,16 @@ def visualize_all_trajects(dict_stations, traject_list, file_name = None, provin
     The order of the visualize functions is of importance.
     The arguments file_name, save_figure and algorithm are for plotting and saving the visualisation. To save the figure,
     a file name has to be given, save_figure set to True and an algorithm name can be added to plot it in the figure title.
+    If the visualisation needs to be saved as a GIF as well, the save_gif argument needs to be set to True.
     """
+    # defining file_names
+    if file_name:
+        png_name = file_name + '.png'
+        gif_name = file_name + '_GIF.gif'
+    else:
+        png_name = None
+        gif_name = None
+
     # defining figure and figure axis
     fig, plt_axis = plt.subplots(figsize=(10, 10))
 
@@ -183,11 +204,11 @@ def visualize_all_trajects(dict_stations, traject_list, file_name = None, provin
     visualize_area(plt_axis, province, algorithm)
     visualize_stations(plt_axis, dict_stations, province)
     visualize_connections(plt_axis, dict_stations)
-    visualize_traject(plt_axis, dict_stations, traject_list)
+    visualize_traject(plt_axis, dict_stations, traject_list, save_gif, gif_name)
 
     if save_figure:
         # saving figure as png image
-        plt.savefig(file_name, dpi = 600, bbox_inches = 'tight')
+        plt.savefig(png_name, dpi = 600, bbox_inches = 'tight')
 
     # displaying the full final visual/graph
     plt.show()
@@ -231,11 +252,11 @@ if __name__ == "__main__":
     # example of traject TODO REMOVE AFTERWARDS
     traject_empty = []
 
-    traject_short = [['Delft', 'Den Haag Centraal', '13'], ['Den Haag Centraal', 'Leiden Centraal','12'],
+    traject_short = [[['Delft', 'Den Haag Centraal', '13'], ['Den Haag Centraal', 'Leiden Centraal','12'],
         ['Leiden Centraal', 'Den Haag Centraal', '12'], ['Den Haag Centraal', 'Leiden Centraal', '12'],
         ['Leiden Centraal', 'Heemstede-Aerdenhout', '13'], ['Heemstede-Aerdenhout', 'Haarlem', '6'],
         ['Haarlem', 'Amsterdam Sloterdijk', '11'], ['Amsterdam Sloterdijk', 'Haarlem', '11'],
-        ['Haarlem', 'Beverwijk', '16'], ['Beverwijk', 'Castricum', '13']]
+        ['Haarlem', 'Beverwijk', '16'], ['Beverwijk', 'Castricum', '13']]]
 
     traject_long = [[['Rotterdam Alexander', 'Rotterdam Centraal', '8'],
                       ['Rotterdam Centraal', 'Dordrecht', '17'],
@@ -306,7 +327,7 @@ if __name__ == "__main__":
         ['Den Haag Centraal', 'Delft', 13], ['Delft', 'Schiedam Centrum', 7], ['Schiedam Centrum', 'Rotterdam Centraal', 5],
         ['Rotterdam Centraal', 'Rotterdam Alexander', 8], ['Rotterdam Alexander', 'Gouda', 10], ['Gouda', 'Den Haag Centraal', 18]]]
 
-    traject_best_result = [[
+    traject_best_result_nl = [[
         ['Alkmaar', 'Castricum', 0],
         ['Castricum', 'Zaandam', 0],
         ['Zaandam', 'Amsterdam Sloterdijk', 0],
@@ -431,45 +452,38 @@ if __name__ == "__main__":
         ['Zutphen', 'Apeldoorn', 0],
         ['Apeldoorn', 'Amersfoort', 0]]]
 
+    traject_best_result_holland = [[['Rotterdam Alexander', 'Rotterdam Centraal', 0], ['Rotterdam Centraal', 'Schiedam Centrum', 0],
+        ['Schiedam Centrum', 'Delft', 0], ['Delft', 'Den Haag Centraal', 0], ['Den Haag Centraal', 'Leiden Centraal', 0],
+        ['Leiden Centraal', 'Schiphol Airport', 0], ['Schiphol Airport', 'Amsterdam Zuid', 0], ['Amsterdam Zuid', 'Amsterdam Sloterdijk', 0],
+        ['Amsterdam Sloterdijk', 'Amsterdam Centraal', 0], ['Amsterdam Centraal', 'Amsterdam Amstel', 0], ['Amsterdam Amstel', 'Amsterdam Zuid', 0],
+        ['Amsterdam Zuid', 'Schiphol Airport', 0], ['Schiphol Airport', 'Amsterdam Zuid', 0]], [['Den Helder', 'Alkmaar', 0], ['Alkmaar', 'Castricum', 0],
+        ['Castricum', 'Zaandam', 0], ['Zaandam', 'Amsterdam Sloterdijk', 0], ['Amsterdam Sloterdijk', 'Haarlem', 0], ['Haarlem', 'Heemstede-Aerdenhout', 0],
+        ['Heemstede-Aerdenhout', 'Leiden Centraal', 0], ['Leiden Centraal', 'Alphen a/d Rijn', 0]], [['Den Haag Centraal', 'Gouda', 0],
+        ['Gouda', 'Rotterdam Alexander', 0], ['Rotterdam Alexander', 'Rotterdam Centraal', 0], ['Rotterdam Centraal', 'Dordrecht', 0],
+        ['Dordrecht', 'Rotterdam Centraal', 0], ['Rotterdam Centraal', 'Rotterdam Alexander', 0], ['Rotterdam Alexander', 'Gouda', 0],
+        ['Gouda', 'Alphen a/d Rijn', 0]],[['Haarlem', 'Beverwijk', 0], ['Beverwijk', 'Zaandam', 0], ['Zaandam', 'Hoorn',0], ['Hoorn', 'Alkmaar', 0],
+        ['Alkmaar', 'Castricum', 0], ['Castricum', 'Beverwijk', 0]]]
+
     # TODO Make sure the file path is correct after importing!
     dict_stations_holland, dict_connections_holland = read_data('../StationsHolland.csv', '../ConnectiesHolland.csv')
     dict_stations_nl, dict_connections_nl = read_data('../StationsNationaal.csv', '../ConnectiesNationaal.csv')
 
-    # # calling function of complete visual product
-    # visualize_all_trajects(dict_stations_holland, traject_long, province = True)
-    # visualize_all_trajects(dict_stations_nl, traject_best_result, province = False)
-    visualize_all_trajects(dict_stations_holland, traject_empty, province = True, save_figure = True,
-                            file_name = 'empty_map.png', algorithm = 'Empty')
+    # visualizing example image
+    visualize_all_trajects(dict_stations_holland, traject_long, province = True, save_figure = True, file_name = 'plotted_figures/intro_image',
+                            algorithm = 'Example Traject')
 
-    # exit () prevents last block from executing
-    exit()
+    # visualing best outcome Netherlands (using DepthFirst)
+    visualize_all_trajects(dict_stations_nl, traject_best_result_nl, province = False, save_figure = True, save_gif = True,
+                            file_name = 'plotted_figures/visualisation_best_result_nl', algorithm = 'DepthFirst - Best result')
 
+    # visualing best outcome NH and ZH (using DepthFirst)
+    visualize_all_trajects(dict_stations_holland, traject_best_result_holland, province = True, save_figure = True, save_gif = True,
+                            file_name = 'plotted_figures/visualisation_best_result_holland', algorithm = 'DepthFirst - Best result')
+
+    # visualizing (random) outcomes of three algorithms, for NH and ZH
     visualize_all_trajects(dict_stations_holland, traject_depthfirst, province = True, save_figure = True,
-                            file_name = 'visualisation_depthfirst_v2.png', algorithm = 'DepthFirst')
+                            file_name = 'plotted_figures/visualisation_depthfirst_v2', algorithm = 'DepthFirst', save_gif = True)
     visualize_all_trajects(dict_stations_holland, traject_random, province = True, save_figure = True,
-                            file_name = 'visualisation_random_v2.png', algorithm = 'Random')
+                            file_name = 'plotted_figures/visualisation_random_v2', algorithm = 'Random', save_gif = True)
     visualize_all_trajects(dict_stations_holland, traject_greedy, province = True, save_figure = True,
-                            file_name = 'visualisation_greedy_v2.png', algorithm = 'Greedy')
-
-
-
-    # code block for counting connections in dictionary
-    count_connection_1 = set()
-    for connection in dict_connections_holland:
-        if connection.values() not in count_connection_1:
-            count_connection_1.add(tuple(connection.values()))
-
-    total_time_1 = 0
-    for connection in count_connection_1:
-        total_time_1 += float(connection[2])
-    print(f"Total time for Noord- and Zuid-Holland is {total_time_1}")
-
-    count_connection_2 = set()
-    for connection in dict_connections_nl:
-        if connection.values() not in count_connection_2:
-            count_connection_2.add(tuple(connection.values()))
-
-    total_time_2 = 0
-    for connection in count_connection_2:
-        total_time_2 += float(connection[2])
-    print(f"Total time for Netherlands is {total_time_2}")
+                            file_name = 'plotted_figures/visualisation_greedy_v2', algorithm = 'Greedy', save_gif = True)
