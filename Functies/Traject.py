@@ -18,6 +18,7 @@ class Traject():
         self.connections_dict = {}
         self.stations_path = None
         self.connections_path = None
+        self.stations_dict = None
 
     def run(self, stations_path, connections_path):
         """
@@ -25,24 +26,7 @@ class Traject():
         """
         self.stations_path = stations_path
         self.connections_path = connections_path
-        stations_dict, connections_dict = read_data(stations_path, connections_path)
-        # make list of all stations in the data
-        stations = []
-        for station in stations_dict.keys():
-            stations.append(station)
-
-        # choose random station
-        start_station = (random.sample(stations, 1)[0])
-        self.current_station = start_station
-        self.stations.append(start_station)
-
-        # while the max time hasn't been exceeded, available coonnections are determined, a new connection is chosen and added to the list of connections.
-        while self.time_condition == False:
-            self.determine_available_connections(stations_dict)
-            self.add_connection()
-
-            # update the total duration of the traject.
-            self.duration()
+        self.stations_dict, connections_dict = read_data(stations_path, connections_path)
 
     def determine_available_connections(self, stations_dict):
         """
@@ -61,25 +45,6 @@ class Traject():
         # so if this is the case the tim_condition is set to True.
         if len(self.available_connections) == 0:
             self.time_condition = True
-
-    def add_connection(self):
-        """
-        This method randomly chooses a new connection from the available connections and adds this to the list of connections for the traject.
-        """
-        # check if max time hasn't been exceeded
-        if self.time_condition == False:
-            # choose random station from available stations
-            next_station = random.sample(self.available_connections, 1)[0]
-
-            # a list with the current station, next station and duration of the connection is appended to the connections list.
-            self.connections.append([self.current_station, next_station, self.connections_dict['connections'][next_station]])
-
-            # to add the next station to a list of unique stations, it is checked whether the next station is already in the stations list
-            if next_station not in self.stations:
-                self.stations.append(next_station)
-
-            # set the next station as the current station
-            self.current_station = next_station
 
     def duration(self):
         """

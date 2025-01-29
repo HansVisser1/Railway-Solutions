@@ -1,31 +1,45 @@
 import pprint
 from Functies.read_files import read_data
-from Functies.random_multiple_trajects import random_multiple_trajects
-from Functies.baseline import baseline, collect_baselines, plot_multiple_baselines
-from Functies.list_connections import list_connections
+from Functies.baseline import baseline, collect_baselines, plot_quality_distribution
 from Visualisation.visualize_railway import visualize_all_trajects
 
-# create random number of trajects and return the nr of trajects, trajects objects list and the total cost
-nr, trajects, quality = random_multiple_trajects(1, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
+# the path should end in 'Nationaal.csv' for the whole of the Netherlands or 'Holland.csv' for north and south Holland.
+stations = 'Data/StationsNationaal.csv'
+connections = 'Data/ConnectiesNationaal.csv'
 
-# make the connections_list for the visualization
-traject_list = list_connections(trajects)
-count = 0
-for traject in traject_list:
-    count += 1
-    pprint.pprint(f"Traject {count}: {traject}")
-    print()
+# select the minimum and maximum amount of trajects allowed for the network
+min_trajects = 1
+max_trajects = 20
+time_limit = 180
+visualize_condition = True
+
+# possible types: 'DepthFirst', 'Random', 'Greedy', 'HillClimber', 'SimulatedAnnealing'
+traject_type = 'Random'
+
+# required for HillClimber and SimulatedAnnealing (iterations per )
+algorithm_iterations = 2000
+
+# required for depthfirst (the maximum possible amount of connections in a traject)
+depthfirst_depth = 22
+
+# check if input is correct
+while traject_type not in ['DepthFirst', 'SimulatedAnnealing', 'Greedy', 'Random', 'HillClimber']:
+    print(f"ERROR: Spelling of traject_type is incorrect, it should be one of these: {['DepthFirst', 'SimulatedAnnealing', 'Greedy', 'Random', 'HillClimber']}")
+    break
+
+
 # read the data for the visualization
-station_dict, connection_dict = read_data('Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
+station_dict, connection_dict = read_data(stations, connections)
 
-# visualize the trajects
-visualize_all_trajects(station_dict, traject_list)
-
-# Parameters for baseline comparison
-num_runs = 4
-iterations = 150
+# iterations for the baseline
+iterations = 15000
 
 # Collect baseline results
-all_results = collect_baselines(iterations, num_runs, 1, 7, 'Data/StationsHolland.csv', 'Data/ConnectiesHolland.csv')
-labels = [f"Run {i+1}" for i in range(num_runs)]
-plot_multiple_baselines(all_results, labels, iterations)
+all_results, highest_score, best_trajects = collect_baselines(iterations, traject_type, num_runs=1, min_trajects, max_trajects, stations, connections, depthfirst_depth, algorithm_iterations, time_limit)
+
+# plot_multiple_baselines(all_results, labels, iterations)
+plot_quality_distribution(all_results, iterations, traject_type, highest_score)
+
+# visualize the trajects
+if visualize_condition == True:
+    visualize_all_trajects(station_dict, best_trajects)
