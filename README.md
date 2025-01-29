@@ -37,15 +37,15 @@ This is a list describing the data structure of this project and what the differ
 
 /Code: This folder contains all the code of the project.
 
-    /Functies: This folder contains all the functions that were made
+Code/Functies: This folder contains all the functions that were made
 
-    /Visualisation: This folder contains all the code with regards to visualising the outputs of the algorithms
+Code/Visualisation: This folder contains all the code with regards to visualising the outputs of the algorithms
 
 /Data: This folder contains information about the stations and connections in the networks for Holland and the Netherlands that the code uses to make the routes, as well as the geojson files to visualize the maps.
 
 /Results: This folder contains all the plots and outputs of the code.
 
-    /Plotted_figures: This folder contains all the figures that will be plotted by the code.
+Results/Plotted_figures: This folder contains all the figures that will be plotted by the code.
 
 **Authors**
 
