@@ -1,5 +1,6 @@
 # RailNL
 Railway Solutions
+
 The goal of this case is making a route planning for a train network for Holland and for the Netherlands.
 For Holland there can be a max of 7 routes and for the Netherlands there can be a max of 20 routes in the network.
 The routes should fit in the specified time limit (120 minutes for Holland and 180 minutes for the Netherlands).
