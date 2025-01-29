@@ -7,11 +7,13 @@ For a good solution the routes should travel over as much connections as possibl
 while avoiding overlapping too much with other routes.
 
 **Requirements**
+
 All the code is in Python. The requirements.txt contains all the necessary packages to run the code successfully. 
 by running this in the terminal the packages can be installed:
 'pip install -r requirements.txt'
 
 **USAGE**
+
 The planning can be made by running 'python main.py' from the main folder.
 Within the main.py file parameters can be changed to run the different algorithms for the different networks.
 These parameters are explained within the main.py file.
@@ -31,7 +33,22 @@ Run the file through the terminal with 'python experiment.py'
 
 **Structure**
 
+This is a list describing the data structure of this project and what the different folders contain:
+
+/Code: This folder contains all the code of the project.
+
+Code/Functies: This folder contains all the functions that were made
+
+Code/Visualisation: This folder contains all the code with regards to visualising the outputs of the algorithms
+
+/Data: This folder contains information about the stations and connections in the networks for Holland and the Netherlands that the code uses to make the routes, as well as the geojson files to visualize the maps.
+
+/Results: This folder contains all the plots and outputs of the code.
+
+Results/Plotted_figures: This folder contains all the figures that will be plotted by the code.
+
 **Authors**
+
 Hans Visser
 Victor Brouns
 Leander Gall
