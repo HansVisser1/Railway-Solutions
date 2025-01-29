@@ -14,7 +14,8 @@ def visualize_area(plt_axis, province, algorithm):
     """
     # opening GeoJSON file
     # TODO change to Data/nl-all-provinces.geojson
-    geo_data = gpd.read_file("nl-all-provinces.geojson")
+    # geo_data = gpd.read_file("nl-all-provinces.geojson")
+    geo_data = gpd.read_file("Data/nl-all-provinces.geojson")
     plt_axis.set_xticks([])
     plt_axis.set_yticks([])
 
