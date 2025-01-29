@@ -13,8 +13,6 @@ def visualize_area(plt_axis, province, algorithm):
     the name of the algorithm that produced the to be visualed answer, and is used to plot the correct figure title.
     """
     # opening GeoJSON file
-    # TODO change to Data/nl-all-provinces.geojson
-    # geo_data = gpd.read_file("nl-all-provinces.geojson")
     geo_data = gpd.read_file("Data/nl-all-provinces.geojson")
     plt_axis.set_xticks([])
     plt_axis.set_yticks([])
@@ -134,13 +132,10 @@ def visualize_traject(plt_axis, station_dictionary, traject_list, save_gif, gif_
     If the save_gif argument is set to True, a GIF of the visualisation will be produced.
     This function plots the trajects in the fully visualized graph, creates a GIF and displays the graph, but returns nothing.
     """
-
-    # TODO REMOVE COLOUR LOOP
     # list of different colours for the trajects to be plotted in
     traject_colours = ['gold', 'red', 'darkorange', 'lime', 'magenta', 'cyan', 'silver', 'dodgerblue', 'yellowgreen',
                         'pink', 'mediumorchid', 'lightcoral', 'saddlebrown', 'deepskyblue',  'deeppink',
                         'olive', 'peru', 'mistyrose', 'mediumaquamarine',  'lightsteelblue']
-
     gif_frames = []
 
     # looping through the list of trajects and connections therein
@@ -167,10 +162,11 @@ def visualize_traject(plt_axis, station_dictionary, traject_list, save_gif, gif_
                     linestyle = '--', zorder = 3)
                 plt_axis.legend(loc = 'upper left')
 
+            # drawing and displaying figure
             plt.draw()
             plt.pause(0.10)
 
-            # capturing frames and storing them
+            # capturing frames for GIF and storing them
             plt_axis.figure.canvas.draw()
             frame = np.array(plt_axis.figure.canvas.renderer.buffer_rgba())
             plt.tight_layout(pad=0.1)
@@ -213,278 +209,3 @@ def visualize_all_trajects(dict_stations, traject_list, file_name = None, provin
 
     # displaying the full final visual/graph
     plt.show()
-
-
-if __name__ == "__main__":
-    def read_data(stations_file, connections_file):
-        """
-        This function takes the stations file and the connections file
-        Stations is a dictionary that has the station name as key, and the values are
-        x, y and connections. Connections in turn is a dictionary of all the connections
-        a certain station has.
-        Connections here is a nested dictionary containing the info for its
-        connections.
-        """
-        stations = {}
-        connections = []
-
-        # Reading stations using open
-        with open(stations_file, 'r') as file:
-            document = csv.DictReader(file)
-            for row in document:
-                station_name = row['station']
-                x = row['x']
-                y = row['y']
-                stations[station_name] = {'x': x, 'y': y, 'connections': {}}
-
-        # Reading connections using open
-        with open(connections_file, 'r') as file:
-            document = csv.DictReader(file)
-            for row in document:
-                station1 = row['station1']
-                station2 = row['station2']
-                distance = row['distance']
-
-                stations[station1]['connections'][station2] = distance
-                stations[station2]['connections'][station1] = distance
-                connections.append({'station1': station1, 'station2': station2, 'distance': distance})
-        return stations, connections
-
-    # example of traject TODO REMOVE AFTERWARDS
-    traject_empty = []
-
-    traject_short = [[['Delft', 'Den Haag Centraal', '13'], ['Den Haag Centraal', 'Leiden Centraal','12'],
-        ['Leiden Centraal', 'Den Haag Centraal', '12'], ['Den Haag Centraal', 'Leiden Centraal', '12'],
-        ['Leiden Centraal', 'Heemstede-Aerdenhout', '13'], ['Heemstede-Aerdenhout', 'Haarlem', '6'],
-        ['Haarlem', 'Amsterdam Sloterdijk', '11'], ['Amsterdam Sloterdijk', 'Haarlem', '11'],
-        ['Haarlem', 'Beverwijk', '16'], ['Beverwijk', 'Castricum', '13']]]
-
-    traject_long = [[['Rotterdam Alexander', 'Rotterdam Centraal', '8'],
-                      ['Rotterdam Centraal', 'Dordrecht', '17'],
-                      ['Dordrecht', 'Rotterdam Centraal', '17'],
-                      ['Rotterdam Centraal', 'Rotterdam Alexander', '8'],
-                      ['Rotterdam Alexander', 'Rotterdam Centraal', '8'],
-                      ['Rotterdam Centraal', 'Rotterdam Alexander', '8'],
-                      ['Rotterdam Alexander', 'Gouda', '10'],
-                      ['Gouda', 'Den Haag Centraal', '18'],
-                      ['Den Haag Centraal', 'Gouda', '18']],
-                     [['Zaandam', 'Amsterdam Sloterdijk', '6'],
-                      ['Amsterdam Sloterdijk', 'Haarlem', '11'],
-                      ['Haarlem', 'Amsterdam Sloterdijk', '11'],
-                      ['Amsterdam Sloterdijk', 'Haarlem', '11'],
-                      ['Haarlem', 'Amsterdam Sloterdijk', '11'],
-                      ['Amsterdam Sloterdijk', 'Amsterdam Zuid', '16'],
-                      ['Amsterdam Zuid', 'Schiphol Airport', '6'],
-                      ['Schiphol Airport', 'Leiden Centraal', '15'],
-                      ['Leiden Centraal', 'Heemstede-Aerdenhout', '13'],
-                      ['Heemstede-Aerdenhout', 'Haarlem', '6'],
-                      ['Haarlem', 'Amsterdam Sloterdijk', '11']]]
-
-    traject_depthfirst = [[['Dordrecht', 'Rotterdam Centraal', 0], ['Rotterdam Centraal', 'Schiedam Centrum', 0],
-        ['Schiedam Centrum', 'Delft', 0], ['Delft', 'Den Haag Centraal', 0], ['Den Haag Centraal', 'Leiden Centraal', 0],
-        ['Leiden Centraal', 'Heemstede-Aerdenhout', 0], ['Heemstede-Aerdenhout', 'Haarlem', 0], ['Haarlem', 'Amsterdam Sloterdijk', 0],
-        ['Amsterdam Sloterdijk', 'Amsterdam Centraal', 0], ['Amsterdam Centraal', 'Amsterdam Amstel', 0], ['Amsterdam Amstel', 'Amsterdam Zuid', 0],
-        ['Amsterdam Zuid', 'Schiphol Airport', 0], ['Schiphol Airport', 'Amsterdam Zuid', 0]], [['Zaandam', 'Beverwijk', 0], ['Beverwijk', 'Castricum', 0],
-        ['Castricum', 'Zaandam', 0], ['Zaandam', 'Beverwijk', 0], ['Beverwijk', 'Castricum', 0], ['Castricum', 'Alkmaar', 0], ['Alkmaar', 'Castricum', 0],
-        ['Castricum', 'Zaandam', 0]], [['Rotterdam Alexander', 'Gouda', 0], ['Gouda', 'Alphen a/d Rijn', 0], ['Alphen a/d Rijn', 'Leiden Centraal', 0],
-        ['Leiden Centraal', 'Schiphol Airport', 0], ['Schiphol Airport', 'Amsterdam Zuid', 0], ['Amsterdam Zuid', 'Amsterdam Sloterdijk', 0],
-        ['Amsterdam Sloterdijk', 'Zaandam', 0], ['Zaandam', 'Hoorn', 0]], [['Den Helder', 'Alkmaar', 0], ['Alkmaar', 'Hoorn', 0], ['Hoorn', 'Zaandam', 0],
-        ['Zaandam', 'Amsterdam Sloterdijk', 0], ['Amsterdam Sloterdijk', 'Haarlem', 0], ['Haarlem', 'Beverwijk', 0]],
-        [['Schiphol Airport', 'Leiden Centraal', 0], ['Leiden Centraal', 'Den Haag Centraal', 0], ['Den Haag Centraal', 'Gouda', 0],
-        ['Gouda', 'Rotterdam Alexander', 0], ['Rotterdam Alexander', 'Rotterdam Centraal', 0], ['Rotterdam Centraal', 'Schiedam Centrum', 0],
-        ['Schiedam Centrum', 'Delft', 0], ['Delft', 'Den Haag Centraal', 0], ['Den Haag Centraal', 'Gouda', 0]]]
-
-    traject_random = [[['Rotterdam Alexander', 'Rotterdam Centraal', '8'], ['Rotterdam Centraal', 'Dordrecht', '17'],
-        ['Dordrecht', 'Rotterdam Centraal', '17'], ['Rotterdam Centraal', 'Rotterdam Alexander', '8'],
-        ['Rotterdam Alexander', 'Rotterdam Centraal', '8'], ['Rotterdam Centraal', 'Schiedam Centrum', '5'], ['Schiedam Centrum', 'Delft', '7'],
-        ['Delft', 'Den Haag Centraal', '13'], ['Den Haag Centraal', 'Leiden Centraal', '12'], ['Leiden Centraal', 'Den Haag Centraal', '12'],
-        ['Den Haag Centraal', 'Leiden Centraal', '12']], [['Zaandam', 'Castricum', '12'], ['Castricum', 'Zaandam', '12'], ['Zaandam', 'Hoorn', '26'],
-        ['Hoorn', 'Zaandam', '26'], ['Zaandam', 'Hoorn', '26']], [['Rotterdam Centraal', 'Schiedam Centrum', '5'],
-        ['Schiedam Centrum', 'Rotterdam Centraal', '5'], ['Rotterdam Centraal', 'Rotterdam Alexander', '8'], ['Rotterdam Alexander', 'Gouda', '10'],
-        ['Gouda', 'Den Haag Centraal', '18'], ['Den Haag Centraal', 'Gouda', '18'], ['Gouda', 'Alphen a/d Rijn', '19'], ['Alphen a/d Rijn', 'Gouda', '19'],
-        ['Gouda', 'Den Haag Centraal', '18']], [['Castricum', 'Beverwijk', '13'], ['Beverwijk', 'Zaandam', '25'], ['Zaandam', 'Beverwijk', '25'],
-        ['Beverwijk', 'Castricum', '13'], ['Castricum', 'Alkmaar', '9'], ['Alkmaar', 'Castricum', '9'], ['Castricum', 'Zaandam','12'],
-        ['Zaandam', 'Castricum', '12']], [['Den Helder', 'Alkmaar', '36'], ['Alkmaar', 'Castricum', '9'], ['Castricum', 'Beverwijk', '13'],
-        ['Beverwijk', 'Castricum', '13'], ['Castricum', 'Alkmaar', '9'], ['Alkmaar', 'Castricum', '9'], ['Castricum', 'Zaandam', '12'],
-        ['Zaandam', 'Castricum', '12']]]
-
-    traject_greedy = [[['Den Helder', 'Alkmaar', 36], ['Alkmaar', 'Castricum', 9], ['Castricum', 'Zaandam', 12], ['Zaandam', 'Amsterdam Sloterdijk', 6],
-        ['Amsterdam Sloterdijk', 'Amsterdam Centraal', 6], ['Amsterdam Centraal', 'Amsterdam Amstel', 8], ['Amsterdam Amstel', 'Amsterdam Zuid', 10],
-        ['Amsterdam Zuid', 'Schiphol Airport', 6], ['Schiphol Airport', 'Leiden Centraal', 15], ['Leiden Centraal', 'Den Haag Centraal', 12]],
-        [['Dordrecht', 'Rotterdam Centraal', 17], ['Rotterdam Centraal', 'Schiedam Centrum', 5], ['Schiedam Centrum', 'Delft', 7],
-        ['Delft', 'Den Haag Centraal', 13], ['Den Haag Centraal', 'Leiden Centraal', 12], ['Leiden Centraal', 'Heemstede-Aerdenhout', 13],
-        ['Heemstede-Aerdenhout', 'Haarlem', 6], ['Haarlem', 'Amsterdam Sloterdijk', 11], ['Amsterdam Sloterdijk', 'Amsterdam Centraal', 6],
-        ['Amsterdam Centraal', 'Amsterdam Amstel', 8], ['Amsterdam Amstel', 'Amsterdam Zuid', 10], ['Amsterdam Zuid', 'Schiphol Airport', 6],
-        ['Schiphol Airport', 'Amsterdam Zuid', 6]], [['Dordrecht', 'Rotterdam Centraal', 17], ['Rotterdam Centraal', 'Schiedam Centrum', 5],
-        ['Schiedam Centrum', 'Delft', 7], ['Delft', 'Den Haag Centraal', 13], ['Den Haag Centraal', 'Leiden Centraal', 12],
-        ['Leiden Centraal', 'Heemstede-Aerdenhout', 13], ['Heemstede-Aerdenhout', 'Haarlem', 6], ['Haarlem', 'Amsterdam Sloterdijk', 11],
-        ['Amsterdam Sloterdijk', 'Amsterdam Centraal', 6], ['Amsterdam Centraal', 'Amsterdam Amstel', 8], ['Amsterdam Amstel', 'Amsterdam Zuid', 10],
-        ['Amsterdam Zuid', 'Schiphol Airport', 6], ['Schiphol Airport', 'Amsterdam Zuid', 6]], [['Amsterdam Centraal', 'Amsterdam Sloterdijk', 6],
-        ['Amsterdam Sloterdijk', 'Zaandam', 6], ['Zaandam', 'Castricum', 12], ['Castricum', 'Alkmaar', 9], ['Alkmaar', 'Hoorn', 24],
-        ['Hoorn', 'Zaandam', 26], ['Zaandam', 'Amsterdam Sloterdijk', 6], ['Amsterdam Sloterdijk', 'Amsterdam Centraal', 6],
-        ['Amsterdam Centraal', 'Amsterdam Amstel', 8], ['Amsterdam Amstel', 'Amsterdam Zuid', 10], ['Amsterdam Zuid', 'Schiphol Airport', 6]],
-        [['Amsterdam Sloterdijk', 'Amsterdam Centraal', 6], ['Amsterdam Centraal', 'Amsterdam Amstel', 8], ['Amsterdam Amstel', 'Amsterdam Zuid', 10],
-        ['Amsterdam Zuid', 'Schiphol Airport', 6], ['Schiphol Airport', 'Leiden Centraal', 15], ['Leiden Centraal', 'Den Haag Centraal', 12],
-        ['Den Haag Centraal', 'Delft', 13], ['Delft', 'Schiedam Centrum', 7], ['Schiedam Centrum', 'Rotterdam Centraal', 5],
-        ['Rotterdam Centraal', 'Rotterdam Alexander', 8], ['Rotterdam Alexander', 'Gouda', 10], ['Gouda', 'Den Haag Centraal', 18]]]
-
-    traject_best_result_nl = [[
-        ['Alkmaar', 'Castricum', 0],
-        ['Castricum', 'Zaandam', 0],
-        ['Zaandam', 'Amsterdam Sloterdijk', 0],
-        ['Amsterdam Sloterdijk', 'Amsterdam Centraal', 0],
-        ['Amsterdam Centraal', 'Amsterdam Amstel', 0],
-        ['Amsterdam Amstel', 'Amsterdam Zuid', 0],
-        ['Amsterdam Zuid', 'Schiphol Airport', 0],
-        ['Schiphol Airport', 'Leiden Centraal', 0],
-        ['Leiden Centraal', 'Den Haag Laan v NOI', 0],
-        ['Den Haag Laan v NOI', 'Delft', 0],
-        ['Delft', 'Schiedam Centrum', 0],
-        ['Schiedam Centrum', 'Rotterdam Centraal', 0],
-        ['Rotterdam Centraal', 'Rotterdam Alexander', 0],
-        ['Rotterdam Alexander', 'Rotterdam Blaak', 0],
-        ['Rotterdam Blaak', 'Schiedam Centrum', 0],
-        ['Schiedam Centrum', 'Rotterdam Centraal', 0],
-        ['Rotterdam Centraal', 'Rotterdam Alexander', 0],
-        ['Rotterdam Alexander', 'Rotterdam Blaak', 0],
-        ['Rotterdam Blaak', 'Schiedam Centrum', 0],
-        ['Schiedam Centrum', 'Delft', 0],
-        ['Delft', 'Schiedam Centrum', 0]],[
-        ['Sittard', 'Roermond', 0],
-        ['Roermond', 'Weert', 0],
-        ['Weert', 'Eindhoven', 0],
-        ['Eindhoven', 'Tilburg', 0],
-        ['Tilburg', 's-Hertogenbosch', 0],
-        ['s-Hertogenbosch', 'Oss', 0],
-        ['Oss', 'Nijmegen', 0],
-        ['Nijmegen', 'Arnhem Centraal', 0],
-        ['Arnhem Centraal', 'Dieren', 0],
-        ['Dieren', 'Zutphen', 0],
-        ['Zutphen', 'Deventer', 0],
-        ['Deventer', 'Apeldoorn', 0],
-        ['Apeldoorn', 'Deventer', 0]],
-        [['s-Hertogenbosch', 'Tilburg', 0],
-        ['Tilburg', 'Breda', 0],
-        ['Breda', 'Dordrecht', 0],
-        ['Dordrecht', 'Rotterdam Blaak', 0],
-        ['Rotterdam Blaak', 'Rotterdam Alexander', 0],
-        ['Rotterdam Alexander', 'Gouda', 0],
-        ['Gouda', 'Den Haag Centraal', 0],
-        ['Den Haag Centraal', 'Leiden Centraal', 0],
-        ['Leiden Centraal', 'Den Haag HS', 0],
-        ['Den Haag HS', 'Delft', 0],
-        ['Delft', 'Den Haag Centraal', 0],
-        ['Den Haag Centraal', 'Leiden Centraal', 0],
-        ['Leiden Centraal', 'Heemstede-Aerdenhout', 0],
-        ['Heemstede-Aerdenhout', 'Haarlem', 0],
-        ['Haarlem', 'Heemstede-Aerdenhout', 0]],[
-        ['Amsterdam Centraal', 'Utrecht Centraal', 0],
-        ['Utrecht Centraal', 'Amersfoort', 0],
-        ['Amersfoort', 'Zwolle', 0],
-        ['Zwolle', 'Deventer', 0],
-        ['Deventer', 'Almelo', 0],
-        ['Almelo', 'Hengelo', 0],
-        ['Hengelo', 'Enschede', 0],
-        ['Enschede', 'Hengelo', 0],
-        ['Hengelo', 'Almelo', 0],
-        ['Almelo', 'Hengelo', 0],
-        ['Hengelo', 'Enschede', 0]],
-        [['Heerenveen', 'Leeuwarden', 0],
-        ['Leeuwarden', 'Groningen', 0],
-        ['Groningen', 'Assen', 0],
-        ['Assen', 'Zwolle', 0],
-        ['Zwolle', 'Steenwijk', 0],
-        ['Steenwijk', 'Heerenveen', 0],
-        ['Heerenveen', 'Leeuwarden', 0],
-        ['Leeuwarden', 'Heerenveen', 0]],
-        [['Lelystad Centrum', 'Almere Centrum', 0],
-        ['Almere Centrum', 'Hilversum', 0],
-        ['Hilversum', 'Utrecht Centraal', 0],
-        ['Utrecht Centraal', 'Gouda', 0],
-        ['Gouda', 'Den Haag HS', 0],
-        ['Den Haag HS', 'Delft', 0],
-        ['Delft', 'Schiedam Centrum', 0],
-        ['Schiedam Centrum', 'Rotterdam Centraal', 0],
-        ['Rotterdam Centraal', 'Dordrecht', 0],
-        ['Dordrecht', 'Roosendaal', 0],
-        ['Roosendaal', 'Etten-Leur', 0],
-        ['Etten-Leur', 'Breda', 0],
-        ['Breda', 'Etten-Leur', 0]],
-        [['Helmond', 'Eindhoven', 0],
-        ['Eindhoven', 'Weert', 0],
-        ['Weert', 'Roermond', 0],
-        ['Roermond', 'Sittard', 0],
-        ['Sittard', 'Heerlen', 0],
-        ['Heerlen', 'Sittard', 0],
-        ['Sittard', 'Maastricht', 0],
-        ['Maastricht', 'Sittard', 0],
-        ['Sittard', 'Heerlen', 0],
-        ['Heerlen', 'Sittard', 0],
-        ['Sittard', 'Maastricht', 0],
-        ['Maastricht', 'Sittard', 0]],
-        [['Venlo', 'Helmond', 0],
-        ['Helmond', 'Eindhoven', 0],
-        ['Eindhoven', 's-Hertogenbosch', 0],
-        ['s-Hertogenbosch', 'Utrecht Centraal', 0],
-        ['Utrecht Centraal', 'Schiphol Airport', 0],
-        ['Schiphol Airport', 'Amsterdam Zuid', 0],
-        ['Amsterdam Zuid', 'Amsterdam Sloterdijk', 0],
-        ['Amsterdam Sloterdijk', 'Haarlem', 0],
-        ['Haarlem', 'Beverwijk', 0],
-        ['Beverwijk', 'Castricum', 0]],
-        [['Gouda', 'Alphen a/d Rijn', 0],
-        ['Alphen a/d Rijn', 'Utrecht Centraal', 0],
-        ['Utrecht Centraal', 'Amsterdam Amstel', 0],
-        ['Amsterdam Amstel', 'Amsterdam Centraal', 0],
-        ['Amsterdam Centraal', 'Almere Centrum', 0],
-        ['Almere Centrum', 'Amsterdam Amstel', 0],
-        ['Amsterdam Amstel', 'Utrecht Centraal', 0],
-        ['Utrecht Centraal', 'Ede-Wageningen', 0],
-        ['Ede-Wageningen', 'Arnhem Centraal', 0]],
-        [['Zutphen', 'Apeldoorn', 0],
-        ['Apeldoorn', 'Deventer', 0],
-        ['Deventer', 'Zutphen', 0],
-        ['Zutphen', 'Apeldoorn', 0],
-        ['Apeldoorn', 'Deventer', 0],
-        ['Deventer', 'Zutphen', 0],
-        ['Zutphen', 'Apeldoorn', 0],
-        ['Apeldoorn', 'Deventer', 0],
-        ['Deventer', 'Zutphen', 0],
-        ['Zutphen', 'Apeldoorn', 0],
-        ['Apeldoorn', 'Amersfoort', 0]]]
-
-    traject_best_result_holland = [[['Rotterdam Alexander', 'Rotterdam Centraal', 0], ['Rotterdam Centraal', 'Schiedam Centrum', 0],
-        ['Schiedam Centrum', 'Delft', 0], ['Delft', 'Den Haag Centraal', 0], ['Den Haag Centraal', 'Leiden Centraal', 0],
-        ['Leiden Centraal', 'Schiphol Airport', 0], ['Schiphol Airport', 'Amsterdam Zuid', 0], ['Amsterdam Zuid', 'Amsterdam Sloterdijk', 0],
-        ['Amsterdam Sloterdijk', 'Amsterdam Centraal', 0], ['Amsterdam Centraal', 'Amsterdam Amstel', 0], ['Amsterdam Amstel', 'Amsterdam Zuid', 0],
-        ['Amsterdam Zuid', 'Schiphol Airport', 0], ['Schiphol Airport', 'Amsterdam Zuid', 0]], [['Den Helder', 'Alkmaar', 0], ['Alkmaar', 'Castricum', 0],
-        ['Castricum', 'Zaandam', 0], ['Zaandam', 'Amsterdam Sloterdijk', 0], ['Amsterdam Sloterdijk', 'Haarlem', 0], ['Haarlem', 'Heemstede-Aerdenhout', 0],
-        ['Heemstede-Aerdenhout', 'Leiden Centraal', 0], ['Leiden Centraal', 'Alphen a/d Rijn', 0]], [['Den Haag Centraal', 'Gouda', 0],
-        ['Gouda', 'Rotterdam Alexander', 0], ['Rotterdam Alexander', 'Rotterdam Centraal', 0], ['Rotterdam Centraal', 'Dordrecht', 0],
-        ['Dordrecht', 'Rotterdam Centraal', 0], ['Rotterdam Centraal', 'Rotterdam Alexander', 0], ['Rotterdam Alexander', 'Gouda', 0],
-        ['Gouda', 'Alphen a/d Rijn', 0]],[['Haarlem', 'Beverwijk', 0], ['Beverwijk', 'Zaandam', 0], ['Zaandam', 'Hoorn',0], ['Hoorn', 'Alkmaar', 0],
-        ['Alkmaar', 'Castricum', 0], ['Castricum', 'Beverwijk', 0]]]
-
-    # TODO Make sure the file path is correct after importing!
-    dict_stations_holland, dict_connections_holland = read_data('../StationsHolland.csv', '../ConnectiesHolland.csv')
-    dict_stations_nl, dict_connections_nl = read_data('../StationsNationaal.csv', '../ConnectiesNationaal.csv')
-
-    # visualizing example image
-    visualize_all_trajects(dict_stations_holland, traject_long, province = True, save_figure = True, file_name = 'plotted_figures/intro_image',
-                            algorithm = 'Example Traject')
-
-    # visualing best outcome Netherlands (using DepthFirst)
-    visualize_all_trajects(dict_stations_nl, traject_best_result_nl, province = False, save_figure = True, save_gif = True,
-                            file_name = 'plotted_figures/visualisation_best_result_nl', algorithm = 'DepthFirst - Best result')
-
-    # visualing best outcome NH and ZH (using DepthFirst)
-    visualize_all_trajects(dict_stations_holland, traject_best_result_holland, province = True, save_figure = True, save_gif = True,
-                            file_name = 'plotted_figures/visualisation_best_result_holland', algorithm = 'DepthFirst - Best result')
-
-    # visualizing (random) outcomes of three algorithms, for NH and ZH
-    visualize_all_trajects(dict_stations_holland, traject_depthfirst, province = True, save_figure = True,
-                            file_name = 'plotted_figures/visualisation_depthfirst_v2', algorithm = 'DepthFirst', save_gif = True)
-    visualize_all_trajects(dict_stations_holland, traject_random, province = True, save_figure = True,
-                            file_name = 'plotted_figures/visualisation_random_v2', algorithm = 'Random', save_gif = True)
-    visualize_all_trajects(dict_stations_holland, traject_greedy, province = True, save_figure = True,
-                            file_name = 'plotted_figures/visualisation_greedy_v2', algorithm = 'Greedy', save_gif = True)
