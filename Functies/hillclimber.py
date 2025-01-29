@@ -8,7 +8,6 @@ def hillclimber(nr_of_trajects, iterations, stations_path, connections_path, tim
     This function randomly adds a connection to an end of the trajects, and if this improves the quality,
     the new state is saved.
     """
-
     # list to determine which side of traject to edit
     back_or_front = [0, -1]
     state = []
