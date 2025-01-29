@@ -8,7 +8,7 @@ while avoiding overlapping too much with other routes.
 
 **Requirements**
 
-All the code is in Python. The requirements.txt contains all the necessary packages to run the code successfully. 
+All the code is in Python 3.10. The requirements.txt contains all the necessary packages to run the code successfully. 
 by running this in the terminal the packages can be installed:
 'pip install -r requirements.txt'
 
