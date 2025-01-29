@@ -1,6 +1,0 @@
-Highest Score: 4851
-Trajectories:
-<Functies.RandomTraject.RandomTraject object at 0x11f5ef640>
-<Functies.RandomTraject.RandomTraject object at 0x1046519d0>
-<Functies.RandomTraject.RandomTraject object at 0x10477f2b0>
-<Functies.RandomTraject.RandomTraject object at 0x1205183d0>
