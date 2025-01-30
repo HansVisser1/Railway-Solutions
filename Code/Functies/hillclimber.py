@@ -1,5 +1,5 @@
-from Functies.RandomTraject import RandomTraject
-from Functies.calculate_score import calculate_score
+from Code.Functies.RandomTraject import RandomTraject
+from Code.Functies.calculate_score import calculate_score
 import random
 import copy
 

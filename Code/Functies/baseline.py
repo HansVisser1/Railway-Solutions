@@ -1,5 +1,5 @@
-from Functies.random_multiple_trajects import random_multiple_trajects
-from Functies.highest_score_convert import highest_score_convert
+from Code.Functies.random_multiple_trajects import random_multiple_trajects
+from Code.Functies.highest_score_convert import highest_score_convert
 import pandas as pd
 import seaborn as sns
 import matplotlib as mpl

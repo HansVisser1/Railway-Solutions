@@ -1,4 +1,4 @@
-from Functies.sim_annealing import sim_annealing
+from Code.Functies.sim_annealing import sim_annealing
 import random
 import pandas as pd
 import seaborn as sns
@@ -32,8 +32,8 @@ def sim_annealing_temperature_test(iterations, min_temp, max_temp, step_size, mi
     cooling_rate = min_cooling
     while cooling_rate <= max_cooling:
         cooling_rates.append(cooling_rate)
-        cooling_rate += cooling_step_size   
-    
+        cooling_rate += cooling_step_size
+
     # make csv writer with the correct collumns
     with open('simulated_annealing_temp_test.csv', 'w', newline="") as f:
         writer = csv.writer(f)
@@ -62,7 +62,7 @@ def sim_annealing_temperature_test(iterations, min_temp, max_temp, step_size, mi
                             print(f"The experiment has been running for {int((end - start) / 60)} minute and {int((end - start) % 60)} seconds")
                         else:
                             print(f"The experiment has been running for {int((end - start) / 60)} minutes and {int((end - start) % 60)} seconds")
-                
+
                 count += 1
 
 

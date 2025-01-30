@@ -1,7 +1,7 @@
 import time
 import matplotlib.pyplot as plt
-from Functies.baseline import baseline
-from Functies.read_files import read_data
+from Code.Functies.baseline import baseline
+from Code.Functies.read_files import read_data
 import csv
 
 # Paths for station and connection data, interchangable for NH and ZH

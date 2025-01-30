@@ -1,4 +1,4 @@
-from Functies.Traject import Traject
+from Code.Functies.Traject import Traject
 
 def list_connections(traject_list):
     """

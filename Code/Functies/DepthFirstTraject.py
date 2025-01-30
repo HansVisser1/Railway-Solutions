@@ -1,8 +1,8 @@
-from Functies.Traject import Traject
+from Code.Functies.Traject import Traject
 import random
 import copy
 import pprint
-from Functies.convert_station_list_to_connections import convert_station_list_to_connections
+from Code.Functies.convert_station_list_to_connections import convert_station_list_to_connections
 
 class DepthFirstTraject(Traject):
     def __init__(self):

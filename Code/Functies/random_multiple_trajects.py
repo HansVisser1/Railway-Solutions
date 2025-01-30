@@ -1,5 +1,5 @@
 import random
-from Functies.multiple_trajects import multiple_trajects
+from Code.Functies.multiple_trajects import multiple_trajects
 
 def random_multiple_trajects(traject_type, min, max, stations_path, connections_path, DFS_depth, algorithm_iterations, time_limit):
     """

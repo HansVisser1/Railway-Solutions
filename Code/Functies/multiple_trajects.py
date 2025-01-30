@@ -1,11 +1,10 @@
-from Functies.Traject import Traject
-from Functies.RandomTraject import RandomTraject
-from Functies.greedy import GreedyTraject
-from Functies.hillclimber import hillclimber
-from Functies.sim_annealing import sim_annealing
-
-from Functies.calculate_score import calculate_score
-from Functies.DepthFirstTraject import DepthFirstTraject
+from Code.Functies.Traject import Traject
+from Code.Functies.RandomTraject import RandomTraject
+from Code.Functies.greedy import GreedyTraject
+from Code.Functies.hillclimber import hillclimber
+from Code.Functies.sim_annealing import sim_annealing
+from Code.Functies.calculate_score import calculate_score
+from Code.Functies.DepthFirstTraject import DepthFirstTraject
 
 
 def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_depth, algorithm_iterations, time_limit):
@@ -13,7 +12,6 @@ def multiple_trajects(nr, traject_type, stations_path, connections_path, DFS_dep
     this function makes the specified output with multiple trajects. since the output of the different algorithms varies, the process is different
     for the different algorithms.
     """
-
     # some of the algorithms use this list
     trajects = []
     total_connections_trajects = []

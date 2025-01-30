@@ -1,4 +1,4 @@
-from Functies.Traject import Traject
+from Code.Functies.Traject import Traject
 import random
 
 class RandomTraject(Traject):

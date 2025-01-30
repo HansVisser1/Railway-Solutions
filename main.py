@@ -1,9 +1,9 @@
 import pprint
 import csv
-from Functies.output_to_csv import output_to_csv
-from Functies.read_files import read_data
-from Functies.baseline import baseline, collect_baselines, plot_quality_distribution
-from Visualisation.visualize_railway import visualize_all_trajects
+from Code.Functies.output_to_csv import output_to_csv
+from Code.Functies.read_files import read_data
+from Code.Functies.baseline import baseline, collect_baselines, plot_quality_distribution
+from Code.Visualisation.visualize_railway import visualize_all_trajects
 
 # Nationaal / Holland
 network = 'Nationaal'
