@@ -49,8 +49,7 @@ def baseline(iterations, traject_type, min_trajects, max_trajects, stations_file
         for i, (key, traject) in enumerate(best_trajects.items(), start=1):
             print(f"Traject {i}:")
             for step in traject:
-                pass
-                print(step)
+                print([step[0], step[1]])
             print()
 
     elif traject_type == 'HillClimber' or traject_type == 'SimulatedAnnealing':

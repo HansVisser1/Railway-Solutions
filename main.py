@@ -18,7 +18,7 @@ visualize_condition = True
 traject_type = 'DepthFirst'
 
 # iterations for the baseline
-iterations = 10
+iterations = 500
 
 # required for HillClimber and SimulatedAnnealing (iterations per model run)
 algorithm_iterations = 2000
