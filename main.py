@@ -4,7 +4,7 @@ from Code.Functies.output_to_csv import output_to_csv
 from Code.Functies.read_files import read_data
 from Code.Functies.baseline import baseline, collect_baselines, plot_quality_distribution
 from Code.Visualisation.visualize_railway import visualize_all_trajects
-
+ 
 # Nationaal / Holland
 network = 'Holland'
 
@@ -18,7 +18,7 @@ visualize_condition = True
 traject_type = 'DepthFirst'
 
 # iterations for the baseline
-iterations = 500
+iterations = 15000
 
 # required for HillClimber and SimulatedAnnealing (iterations per model run)
 algorithm_iterations = 2000
